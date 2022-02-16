@@ -39,7 +39,7 @@
         >
           <div class="" style="width: 43%">
             <div class="mb-0 ms-4 p-4" style="background: rgba(0, 0, 0, 0.45)">
-              <h2 class="display-4 text-white">
+              <h2 class="display-5 text-white">
                 <span class="d-block">Offer</span>
                 <span>worldwide</span>
                 <span class="text-warning"> latest movies </span>
@@ -70,7 +70,7 @@
             <div class="rounded-3 p-4 h-100 why-section-background">
               <h3 class="text-white text-center">Flexibility</h3>
               <div class="d-flex justify-content-center my-3">
-                <i class="bi bi-calendar-plus display-1 text-warning"></i>
+                <i class="bi bi-calendar3 display-1 text-warning"></i>
               </div>
               <p class="text-white mb-4">
                 <span>We offer 2 flexible plans:</span>
