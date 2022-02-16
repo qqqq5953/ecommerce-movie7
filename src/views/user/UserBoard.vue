@@ -54,6 +54,7 @@
 <script>
 import Navbar from '@/components/Navbar.vue';
 import emitter from '@/methods/emitter';
+
 import sortData from '@/methods/sortData';
 import ToastMessage from '@/components/ToastMessage.vue';
 

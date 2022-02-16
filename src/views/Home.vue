@@ -10,6 +10,7 @@
 import Navbar from '@/components/Navbar.vue';
 import sortData from '@/methods/sortData';
 import emitter from '@/methods/emitter';
+import pushMessageState from '@/methods/pushMessageState';
 
 export default {
   components: {
@@ -18,7 +19,8 @@ export default {
   provide() {
     return {
       sortData,
-      emitter
+      emitter,
+      pushMessageState
     };
   },
   created() {

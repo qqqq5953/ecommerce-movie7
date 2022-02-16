@@ -32,7 +32,7 @@
       </header>
       <main class="text-white mt-4">
         <div class="row">
-          <section class="col-9 d-none">
+          <section class="col-9">
             <div class="row h-100 w-100">
               <!-- poster -->
               <div class="col-5">
@@ -187,7 +187,7 @@
           <aside
             class="col-3 p-3 rounded-3 d-flex flex-column aside-background"
           >
-            <div class="mb-3">
+            <div class="mb-3 d-flex flex-column gap-3">
               <!-- popularity -->
               <div class="d-flex align-items-center justify-content-between">
                 <h4 class="h6 text-white text-end mb-0">popularity</h4>
@@ -212,30 +212,47 @@
                 <div class="">
                   <h4 class="h6 text-white mb-0">Rate</h4>
                 </div>
-                <div class="position-relative" style="min-height: 25px">
+                <div
+                  class="position-relative d-flex align-items-center"
+                  style="min-height: 25px"
+                >
                   <div
-                    class="d-flex justify-content-end me-4 position-absolute end-0"
-                    @mousemove="rating($event)"
-                    @mouseenter="offsetWidthCount"
-                    ref="ratingContainer"
+                    class="position-absolute end-0 d-flex align-items-center"
                   >
-                    <i
-                      style="z-index: -1"
-                      v-for="item in starsArray"
-                      :key="item.id"
-                      class="bi text-warning"
-                      :class="{
-                        'bi-star': item.star,
-                        'bi-star-half': item.starHalf,
-                        'bi-star-fill': item.starFill
-                      }"
-                      @click="rated"
-                    ></i>
+                    <a
+                      v-if="status.rating"
+                      href="#"
+                      class="px-2 me-1"
+                      @click.prevent="deleteRating"
+                    >
+                      <i class="bi bi-dash-circle-fill text-muted fs-6"></i>
+                    </a>
+                    <a
+                      href="#"
+                      class="d-flex justify-content-end align-items-center"
+                      :class="{ 'me-4': result }"
+                      @mousemove.prevent="hoverRating($event)"
+                      @mouseenter.prevent="offsetWidthCount"
+                      @click.prevent="rating"
+                      ref="ratingContainer"
+                    >
+                      <i
+                        style="z-index: -1"
+                        v-for="item in starsArray"
+                        :key="item.id"
+                        class="bi text-warning"
+                        :class="{
+                          'bi-star': item.star,
+                          'bi-star-half': item.starHalf,
+                          'bi-star-fill': item.starFill
+                        }"
+                      ></i>
+                    </a>
                   </div>
-                  <div>{{ result * 2 }}</div>
+                  <div v-if="result">{{ result * 2 }}</div>
                 </div>
               </div>
-              <br />
+              <!-- <br />
               ratio:{{ ratio }}
               <br />
               Math.floor:{{ Math.floor(this.result) }}
@@ -244,7 +261,7 @@
               <br />
               offsetX:{{ offsetX }}
               <br />
-              Width:{{ ratingContainerWidth }}
+              Width:{{ ratingContainerWidth }} -->
             </div>
             <ul
               class="d-flex flex-column justify-content-between flex-grow-1 list-unstyled more-video-list mb-0"
@@ -256,7 +273,7 @@
               >
                 <a
                   href="#"
-                  class="btn d-flex justify-content-between text-white w-100 p-3 text-decoration-none fs-6"
+                  class="btn d-flex justify-content-between text-white w-100 px-3 py-2 text-decoration-none fs-6"
                   :class="{ disabled: !item.content.length }"
                   @click.prevent="moreVideos(item.type)"
                 >
@@ -325,7 +342,7 @@ export default {
       type: String
     }
   },
-  inject: ['emitter'],
+  inject: ['emitter', 'pushMessageStatForDashboard'],
   data() {
     return {
       // TMDB
@@ -378,8 +395,10 @@ export default {
         loadingProductID: '',
         watchlistProductID: '',
         isProductInList: '',
-        isSubscriptionInCart: false
+        isSubscriptionInCart: false,
+        rating: ''
       },
+      // rating
       starsArray: [
         { star: true, starHalf: false, starFill: false, id: '1' },
         { star: true, starHalf: false, starFill: false, id: '2' },
@@ -411,8 +430,52 @@ export default {
     }
   },
   methods: {
-    rated() {
-      console.log('rated');
+    async rating() {
+      this.$refs.ratingContainer.style.pointerEvents = 'none';
+
+      // api
+      const api = `https://api.themoviedb.org/3/movie/${this.id}/rating?api_key=${this.key}&session_id=${this.sessionID}`;
+      //
+
+      const requestBody = {
+        value: this.result
+      };
+
+      const response = await this.$http.post(api, requestBody).catch((err) => {
+        console.log(err);
+      });
+
+      this.status.rating = response.data.success;
+
+      console.log('rating', response);
+    },
+    async deleteRating() {
+      this.$refs.ratingContainer.style.pointerEvents = 'none';
+
+      // api
+      const api = `https://api.themoviedb.org/3/movie/${this.id}/rating?api_key=${this.key}&session_id=${this.sessionID}`;
+      //
+
+      const requestBody = {
+        value: this.result
+      };
+
+      const response = await this.$http
+        .delete(api, requestBody)
+        .catch((err) => {
+          console.log(err);
+        });
+
+      this.status.rating = !response.data.success;
+      this.result = 0;
+
+      for (let i = 0; i < this.starsArray.length; i++) {
+        this.starsArray[i].star = true;
+        this.starsArray[i].starHalf = false;
+        this.starsArray[i].starFill = false;
+      }
+
+      console.log('deleteRating', response);
     },
     offsetWidthCount() {
       this.ratingContainerWidth = this.$refs.ratingContainer.offsetWidth;
@@ -451,7 +514,7 @@ export default {
         this.result = 5;
       }
     },
-    rating(e) {
+    hoverRating(e) {
       this.offsetX = e.offsetX;
       this.ratio = this.offsetX / this.ratingContainerWidth;
 
@@ -733,7 +796,11 @@ export default {
   }
 }
 
-.bi {
-  cursor: pointer;
+.delete-rating-btn {
+  padding: 1px 4px 0 6px !important;
+}
+
+.bi-dash-circle-fill:hover {
+  color: white !important;
 }
 </style>

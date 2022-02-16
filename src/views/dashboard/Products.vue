@@ -320,7 +320,11 @@ export default {
         this.$refs.editModal.hideModal();
 
         // toast
-        this.pushMessageState(response, item, currentPage ? '更新' : '新增');
+        this.pushMessageState.dashboard(
+          response,
+          item,
+          currentPage ? '更新' : '新增'
+        );
       } catch (err) {
         console.log(err);
       }
@@ -364,7 +368,7 @@ export default {
         this.$refs.deleteModal.hideModal();
 
         // toast
-        this.pushMessageState(response, item, '刪除');
+        this.pushMessageState.dashboard(response, item, '刪除');
       } catch (err) {
         console.log(err);
       }
