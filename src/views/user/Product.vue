@@ -32,7 +32,7 @@
       </header>
       <main class="text-white mt-4">
         <div class="row">
-          <section class="col-9">
+          <section class="col-9 d-none">
             <div class="row h-100 w-100">
               <!-- poster -->
               <div class="col-5">
@@ -207,40 +207,40 @@
                 </div>
               </div>
 
-              <!-- rate  @mouseenter="rating"
-                    @mouseleave="rating2" @mouseenter="offsetWidthCount"-->
-
-              <div
-                class="d-flex align-items-center justify-content-between border position-relative top-0 bottom-0"
-                style="min-height: 25px"
-              >
+              <!-- rate -->
+              <div class="d-flex align-items-center justify-content-between">
                 <div class="">
                   <h4 class="h6 text-white mb-0">Rate</h4>
                 </div>
-                <div
-                  class="stars d-flex border border-danger justify-content-end"
-                  @mousemove="rating($event)"
-                  @mouseenter="offsetWidthCount"
-                  ref="ratingContainer"
-                >
-                  <i
-                    style="z-index: -1"
-                    v-for="item in starsArray"
-                    :key="item.id"
-                    ref="rating"
-                    class="bi text-warning"
-                    :class="{
-                      'bi-star': item.star,
-                      'bi-star-half': item.starHalf,
-                      'bi-star-fill': item.starFill
-                    }"
-                  ></i>
+                <div class="position-relative" style="min-height: 25px">
+                  <div
+                    class="d-flex justify-content-end me-4 position-absolute end-0"
+                    @mousemove="rating($event)"
+                    @mouseenter="offsetWidthCount"
+                    ref="ratingContainer"
+                  >
+                    <i
+                      style="z-index: -1"
+                      v-for="item in starsArray"
+                      :key="item.id"
+                      class="bi text-warning"
+                      :class="{
+                        'bi-star': item.star,
+                        'bi-star-half': item.starHalf,
+                        'bi-star-fill': item.starFill
+                      }"
+                      @click="rated"
+                    ></i>
+                  </div>
+                  <div>{{ result * 2 }}</div>
                 </div>
               </div>
               <br />
               ratio:{{ ratio }}
               <br />
-              result:{{ result }}
+              Math.floor:{{ Math.floor(this.result) }}
+              <br />
+              Math.ceil:{{ Math.ceil(this.result) }}
               <br />
               offsetX:{{ offsetX }}
               <br />
@@ -272,7 +272,7 @@
           </aside>
         </div>
 
-        <div class="row mt-5">
+        <div class="row mt-5 d-none">
           <!-- video -->
           <h2 class="h1 text-white d-flex align-items-center">
             <i class="bi bi-camera-reels text-warning me-3 fs-4"></i>Watch
@@ -389,7 +389,7 @@ export default {
       ],
       offsetX: '',
       ratingContainerWidth: '',
-      ratio: '',
+      ratio: 0,
       result: ''
     };
   },
@@ -411,10 +411,13 @@ export default {
     }
   },
   methods: {
+    rated() {
+      console.log('rated');
+    },
     offsetWidthCount() {
       this.ratingContainerWidth = this.$refs.ratingContainer.offsetWidth;
     },
-    halfStar(ratio, length) {
+    halfStar(ratio) {
       if (ratio > 0 && ratio <= 0.1) {
         this.result = 0.5;
       } else if (ratio > 0.2 && ratio <= 0.3) {
@@ -423,26 +426,17 @@ export default {
         this.result = 2.5;
       } else if (ratio > 0.6 && ratio <= 0.7) {
         this.result = 3.5;
-      } else if (ratio >= 0.8 && ratio <= 0.9) {
+      } else if (ratio > 0.8 && ratio <= 0.9) {
         this.result = 4.5;
       }
-      for (let i = 0; i < Math.floor(this.result); i++) {
-        this.starsArray[i].star = false;
-        this.starsArray[i].starHalf = false;
-        this.starsArray[i].starFill = true;
-      }
+
+      if (Math.floor(this.result) === 5) return;
 
       this.starsArray[Math.floor(this.result)].star = false;
       this.starsArray[Math.floor(this.result)].starHalf = true;
       this.starsArray[Math.floor(this.result)].starFill = false;
-
-      for (let i = Math.ceil(this.result); i < length; i++) {
-        this.starsArray[i].star = true;
-        this.starsArray[i].starHalf = false;
-        this.starsArray[i].starFill = false;
-      }
     },
-    fullStar(ratio, length) {
+    fullStar(ratio) {
       if (ratio <= 0) {
         this.result = 0;
       } else if (ratio <= 0.2) {
@@ -456,188 +450,27 @@ export default {
       } else if (ratio <= 1) {
         this.result = 5;
       }
-      for (let i = 0; i < this.result; i++) {
-        this.starsArray[i].star = false;
-        this.starsArray[i].starHalf = false;
-        this.starsArray[i].starFill = true;
-      }
-      for (let i = this.result; i < length; i++) {
-        this.starsArray[i].star = true;
-        this.starsArray[i].starHalf = false;
-        this.starsArray[i].starFill = false;
-      }
     },
     rating(e) {
       this.offsetX = e.offsetX;
       this.ratio = this.offsetX / this.ratingContainerWidth;
-      const ratio = this.offsetX / this.ratingContainerWidth;
-      const length = this.starsArray.length;
 
-      this.fullStar(ratio, length);
-      this.halfStar(ratio, length);
+      this.fullStar(this.ratio);
+      this.halfStar(this.ratio);
 
-      // if (ratio <= 0) {
-      //   this.starsArray[0].star = true;
-      //   this.starsArray[0].starHalf = false;
-      //   this.starsArray[0].starFill = false;
-      // } else if (ratio <= 0.1) {
-      //   // 0.5 顆
-      //   this.result = 0.5;
+      // 該星星前全部填滿
+      for (let i = 0; i < Math.floor(this.result); i++) {
+        this.starsArray[i].star = false;
+        this.starsArray[i].starHalf = false;
+        this.starsArray[i].starFill = true;
+      }
 
-      //   for (let i = 0; i < this.result; i++) {
-      //     this.starsArray[i].star = false;
-      //     this.starsArray[i].starHalf = false;
-      //     this.starsArray[i].starFill = true;
-      //   }
-
-      //   this.starsArray[Math.floor(this.result)].star = false;
-      //   this.starsArray[Math.floor(this.result)].starHalf = true;
-      //   this.starsArray[Math.floor(this.result)].starFill = false;
-
-      //   for (let i = Math.ceil(this.result); i < length; i++) {
-      //     this.starsArray[i].star = true;
-      //     this.starsArray[i].starHalf = false;
-      //     this.starsArray[i].starFill = false;
-      //   }
-      // } else if (ratio <= 0.2) {
-      //   // 1 顆
-      //   this.result = 1;
-
-      //   for (let i = 0; i < this.result; i++) {
-      //     this.starsArray[i].star = false;
-      //     this.starsArray[i].starHalf = false;
-      //     this.starsArray[i].starFill = true;
-      //   }
-
-      //   for (let i = this.result; i < length; i++) {
-      //     this.starsArray[i].star = true;
-      //     this.starsArray[i].starHalf = false;
-      //     this.starsArray[i].starFill = false;
-      //   }
-      // } else if (ratio <= 0.3) {
-      //   // 1.5 顆
-      //   this.result = 1.5;
-
-      //   for (let i = 0; i < this.result; i++) {
-      //     this.starsArray[i].star = false;
-      //     this.starsArray[i].starHalf = false;
-      //     this.starsArray[i].starFill = true;
-      //   }
-
-      //   this.starsArray[1].star = false;
-      //   this.starsArray[1].starHalf = true;
-      //   this.starsArray[1].starFill = false;
-
-      //   for (let i = 2; i < length; i++) {
-      //     this.starsArray[i].star = true;
-      //     this.starsArray[i].starHalf = false;
-      //     this.starsArray[i].starFill = false;
-      //   }
-      // } else if (ratio <= 0.4) {
-      //   // 2 顆
-      //   this.result = 2;
-
-      //   for (let i = 0; i < this.result; i++) {
-      //     this.starsArray[i].star = false;
-      //     this.starsArray[i].starHalf = false;
-      //     this.starsArray[i].starFill = true;
-      //   }
-
-      //   for (let i = this.result; i < length; i++) {
-      //     this.starsArray[i].star = true;
-      //     this.starsArray[i].starHalf = false;
-      //     this.starsArray[i].starFill = false;
-      //   }
-      // } else if (ratio <= 0.5) {
-      //   // 2.5 顆
-      //   this.result = 2.5;
-
-      //   for (let i = 0; i < this.result; i++) {
-      //     this.starsArray[i].star = false;
-      //     this.starsArray[i].starHalf = false;
-      //     this.starsArray[i].starFill = true;
-      //   }
-
-      //   this.starsArray[2].star = false;
-      //   this.starsArray[2].starHalf = true;
-      //   this.starsArray[2].starFill = false;
-
-      //   for (let i = 3; i < length; i++) {
-      //     this.starsArray[i].star = true;
-      //     this.starsArray[i].starHalf = false;
-      //     this.starsArray[i].starFill = false;
-      //   }
-      // } else if (ratio <= 0.6) {
-      //   // 3 顆
-      //   this.result = 3;
-
-      //   for (let i = 0; i < this.result; i++) {
-      //     this.starsArray[i].star = false;
-      //     this.starsArray[i].starHalf = false;
-      //     this.starsArray[i].starFill = true;
-      //   }
-
-      //   for (let i = this.result; i < length; i++) {
-      //     this.starsArray[i].star = true;
-      //     this.starsArray[i].starHalf = false;
-      //     this.starsArray[i].starFill = false;
-      //   }
-      // } else if (ratio <= 0.7) {
-      //   // 3.5 顆
-      //   this.result = 3.5;
-
-      //   for (let i = 0; i < this.result; i++) {
-      //     this.starsArray[i].star = false;
-      //     this.starsArray[i].starHalf = false;
-      //     this.starsArray[i].starFill = true;
-      //   }
-
-      //   this.starsArray[3].star = false;
-      //   this.starsArray[3].starHalf = true;
-      //   this.starsArray[3].starFill = false;
-
-      //   for (let i = 4; i < length; i++) {
-      //     this.starsArray[i].star = true;
-      //     this.starsArray[i].starHalf = false;
-      //     this.starsArray[i].starFill = false;
-      //   }
-      // } else if (ratio <= 0.8) {
-      //   // 4 顆
-      //   this.result = 4;
-
-      //   for (let i = 0; i < this.result; i++) {
-      //     this.starsArray[i].star = false;
-      //     this.starsArray[i].starHalf = false;
-      //     this.starsArray[i].starFill = true;
-      //   }
-
-      //   for (let i = this.result; i < length; i++) {
-      //     this.starsArray[i].star = true;
-      //     this.starsArray[i].starHalf = false;
-      //     this.starsArray[i].starFill = false;
-      //   }
-      // } else if (ratio <= 0.9) {
-      //   // 4.5 顆
-      //   this.result = 4.5;
-
-      //   for (let i = 0; i < this.result; i++) {
-      //     this.starsArray[i].star = false;
-      //     this.starsArray[i].starHalf = false;
-      //     this.starsArray[i].starFill = true;
-      //   }
-
-      //   this.starsArray[4].star = false;
-      //   this.starsArray[4].starHalf = true;
-      //   this.starsArray[4].starFill = false;
-      // } else {
-      //   this.result = '5';
-
-      //   for (let i = 0; i < length; i++) {
-      //     this.starsArray[i].star = false;
-      //     this.starsArray[i].starHalf = false;
-      //     this.starsArray[i].starFill = true;
-      //   }
-      // }
+      // 該星星後全部空心
+      for (let i = Math.ceil(this.result); i < this.starsArray.length; i++) {
+        this.starsArray[i].star = true;
+        this.starsArray[i].starHalf = false;
+        this.starsArray[i].starFill = false;
+      }
     },
     moreVideos(type) {
       this.$router.push({
@@ -900,10 +733,7 @@ export default {
   }
 }
 
-.stars {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  right: 0;
+.bi {
+  cursor: pointer;
 }
 </style>
