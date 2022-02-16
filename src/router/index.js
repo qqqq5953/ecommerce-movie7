@@ -61,7 +61,6 @@ const routes = [
         name: 'Product',
         component: () => import('../views/user/Product.vue'),
         props: (route) => {
-          console.log('route', route);
           return {
             // key 可以自訂，要與UserProduct的props變數一致
             productID: route.params.productID

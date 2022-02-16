@@ -187,23 +187,64 @@
           <aside
             class="col-3 p-3 rounded-3 d-flex flex-column aside-background"
           >
-            <div class="row mb-3">
+            <div class="mb-3">
               <!-- popularity -->
-              <div class="col d-flex flex-column">
-                <h4 class="h6 text-white text-end">popularity</h4>
-                <div class="text-end mt-auto">
-                  <i class="bi bi-star-fill text-warning me-2"></i>
+              <div class="d-flex align-items-center justify-content-between">
+                <h4 class="h6 text-white text-end mb-0">popularity</h4>
+                <div class="text-end">
+                  <!-- <i class="bi bi-star-fill text-warning me-2"></i> -->
+                  <i class="bi bi-trophy text-danger me-2"></i>
                   <span>{{ parseFloat(popularity).toFixed(0) }}</span>
                 </div>
               </div>
+
               <!-- vote -->
-              <div class="col d-flex flex-column">
-                <h4 class="h6 text-white text-end">Vote Average</h4>
-                <div class="text-end mt-auto">
+              <div class="d-flex align-items-center justify-content-between">
+                <h4 class="h6 text-white text-end mb-0">Vote Average</h4>
+                <div class="text-end">
                   <i class="bi bi-people-fill text-info me-2"></i>
                   <span>{{ voteAverage }}</span>
                 </div>
               </div>
+
+              <!-- rate  @mouseenter="rating"
+                    @mouseleave="rating2" @mouseenter="offsetWidthCount"-->
+
+              <div
+                class="d-flex align-items-center justify-content-between border position-relative top-0 bottom-0"
+                style="min-height: 25px"
+              >
+                <div class="">
+                  <h4 class="h6 text-white mb-0">Rate</h4>
+                </div>
+                <div
+                  class="stars d-flex border border-danger justify-content-end"
+                  @mousemove="rating($event)"
+                  @mouseenter="offsetWidthCount"
+                  ref="ratingContainer"
+                >
+                  <i
+                    style="z-index: -1"
+                    v-for="item in starsArray"
+                    :key="item.id"
+                    ref="rating"
+                    class="bi text-warning"
+                    :class="{
+                      'bi-star': item.star,
+                      'bi-star-half': item.starHalf,
+                      'bi-star-fill': item.starFill
+                    }"
+                  ></i>
+                </div>
+              </div>
+              <br />
+              ratio:{{ ratio }}
+              <br />
+              result:{{ result }}
+              <br />
+              offsetX:{{ offsetX }}
+              <br />
+              Width:{{ ratingContainerWidth }}
             </div>
             <ul
               class="d-flex flex-column justify-content-between flex-grow-1 list-unstyled more-video-list mb-0"
@@ -338,7 +379,18 @@ export default {
         watchlistProductID: '',
         isProductInList: '',
         isSubscriptionInCart: false
-      }
+      },
+      starsArray: [
+        { star: true, starHalf: false, starFill: false, id: '1' },
+        { star: true, starHalf: false, starFill: false, id: '2' },
+        { star: true, starHalf: false, starFill: false, id: '3' },
+        { star: true, starHalf: false, starFill: false, id: '4' },
+        { star: true, starHalf: false, starFill: false, id: '5' }
+      ],
+      offsetX: '',
+      ratingContainerWidth: '',
+      ratio: '',
+      result: ''
     };
   },
   computed: {
@@ -359,6 +411,234 @@ export default {
     }
   },
   methods: {
+    offsetWidthCount() {
+      this.ratingContainerWidth = this.$refs.ratingContainer.offsetWidth;
+    },
+    halfStar(ratio, length) {
+      if (ratio > 0 && ratio <= 0.1) {
+        this.result = 0.5;
+      } else if (ratio > 0.2 && ratio <= 0.3) {
+        this.result = 1.5;
+      } else if (ratio > 0.4 && ratio <= 0.5) {
+        this.result = 2.5;
+      } else if (ratio > 0.6 && ratio <= 0.7) {
+        this.result = 3.5;
+      } else if (ratio >= 0.8 && ratio <= 0.9) {
+        this.result = 4.5;
+      }
+      for (let i = 0; i < Math.floor(this.result); i++) {
+        this.starsArray[i].star = false;
+        this.starsArray[i].starHalf = false;
+        this.starsArray[i].starFill = true;
+      }
+
+      this.starsArray[Math.floor(this.result)].star = false;
+      this.starsArray[Math.floor(this.result)].starHalf = true;
+      this.starsArray[Math.floor(this.result)].starFill = false;
+
+      for (let i = Math.ceil(this.result); i < length; i++) {
+        this.starsArray[i].star = true;
+        this.starsArray[i].starHalf = false;
+        this.starsArray[i].starFill = false;
+      }
+    },
+    fullStar(ratio, length) {
+      if (ratio <= 0) {
+        this.result = 0;
+      } else if (ratio <= 0.2) {
+        this.result = 1;
+      } else if (ratio <= 0.4) {
+        this.result = 2;
+      } else if (ratio <= 0.6) {
+        this.result = 3;
+      } else if (ratio <= 0.8) {
+        this.result = 4;
+      } else if (ratio <= 1) {
+        this.result = 5;
+      }
+      for (let i = 0; i < this.result; i++) {
+        this.starsArray[i].star = false;
+        this.starsArray[i].starHalf = false;
+        this.starsArray[i].starFill = true;
+      }
+      for (let i = this.result; i < length; i++) {
+        this.starsArray[i].star = true;
+        this.starsArray[i].starHalf = false;
+        this.starsArray[i].starFill = false;
+      }
+    },
+    rating(e) {
+      this.offsetX = e.offsetX;
+      this.ratio = this.offsetX / this.ratingContainerWidth;
+      const ratio = this.offsetX / this.ratingContainerWidth;
+      const length = this.starsArray.length;
+
+      this.fullStar(ratio, length);
+      this.halfStar(ratio, length);
+
+      // if (ratio <= 0) {
+      //   this.starsArray[0].star = true;
+      //   this.starsArray[0].starHalf = false;
+      //   this.starsArray[0].starFill = false;
+      // } else if (ratio <= 0.1) {
+      //   // 0.5 顆
+      //   this.result = 0.5;
+
+      //   for (let i = 0; i < this.result; i++) {
+      //     this.starsArray[i].star = false;
+      //     this.starsArray[i].starHalf = false;
+      //     this.starsArray[i].starFill = true;
+      //   }
+
+      //   this.starsArray[Math.floor(this.result)].star = false;
+      //   this.starsArray[Math.floor(this.result)].starHalf = true;
+      //   this.starsArray[Math.floor(this.result)].starFill = false;
+
+      //   for (let i = Math.ceil(this.result); i < length; i++) {
+      //     this.starsArray[i].star = true;
+      //     this.starsArray[i].starHalf = false;
+      //     this.starsArray[i].starFill = false;
+      //   }
+      // } else if (ratio <= 0.2) {
+      //   // 1 顆
+      //   this.result = 1;
+
+      //   for (let i = 0; i < this.result; i++) {
+      //     this.starsArray[i].star = false;
+      //     this.starsArray[i].starHalf = false;
+      //     this.starsArray[i].starFill = true;
+      //   }
+
+      //   for (let i = this.result; i < length; i++) {
+      //     this.starsArray[i].star = true;
+      //     this.starsArray[i].starHalf = false;
+      //     this.starsArray[i].starFill = false;
+      //   }
+      // } else if (ratio <= 0.3) {
+      //   // 1.5 顆
+      //   this.result = 1.5;
+
+      //   for (let i = 0; i < this.result; i++) {
+      //     this.starsArray[i].star = false;
+      //     this.starsArray[i].starHalf = false;
+      //     this.starsArray[i].starFill = true;
+      //   }
+
+      //   this.starsArray[1].star = false;
+      //   this.starsArray[1].starHalf = true;
+      //   this.starsArray[1].starFill = false;
+
+      //   for (let i = 2; i < length; i++) {
+      //     this.starsArray[i].star = true;
+      //     this.starsArray[i].starHalf = false;
+      //     this.starsArray[i].starFill = false;
+      //   }
+      // } else if (ratio <= 0.4) {
+      //   // 2 顆
+      //   this.result = 2;
+
+      //   for (let i = 0; i < this.result; i++) {
+      //     this.starsArray[i].star = false;
+      //     this.starsArray[i].starHalf = false;
+      //     this.starsArray[i].starFill = true;
+      //   }
+
+      //   for (let i = this.result; i < length; i++) {
+      //     this.starsArray[i].star = true;
+      //     this.starsArray[i].starHalf = false;
+      //     this.starsArray[i].starFill = false;
+      //   }
+      // } else if (ratio <= 0.5) {
+      //   // 2.5 顆
+      //   this.result = 2.5;
+
+      //   for (let i = 0; i < this.result; i++) {
+      //     this.starsArray[i].star = false;
+      //     this.starsArray[i].starHalf = false;
+      //     this.starsArray[i].starFill = true;
+      //   }
+
+      //   this.starsArray[2].star = false;
+      //   this.starsArray[2].starHalf = true;
+      //   this.starsArray[2].starFill = false;
+
+      //   for (let i = 3; i < length; i++) {
+      //     this.starsArray[i].star = true;
+      //     this.starsArray[i].starHalf = false;
+      //     this.starsArray[i].starFill = false;
+      //   }
+      // } else if (ratio <= 0.6) {
+      //   // 3 顆
+      //   this.result = 3;
+
+      //   for (let i = 0; i < this.result; i++) {
+      //     this.starsArray[i].star = false;
+      //     this.starsArray[i].starHalf = false;
+      //     this.starsArray[i].starFill = true;
+      //   }
+
+      //   for (let i = this.result; i < length; i++) {
+      //     this.starsArray[i].star = true;
+      //     this.starsArray[i].starHalf = false;
+      //     this.starsArray[i].starFill = false;
+      //   }
+      // } else if (ratio <= 0.7) {
+      //   // 3.5 顆
+      //   this.result = 3.5;
+
+      //   for (let i = 0; i < this.result; i++) {
+      //     this.starsArray[i].star = false;
+      //     this.starsArray[i].starHalf = false;
+      //     this.starsArray[i].starFill = true;
+      //   }
+
+      //   this.starsArray[3].star = false;
+      //   this.starsArray[3].starHalf = true;
+      //   this.starsArray[3].starFill = false;
+
+      //   for (let i = 4; i < length; i++) {
+      //     this.starsArray[i].star = true;
+      //     this.starsArray[i].starHalf = false;
+      //     this.starsArray[i].starFill = false;
+      //   }
+      // } else if (ratio <= 0.8) {
+      //   // 4 顆
+      //   this.result = 4;
+
+      //   for (let i = 0; i < this.result; i++) {
+      //     this.starsArray[i].star = false;
+      //     this.starsArray[i].starHalf = false;
+      //     this.starsArray[i].starFill = true;
+      //   }
+
+      //   for (let i = this.result; i < length; i++) {
+      //     this.starsArray[i].star = true;
+      //     this.starsArray[i].starHalf = false;
+      //     this.starsArray[i].starFill = false;
+      //   }
+      // } else if (ratio <= 0.9) {
+      //   // 4.5 顆
+      //   this.result = 4.5;
+
+      //   for (let i = 0; i < this.result; i++) {
+      //     this.starsArray[i].star = false;
+      //     this.starsArray[i].starHalf = false;
+      //     this.starsArray[i].starFill = true;
+      //   }
+
+      //   this.starsArray[4].star = false;
+      //   this.starsArray[4].starHalf = true;
+      //   this.starsArray[4].starFill = false;
+      // } else {
+      //   this.result = '5';
+
+      //   for (let i = 0; i < length; i++) {
+      //     this.starsArray[i].star = false;
+      //     this.starsArray[i].starHalf = false;
+      //     this.starsArray[i].starFill = true;
+      //   }
+      // }
+    },
     moreVideos(type) {
       this.$router.push({
         name: 'ProductVideos',
@@ -373,7 +653,7 @@ export default {
       const response = await this.$http
         .get(api)
         .catch((err) => console.log(err));
-      console.log('getProductDetails', response);
+      // console.log('getProductDetails', response);
 
       // 產品在 TMDB api 中的id
       this.id = response.data.product.content.split('|')[0];
@@ -397,7 +677,7 @@ export default {
       const response = await this.$http.get(
         `https://api.themoviedb.org/3/${this.genre}/${this.id}?api_key=${this.key}&language=${this.language}&append_to_response=videos,images`
       );
-      console.log('getData', response);
+      // console.log('getData', response);
 
       if (this.genre === 'movie') this.getMovieDetail(response);
       if (this.genre === 'tv') this.getTVDetail(response);
@@ -489,7 +769,7 @@ export default {
       });
 
       this.status.isProductInList = response.data.item_present;
-      console.log('checkProductStatus', response);
+      // console.log('checkProductStatus', response);
     },
     async removeProductFromList() {
       // spinner on
@@ -618,5 +898,12 @@ export default {
     border-radius: 0.3rem;
     outline: 1px solid rgba(255, 255, 255, 0.9);
   }
+}
+
+.stars {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
 }
 </style>
