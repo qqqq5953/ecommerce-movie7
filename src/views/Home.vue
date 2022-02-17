@@ -27,9 +27,6 @@ export default {
       emitter,
       pushMessageStateForUser
     };
-  },
-  created() {
-    // console.log('movieID', this.movieID);
   }
 };
 </script>

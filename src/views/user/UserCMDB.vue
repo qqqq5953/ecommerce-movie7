@@ -237,12 +237,18 @@ export default {
         const genre = item.category.split('|')[1];
         return genre === 'nowplaying';
       });
+
+      // 照熱門度分類
+      this.nowPlaying = this.sortData(this.nowPlaying, 'content');
     },
     getUpcoming() {
       this.upComing = this.products.filter((item) => {
         const genre = item.category.split('|')[1];
         return genre === 'upcoming';
       });
+
+      // 照熱門度分類
+      this.upComing = this.sortData(this.upComing, 'content');
     }
   },
   created() {

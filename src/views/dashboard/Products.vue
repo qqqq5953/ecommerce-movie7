@@ -155,7 +155,7 @@ export default {
       // 暫時 for 快速新增
       const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/admin/product`;
 
-      for (let i = 0; i < 2; i++) {
+      for (let i = 0; i < 6; i++) {
         this.tempProduct = {};
         this.tempProduct.title = this.top20nowPlaying[i].title;
         this.tempProduct.category = 'movie|nowplaying';
@@ -221,7 +221,7 @@ export default {
       // 暫時 for 快速新增
       const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/admin/product`;
 
-      for (let i = 0; i < 2; i++) {
+      for (let i = 0; i < 6; i++) {
         this.tempProduct = {};
         this.tempProduct.title = this.top20upComing[i].title;
         this.tempProduct.category = 'movie|upcoming';

@@ -42,19 +42,29 @@
                           />
                         </div>
                         <div class="col-9">
-                          <h3 class="card-title mb-1">
+                          <h3 class="card-title mb-0">
                             {{ item.title }}
                           </h3>
-                          <small class="d-inline-block me-2">{{
-                            item.content.split('|')[2]
-                          }}</small>
-                          |
-                          <small class="ms-2 d-inline-block"
-                            >Popularity:
-                            <span class="">{{
-                              parseFloat(item.content.split('|')[1]).toFixed(0)
-                            }}</span></small
+                          <div class="mb-1">
+                            <small class="d-inline-block me-2">{{
+                              item.content.split('|')[2]
+                            }}</small>
+                            |
+                            <small class="ms-2 d-inline-block"
+                              >Popularity:
+                              <span class="">{{
+                                parseFloat(item.content.split('|')[1]).toFixed(
+                                  0
+                                )
+                              }}</span></small
+                            >
+                          </div>
+                          <div
+                            v-if="item.category.split('|')[1] === 'upcoming'"
+                            class="badge bg-primary rounded-pill text-warning fst-italic"
                           >
+                            {{ item.category.split('|')[1] }}
+                          </div>
                         </div>
                       </div>
                       <!-- card-body -->
@@ -147,6 +157,8 @@ export default {
       const response = await this.$http.get(api).catch((err) => {
         console.log(err);
       });
+
+      console.log('getAllProducts', response);
 
       // 儲存資料並
       this.allProducts = response.data.products;
