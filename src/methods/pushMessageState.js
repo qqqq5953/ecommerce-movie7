@@ -1,6 +1,6 @@
 import emitter from '@/methods/emitter';
 
-export default function (response, item, action) {
+export function pushMessageStateForDashboard(response, item, action) {
   function emitContent(style, status, content) {
     emitter.emit('push-message', {
       title: item.title,
@@ -17,4 +17,21 @@ export default function (response, item, action) {
     return;
   };
   emitContent('danger', `${action}失敗`, message.join('、'));
+}
+
+export function pushMessageStateForUser(response, item, action) {
+  function emitContent(style, status, content) {
+    emitter.emit('push-message', {
+      title: item.title,
+      style,
+      status,
+      content
+    });
+  }
+
+  if (response) {
+    emitContent('success', `${action} completed`);
+    return;
+  };
+  emitContent('danger', `${action} failed`);
 }

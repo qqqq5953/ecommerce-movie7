@@ -289,7 +289,7 @@
           </aside>
         </div>
 
-        <div class="row mt-5 d-none">
+        <div class="row mt-5">
           <!-- video -->
           <h2 class="h1 text-white d-flex align-items-center">
             <i class="bi bi-camera-reels text-warning me-3 fs-4"></i>Watch
@@ -310,25 +310,6 @@
             >
             </iframe>
           </section>
-          <div class="col-3">
-            <!-- <ul
-              class="h-100 d-flex flex-column justify-content-evenly list-unstyled border more-video-list"
-            >
-              <li
-                class="flex-grow-1"
-                v-for="item in Object.values(videoType)"
-                :key="item"
-              >
-                <a
-                  href="#"
-                  class="d-block px-2 text-white w-100 h-100 d-flex justify-content-between align-items-center text-decoration-none"
-                >
-                  {{ item.name.toUpperCase() }}
-                  <i class="bi bi-chevron-compact-right"></i>
-                </a>
-              </li>
-            </ul> -->
-          </div>
         </div>
       </main>
     </div>
@@ -342,7 +323,7 @@ export default {
       type: String
     }
   },
-  inject: ['emitter', 'pushMessageStatForDashboard'],
+  inject: ['emitter', 'pushMessageStateForUser'],
   data() {
     return {
       // TMDB
@@ -430,12 +411,13 @@ export default {
     }
   },
   methods: {
+    /// rating
     async rating() {
+      // rating 後禁止點擊
       this.$refs.ratingContainer.style.pointerEvents = 'none';
 
       // api
       const api = `https://api.themoviedb.org/3/movie/${this.id}/rating?api_key=${this.key}&session_id=${this.sessionID}`;
-      //
 
       const requestBody = {
         value: this.result
@@ -445,16 +427,22 @@ export default {
         console.log(err);
       });
 
-      this.status.rating = response.data.success;
+      // toast
+      this.pushMessageStateForUser(
+        response.data.status_message,
+        this.title,
+        'rating'
+      );
 
-      console.log('rating', response);
+      // 控制刪除rating鈕狀態
+      this.status.rating = response.data.success;
     },
     async deleteRating() {
-      this.$refs.ratingContainer.style.pointerEvents = 'none';
+      // delete rating 後可點擊
+      this.$refs.ratingContainer.style.pointerEvents = 'auto';
 
       // api
       const api = `https://api.themoviedb.org/3/movie/${this.id}/rating?api_key=${this.key}&session_id=${this.sessionID}`;
-      //
 
       const requestBody = {
         value: this.result
@@ -466,60 +454,59 @@ export default {
           console.log(err);
         });
 
+      // 控制刪除rating鈕狀態
       this.status.rating = !response.data.success;
-      this.result = 0;
 
+      // 清空rating星星及數字
+      this.result = 0;
       for (let i = 0; i < this.starsArray.length; i++) {
         this.starsArray[i].star = true;
         this.starsArray[i].starHalf = false;
         this.starsArray[i].starFill = false;
       }
 
-      console.log('deleteRating', response);
+      // toast
+      this.pushMessageStateForUser(
+        response.data.status_message,
+        this.title,
+        'delete rating'
+      );
     },
     offsetWidthCount() {
+      // 計算元素寬度
       this.ratingContainerWidth = this.$refs.ratingContainer.offsetWidth;
     },
     halfStar(ratio) {
-      if (ratio > 0 && ratio <= 0.1) {
-        this.result = 0.5;
-      } else if (ratio > 0.2 && ratio <= 0.3) {
-        this.result = 1.5;
-      } else if (ratio > 0.4 && ratio <= 0.5) {
-        this.result = 2.5;
-      } else if (ratio > 0.6 && ratio <= 0.7) {
-        this.result = 3.5;
-      } else if (ratio > 0.8 && ratio <= 0.9) {
-        this.result = 4.5;
-      }
+      if (ratio > 0 && ratio <= 0.1) this.result = 0.5;
+      if (ratio > 0.2 && ratio <= 0.3) this.result = 1.5;
+      if (ratio > 0.4 && ratio <= 0.5) this.result = 2.5;
+      if (ratio > 0.6 && ratio <= 0.7) this.result = 3.5;
+      if (ratio > 0.8 && ratio <= 0.9) this.result = 4.5;
 
+      // 防止 fullStar this.result 干擾
       if (Math.floor(this.result) === 5) return;
 
+      // 填滿半顆星的部分
       this.starsArray[Math.floor(this.result)].star = false;
       this.starsArray[Math.floor(this.result)].starHalf = true;
       this.starsArray[Math.floor(this.result)].starFill = false;
     },
     fullStar(ratio) {
-      if (ratio <= 0) {
-        this.result = 0;
-      } else if (ratio <= 0.2) {
-        this.result = 1;
-      } else if (ratio <= 0.4) {
-        this.result = 2;
-      } else if (ratio <= 0.6) {
-        this.result = 3;
-      } else if (ratio <= 0.8) {
-        this.result = 4;
-      } else if (ratio <= 1) {
-        this.result = 5;
-      }
+      if (ratio <= 0) this.result = 0;
+      if (ratio > 0.1 && ratio <= 0.2) this.result = 1;
+      if (ratio > 0.3 && ratio <= 0.4) this.result = 2;
+      if (ratio > 0.5 && ratio <= 0.6) this.result = 3;
+      if (ratio > 0.7 && ratio <= 0.8) this.result = 4;
+      if (ratio > 0.9 && ratio <= 1) this.result = 5;
     },
     hoverRating(e) {
+      // 計算點到的位置距離元素左邊界多遠 及 佔元素寬度幾%
       this.offsetX = e.offsetX;
       this.ratio = this.offsetX / this.ratingContainerWidth;
 
-      this.fullStar(this.ratio);
+      // 根據ratio計算是半顆星還是一顆星
       this.halfStar(this.ratio);
+      this.fullStar(this.ratio);
 
       // 該星星前全部填滿
       for (let i = 0; i < Math.floor(this.result); i++) {
@@ -535,12 +522,31 @@ export default {
         this.starsArray[i].starFill = false;
       }
     },
+    /// video
     moreVideos(type) {
       this.$router.push({
         name: 'ProductVideos',
         params: { movieID: this.id, movieTitle: this.title, videoType: type }
       });
     },
+    arrangeVideoType(types) {
+      types.forEach((item) => {
+        if (item.type === 'Clip') {
+          this.videoType.clips.content.push(item);
+        } else if (item.type === 'Teaser') {
+          this.videoType.teasers.content.push(item);
+        } else if (item.type === 'Trailer') {
+          this.videoType.trailers.content.push(item);
+        } else if (item.type === 'Featurette') {
+          this.videoType.featurettes.content.push(item);
+        } else if (item.type === 'Behind the Scenes') {
+          this.videoType.behindTheScenes.content.push(item);
+        } else {
+          this.videoType.others.content.push(item);
+        }
+      });
+    },
+    /// product
     async getProductDetails() {
       this.isLoading = true;
 
@@ -614,49 +620,7 @@ export default {
       this.runTime.hour = Math.floor(response.data.episode_run_time / 60);
       this.runTime.minute = response.data.episode_run_time % 60;
     },
-    arrangeVideoType(types) {
-      types.forEach((item) => {
-        if (item.type === 'Clip') {
-          this.videoType.clips.content.push(item);
-        } else if (item.type === 'Teaser') {
-          this.videoType.teasers.content.push(item);
-        } else if (item.type === 'Trailer') {
-          this.videoType.trailers.content.push(item);
-        } else if (item.type === 'Featurette') {
-          this.videoType.featurettes.content.push(item);
-        } else if (item.type === 'Behind the Scenes') {
-          this.videoType.behindTheScenes.content.push(item);
-        } else {
-          this.videoType.others.content.push(item);
-        }
-      });
-    },
-    async addProductToCart(id) {
-      // spinner on
-      this.status.loadingProductID = id;
-
-      // api
-      const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/cart`;
-
-      const requestBody = {
-        data: { product_id: id, qty: 1 }
-      };
-
-      const response = await this.$http.post(api, requestBody).catch((err) => {
-        console.log(err);
-      });
-      console.log('addProductToCart', response.data);
-
-      // 更新 navbar cart 數量
-      const cartLength = await this.getCartProductNumber();
-      this.emitter.emit('calculate-product-number', cartLength);
-
-      // 檢查是否已訂閱
-      if (id === this.subscriptionID) await this.hasSubscription();
-
-      // spinner off
-      this.status.loadingProductID = '';
-    },
+    /// watchlist
     async checkProductStatus() {
       const api = `https://api.themoviedb.org/3/list/${this.list_id}/item_status?api_key=${this.key}&movie_id=${this.id}`;
 
@@ -717,6 +681,33 @@ export default {
 
       // spinner off
       this.status.watchlistProductID = '';
+    },
+    /// cart
+    async addProductToCart(id) {
+      // spinner on
+      this.status.loadingProductID = id;
+
+      // api
+      const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/cart`;
+
+      const requestBody = {
+        data: { product_id: id, qty: 1 }
+      };
+
+      const response = await this.$http.post(api, requestBody).catch((err) => {
+        console.log(err);
+      });
+      console.log('addProductToCart', response.data);
+
+      // 更新 navbar cart 數量
+      const cartLength = await this.getCartProductNumber();
+      this.emitter.emit('calculate-product-number', cartLength);
+
+      // 檢查是否已訂閱
+      if (id === this.subscriptionID) await this.hasSubscription();
+
+      // spinner off
+      this.status.loadingProductID = '';
     },
     cartAPIResponse() {
       const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/cart`;

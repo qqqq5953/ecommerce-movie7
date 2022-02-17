@@ -98,7 +98,7 @@ export default {
     DeleteModal,
     Pagination
   },
-  inject: ['emitter', 'pushMessageState', 'sortData'],
+  inject: ['emitter', 'pushMessageStateForDashboard', 'sortData'],
   data() {
     return {
       products: [],
@@ -320,7 +320,7 @@ export default {
         this.$refs.editModal.hideModal();
 
         // toast
-        this.pushMessageState.dashboard(
+        this.pushMessageStateForDashboard(
           response,
           item,
           currentPage ? '更新' : '新增'
@@ -368,7 +368,7 @@ export default {
         this.$refs.deleteModal.hideModal();
 
         // toast
-        this.pushMessageState.dashboard(response, item, '刪除');
+        this.pushMessageStateForDashboard(response, item, '刪除');
       } catch (err) {
         console.log(err);
       }

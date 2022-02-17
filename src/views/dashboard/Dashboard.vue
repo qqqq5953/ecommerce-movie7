@@ -8,7 +8,7 @@
 
 <script>
 import emitter from '@/methods/emitter';
-import pushMessageState from '@/methods/pushMessageState';
+import { pushMessageStateForDashboard } from '@/methods/pushMessageState';
 import sortData from '@/methods/sortData';
 import ToastMessage from '@/components/ToastMessage.vue';
 import AdminNavbar from '@/components/AdminNavbar.vue';
@@ -20,7 +20,7 @@ export default {
   provide() {
     return {
       emitter,
-      pushMessageState,
+      pushMessageStateForDashboard,
       sortData
     };
   },
