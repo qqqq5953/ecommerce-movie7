@@ -1,7 +1,7 @@
 <template>
-  <ul class="row flex-nowrap list-unstyled" style="width: 90%; height: 435px">
+  <ul class="card-wrapper row flex-nowrap list-unstyled">
     <li
-      class="col-4 movie-poster"
+      class="col-md-5 col-lg-4 movie-poster"
       v-for="item in results"
       :key="item.id"
       style="scroll-snap-align: start"
@@ -20,32 +20,22 @@
             style="object-fit: cover; object-position: center center"
           />
           <div
-            class="movie-intro position-absolute top-0 bottom-0 left-0 right-0 w-100 h-100"
+            class="movie-intro position-absolute top-0 bottom-0 left-0 right-0 w-100 h-100 d-none d-xl-block"
             style="background: rgba(0, 0, 0, 0.7)"
           >
             <div
               class="d-flex flex-column text-white position-absolute bottom-0 m-auto p-4 w-100"
-              style="top: 150px"
+              style="top: 35%"
             >
               <h3 class="text-white text-center">
-                {{ item.title }} {{ item.content.split('|')[1] }}
+                {{ item.title }}
               </h3>
-
+              <!-- {{ item.content.split('|')[1] }} -->
               <p class="mt-auto">{{ item.description }}</p>
               <small class="d-block fs-6 text-end">{{
                 item.content.split('|')[2]
               }}</small>
             </div>
-            <!-- <div class="d-flex flex-column h-50 text-white movie-intro">
-              <h3 class="text-white text-center flex-grow-1">
-                {{ item.title }}
-              </h3>
-
-              <p class="">{{ item.overview }}</p>
-            </div>
-            <small class="d-block fs-6 text-end mt-auto">{{
-              item.release_date
-            }}</small> -->
           </div>
         </div>
       </a>
@@ -78,6 +68,31 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.card-wrapper {
+  width: 90%;
+  height: 300px;
+
+  @media (min-width: 414px) {
+    width: 90%;
+    height: 345px;
+  }
+
+  @media (min-width: 768px) {
+    width: 90%;
+    height: 325px;
+  }
+
+  @media (min-width: 1200px) {
+    width: 90%;
+    height: 435px;
+  }
+
+  @media (min-width: 1400px) {
+    width: 90%;
+    height: 500px;
+  }
+}
+
 .movie-intro {
   opacity: 0;
   transition: opacity 0.5s;

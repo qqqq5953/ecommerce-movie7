@@ -1,72 +1,113 @@
 <template>
   <Loading :active="isLoading"></Loading>
-
-  <!-- <header class="position-relative">
-    <div
-      class="header position-relative top-0 bottom-0 w-100"
-      style="
-        background: url('https://images.unsplash.com/photo-1478720568477-152d9b164e26?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&h=800&q=80');
-      "
-    ></div>
-  </header> -->
-  <!-- <header
-    class="header"
-    style="
-      background: url('https://images.unsplash.com/photo-1626814026160-2237a95fc5a0?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&h=400&q=80');
-      min-height: 400px;
-    "
-  ></header> -->
-  <!-- <header
-    class="header"
-    style="
-      background: url('https://images.unsplash.com/photo-1542204165-65bf26472b9b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1374&h=300&q=80');
-      min-height: 300px;
-    "
-  ></header> -->
-
   <div class="bg-primary">
     <header class="position-relative">
-      <div
-        class="header"
-        style="
-          background: url('https://images.unsplash.com/photo-1478720568477-152d9b164e26?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&h=800&q=80');
-        "
-      ></div>
-      <div class="position-absolute top-0 bottom-0 w-100">
+      <!-- 手機 -->
+      <section class="d-md-none" style="height: 373px; overflow: hidden">
+        <div class="header-background header-background-img-mobile"></div>
         <div
-          class="d-flex align-items-center m-auto h-100"
-          style="background: rgba(255, 255, 255, 0.2)"
+          class="d-flex align-items-center position-absolute top-0 bottom-0 w-100 h-100"
+          style="
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(2px);
+          "
         >
-          <div class="" style="width: 43%">
-            <div class="mb-0 ms-4 p-4" style="background: rgba(0, 0, 0, 0.45)">
-              <h2 class="display-5 text-white">
-                <span class="d-block">Offer</span>
-                <span>worldwide</span>
+          <div
+            class="mx-4 d-flex flex-column h-100 w-100 justify-content-center position-relative"
+          >
+            <div
+              class="header-foreground-img-mobile header-foreground-mobile"
+            ></div>
+            <div
+              class="header-foreground-img-cover w-100 position-absolute top-0 bottom-0 m-auto"
+            ></div>
+            <div
+              class="position-absolute top-0 bottom-0 start-0 w-100 d-flex flex-column justify-content-center align-items-center"
+            >
+              <h2 class="h4 mb-0 text-white text-center lh-base p-3">
+                <span class="d-block">Offer worldwide</span>
                 <span class="text-warning"> latest movies </span>
                 fitting your lifestyle
               </h2>
-              <hr class="my-0 text-white" />
-              <div class="mt-3">
-                <router-link
-                  :to="{ name: 'AllProducts' }"
-                  class="btn btn-warning fs-5 w-100"
-                >
-                  <span>Pick a movie now</span>
-                  <i class="bi bi-arrow-right ms-2"></i>
-                </router-link>
-                <!-- <a href="#" type="button" class="btn btn-warning fs-5 w-100"> </a> -->
-              </div>
+            </div>
+            <div class="position-absolute bottom-0 start-0 end-0 mb-4">
+              <router-link
+                :to="{ name: 'AllProducts' }"
+                class="btn btn-warning btn-sm fs-6 w-100 text-primary"
+              >
+                <span>Pick a movie now</span>
+                <i class="bi bi-arrow-right ms-2"></i>
+              </router-link>
             </div>
           </div>
         </div>
-      </div>
+      </section>
+
+      <!-- 平板以上 -->
+      <section class="d-none d-md-block">
+        <div class="header-background header-background-img"></div>
+        <div
+          class="d-flex align-items-center h-100 position-absolute top-0 bottom-0 w-100"
+          style="background: rgba(255, 255, 255, 0.25)"
+        >
+          <div class="mb-0 mx-3 mx-md-4 mx-xl-5 p-4 header-title">
+            <h2 class="display-5 text-white">
+              <span class="d-block">Offer</span>
+              <span>worldwide</span>
+              <span class="text-warning"> latest movies </span>
+              fitting your lifestyle
+            </h2>
+            <hr class="my-0 text-white" />
+            <div class="mt-3">
+              <router-link
+                :to="{ name: 'AllProducts' }"
+                class="btn btn-warning fs-5 w-100"
+              >
+                <span>Pick a movie now</span>
+                <i class="bi bi-arrow-right ms-2"></i>
+              </router-link>
+            </div>
+          </div>
+        </div>
+      </section>
     </header>
-    <main class="container py-5">
+    <main class="container py-5 px-5 px-md-4 px-xl-5">
       <!-- why CMDB -->
-      <section class="">
+      <section class="pb-xl-5">
         <h2 class="h1 text-white text-center mb-4">Why CMDB</h2>
-        <ul class="row list-unstyled mb-0">
-          <li class="col">
+        <ul class="row list-unstyled mb-xl-0">
+          <li class="col mb-4 mb-xl-0">
+            <div class="rounded-3 p-4 h-100 why-section-background">
+              <h3 class="text-white text-center">Diversity</h3>
+              <div class="d-flex justify-content-center my-3">
+                <i class="bi bi-globe display-1 text-warning"></i>
+              </div>
+              <p class="text-white">
+                We collect the latest movies from
+                <span class="fw-bold text-warning"
+                  >Asia, Europe, United States of America and Canada</span
+                >
+                , ensuring to keep on track of the trends.
+              </p>
+            </div>
+          </li>
+          <li class="col mb-4 mb-xl-0">
+            <div class="rounded-3 p-4 h-100 why-section-background">
+              <h3 class="text-white text-center">Quality</h3>
+              <div class="d-flex justify-content-center gap-3 my-3">
+                <i class="bi bi-badge-4k display-1 text-warning"></i>
+                <i class="bi bi-badge-hd display-1 text-warning"></i>
+              </div>
+              <p class="text-white">
+                We provide
+                <span class="fw-bold text-warning">either 4K or HD</span>
+                movies depending on the plan chosen, differentiating from the
+                market where only premium members are qualified for receiving
+                high quality entertainment.
+              </p>
+            </div>
+          </li>
+          <li class="col mb-4 mb-xl-0">
             <div class="rounded-3 p-4 h-100 why-section-background">
               <h3 class="text-white text-center">Flexibility</h3>
               <div class="d-flex justify-content-center my-3">
@@ -92,53 +133,25 @@
               </p>
             </div>
           </li>
-          <li class="col">
-            <div class="rounded-3 p-4 h-100 why-section-background">
-              <h3 class="text-white text-center">Diversity</h3>
-              <div class="d-flex justify-content-center my-3">
-                <i class="bi bi-globe display-1 text-warning"></i>
-              </div>
-              <p class="text-white">
-                We collect the latest movies from
-                <span class="fw-bold text-warning"
-                  >Asia, Europe, United States of America and Canada</span
-                >
-                , ensuring to keep on track of the trends.
-              </p>
-            </div>
-          </li>
-          <li class="col">
-            <div class="rounded-3 p-4 h-100 why-section-background">
-              <h3 class="text-white text-center">Quality</h3>
-              <div class="d-flex justify-content-center gap-3 my-3">
-                <i class="bi bi-badge-4k display-1 text-warning"></i>
-                <i class="bi bi-badge-hd display-1 text-warning"></i>
-              </div>
-              <p class="text-white">
-                We provide
-                <span class="fw-bold text-warning">either 4K or HD</span>
-                movies depending on the plan chosen, differentiating from the
-                market where only premium members are qualified for the high
-                quality entertainment.
-              </p>
-            </div>
-          </li>
         </ul>
       </section>
 
       <!-- Playing Now -->
-      <section class="pt-5">
-        <h2 class="h1 d-inline-block">
+      <section class="pb-5">
+        <h2 class="h1 d-inline-block genre-title">
           <a
             href="#"
             @click.prevent="moreResultsOfCMDB('nowplaying')"
             class="text-white text-decoration-none d-flex align-items-center"
           >
-            <i class="bi bi-camera-reels text-warning me-3 fs-4"></i>
-            <i
-              class="bi bi-camera-reels-fill d-none text-warning me-3 fs-4"
-            ></i>
-            <span>Now Playing Movie</span>
+            <div class="d-none d-md-flex">
+              <i class="bi bi-camera-reels text-warning me-3 fs-4"></i>
+              <i
+                class="bi bi-camera-reels-fill d-none text-warning me-3 fs-4"
+              ></i>
+            </div>
+
+            <span>Now Playing</span>
             <i class="bi bi-chevron-right ms-2 fs-4"></i>
           </a>
         </h2>
@@ -154,18 +167,21 @@
       </section>
 
       <!-- UpComing -->
-      <section class="pt-5">
-        <h2 class="h1 d-inline-block">
+      <section class="pb-5">
+        <h2 class="h1 d-inline-block genre-title">
           <a
             href="#"
             @click.prevent="moreResultsOfCMDB('upcoming')"
             class="text-white text-decoration-none d-flex align-items-center"
           >
-            <i class="bi bi-camera-reels text-warning me-3 fs-4"></i>
-            <i
-              class="bi bi-camera-reels-fill d-none text-warning me-3 fs-4"
-            ></i>
-            <span>UpComing Movie</span>
+            <div class="d-none d-md-flex">
+              <i class="bi bi-camera-reels text-warning me-3 fs-4"></i>
+              <i
+                class="bi bi-camera-reels-fill d-none text-warning me-3 fs-4"
+              ></i>
+            </div>
+
+            <span>UpComing</span>
             <i class="bi bi-chevron-right ms-2 fs-4"></i>
           </a>
         </h2>
@@ -260,9 +276,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.header {
+.header-background {
   background-repeat: no-repeat !important;
   background-position: 0% 60% !important;
+  // background-position: center center !important;
   background-size: cover !important;
   height: 70vh;
   -moz-transform: scaleX(-1);
@@ -271,15 +288,88 @@ export default {
   transform: scaleX(-1);
 }
 
+.header-background-img {
+  background: url('https://images.unsplash.com/photo-1478720568477-152d9b164e26?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&h=800&q=80');
+}
+
+.header-foreground-mobile {
+  background-repeat: no-repeat !important;
+  background-position: 0% 60% !important;
+  background-size: cover !important;
+  height: 40vh;
+  -moz-transform: scaleX(-1);
+  -webkit-transform: scaleX(-1);
+  -o-transform: scaleX(-1);
+  transform: scaleX(-1);
+}
+
+.header-foreground-img-mobile {
+  background: url('https://images.unsplash.com/photo-1478720568477-152d9b164e26?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&h=800&q=80');
+}
+
+.header-foreground-img-cover {
+  background: rgba(0, 0, 0, 0.45);
+  height: 40vh;
+}
+
+.header-background-img-mobile {
+  background: url('https://images.unsplash.com/photo-1478720568477-152d9b164e26?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&h=800&q=80');
+}
+
+.header-title {
+  width: 100%;
+  background: rgba(0, 0, 0, 0.5);
+
+  @media (min-width: 768px) {
+    width: 43%;
+    background: rgba(0, 0, 0, 0.45);
+  }
+
+  @media (min-width: 1200px) {
+    width: 43%;
+    background: rgba(0, 0, 0, 0.45);
+  }
+
+  h2 {
+    @media (min-width: 414px) {
+      // outline: 1px solid white;
+      font-size: calc(2.275rem + 1.5vw) !important;
+    }
+
+    @media (min-width: 768px) {
+      // outline: 1px solid white;
+      font-size: calc(1.225rem + 1.5vw);
+    }
+
+    @media (min-width: 992px) {
+      // outline: 1px solid blue;
+    }
+
+    @media (min-width: 1200px) {
+      // display-5
+      font-size: calc(1.425rem + 2.1vw);
+      // outline: 1px solid red;
+    }
+
+    @media (min-width: 1400px) {
+      outline: 1px solid green;
+    }
+  }
+}
+
 .why-section-background {
   background: rgba(52, 58, 64, 0.3);
   border-radius: 16px;
-  box-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.4);
   backdrop-filter: blur(13.5px);
   -webkit-backdrop-filter: blur(13.5px);
+
+  p {
+    font-size: 14px;
+  }
 }
 
-h2:hover {
+.genre-title:hover {
   .bi-chevron-right {
     color: #f0ad4e;
   }
@@ -295,16 +385,16 @@ h2:hover {
 
 .right-blur {
   width: 2.5rem;
-  height: 435px;
+  height: 100%;
   top: 0;
-  right: 0;
+  right: -3px;
+  bottom: 0;
   z-index: 10;
   background: linear-gradient(
     to left,
-    rgba(24, 24, 24, 0.9) 15%,
+    rgba(24, 24, 24, 0.9) 12%,
     transparent 100%
   );
-  // background: linear-gradient(to left, red 5%, transparent 100%);
 }
 
 .card-scrollbar {
