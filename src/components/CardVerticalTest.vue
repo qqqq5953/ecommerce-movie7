@@ -1,7 +1,7 @@
 <template>
   <ul class="card-wrapper row flex-nowrap list-unstyled">
     <li
-      class="col-md-5 col-lg-4 movie-poster"
+      class="col-12 col-sm-8 col-md-5 col-lg-4 movie-poster"
       v-for="item in results"
       :key="item.id"
       style="scroll-snap-align: start"

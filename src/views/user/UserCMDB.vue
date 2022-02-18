@@ -1,14 +1,14 @@
 <template>
   <Loading :active="isLoading"></Loading>
   <div class="bg-primary">
-    <header class="position-relative">
-      <!-- 手機 -->
-      <section class="d-md-none" style="height: 373px; overflow: hidden">
+    <header class="position-relative d-md-none">
+      <!-- 手機test -->
+      <section class="d-none" style="height: 373px; overflow: hidden">
         <div class="header-background header-background-img-mobile"></div>
         <div
           class="d-flex align-items-center position-absolute top-0 bottom-0 w-100 h-100"
           style="
-            background: rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.2);
             backdrop-filter: blur(2px);
           "
         >
@@ -16,10 +16,21 @@
             class="mx-4 d-flex flex-column h-100 w-100 justify-content-center position-relative"
           >
             <div
-              class="header-foreground-img-mobile header-foreground-mobile"
+              style="
+                background: url('https://images.unsplash.com/photo-1626814026160-2237a95fc5a0?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80');
+                background-repeat: no-repeat !important;
+                background-position: 0% 60% !important;
+                background-size: cover !important;
+                height: 40vh;
+                -moz-transform: scaleX(-1);
+                -webkit-transform: scaleX(-1);
+                -o-transform: scaleX(-1);
+                transform: scaleX(-1);
+              "
             ></div>
             <div
-              class="header-foreground-img-cover w-100 position-absolute top-0 bottom-0 m-auto"
+              class="w-100 position-absolute top-0 bottom-0 m-auto"
+              style="background: rgba(0, 0, 0, 0.5); height: 213px"
             ></div>
             <div
               class="position-absolute top-0 bottom-0 start-0 w-100 d-flex flex-column justify-content-center align-items-center"
@@ -43,30 +54,68 @@
         </div>
       </section>
 
-      <!-- 平板以上 -->
-      <section class="d-none d-md-block">
-        <div class="header-background header-background-img"></div>
+      <!-- 手機 -->
+      <section class="d-md-none" style="max-height: 373px; overflow: hidden">
         <div
-          class="d-flex align-items-center h-100 position-absolute top-0 bottom-0 w-100"
-          style="background: rgba(255, 255, 255, 0.25)"
+          class="header-background header-background-adjusted-mobile header-background-img-mobile"
+        ></div>
+        <!-- 白色遮罩 -->
+        <div
+          class="header-background-img-cover position-absolute top-0 bottom-0 end-0 d-flex align-items-center w-100 h-100"
         >
-          <div class="mb-0 mx-3 mx-md-4 mx-xl-5 p-4 header-title">
-            <h2 class="display-5 text-white">
-              <span class="d-block">Offer</span>
-              <span>worldwide</span>
-              <span class="text-warning"> latest movies </span>
-              fitting your lifestyle
-            </h2>
-            <hr class="my-0 text-white" />
-            <div class="mt-3">
+          <div
+            class="position-relative d-flex flex-column justify-content-center h-100 w-100 mx-4"
+          >
+            <!-- 黑色遮罩 -->
+            <div
+              class="header-foreground position-absolute top-0 bottom-0 m-auto w-100"
+            ></div>
+            <!-- header-title -->
+            <div
+              class="position-absolute d-flex justify-content-center align-items-center w-100"
+            >
+              <h2 class="text-white text-center lh-base p-3 mb-0">
+                <span class="d-block">Offer worldwide</span>
+                <span class="text-warning"> latest movies </span>
+                fitting your lifestyle
+              </h2>
+            </div>
+            <!-- CTA button -->
+            <div class="position-absolute bottom-0 start-0 end-0 mb-3">
               <router-link
                 :to="{ name: 'AllProducts' }"
-                class="btn btn-warning fs-5 w-100"
+                class="btn btn-warning btn-sm fs-6 w-100 text-primary"
               >
                 <span>Pick a movie now</span>
                 <i class="bi bi-arrow-right ms-2"></i>
               </router-link>
             </div>
+          </div>
+        </div>
+      </section>
+    </header>
+    <!-- 平板以上 -->
+    <header class="position-relative container-md d-none d-md-block">
+      <section class="position-relative">
+        <div class="header-background header-background-img"></div>
+        <div
+          class="header-background-img-cover d-flex align-items-center h-100 position-absolute top-0 bottom-0 end-0 start-0"
+        >
+          <div class="mb-0 mx-3 mx-md-4 mx-xl-5 p-4 header-foreground">
+            <h2 class="text-white">
+              <span class="d-block">Offer worldwide</span>
+              <!-- <span>worldwide</span> -->
+              <span class="text-warning"> latest movies </span>
+              fitting your lifestyle
+            </h2>
+
+            <router-link
+              :to="{ name: 'AllProducts' }"
+              class="btn btn-warning fs-5 w-100 text-primary"
+            >
+              <span>Pick a movie now</span>
+              <i class="bi bi-arrow-right ms-2"></i>
+            </router-link>
           </div>
         </div>
       </section>
@@ -276,85 +325,105 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+// 通用背景設定
 .header-background {
   background-repeat: no-repeat !important;
-  background-position: 0% 60% !important;
-  // background-position: center center !important;
+  background-position: center center !important;
   background-size: cover !important;
-  height: 70vh;
-  -moz-transform: scaleX(-1);
-  -webkit-transform: scaleX(-1);
-  -o-transform: scaleX(-1);
-  transform: scaleX(-1);
-}
-
-.header-background-img {
-  background: url('https://images.unsplash.com/photo-1478720568477-152d9b164e26?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&h=800&q=80');
-}
-
-.header-foreground-mobile {
-  background-repeat: no-repeat !important;
-  background-position: 0% 60% !important;
-  background-size: cover !important;
-  height: 40vh;
-  -moz-transform: scaleX(-1);
-  -webkit-transform: scaleX(-1);
-  -o-transform: scaleX(-1);
-  transform: scaleX(-1);
-}
-
-.header-foreground-img-mobile {
-  background: url('https://images.unsplash.com/photo-1478720568477-152d9b164e26?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&h=800&q=80');
-}
-
-.header-foreground-img-cover {
-  background: rgba(0, 0, 0, 0.45);
-  height: 40vh;
-}
-
-.header-background-img-mobile {
-  background: url('https://images.unsplash.com/photo-1478720568477-152d9b164e26?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&h=800&q=80');
-}
-
-.header-title {
-  width: 100%;
-  background: rgba(0, 0, 0, 0.5);
+  min-height: 350px;
+  max-height: 375px;
+  // -moz-transform: scaleX(-1);
+  // -webkit-transform: scaleX(-1);
+  // -o-transform: scaleX(-1);
+  // transform: scaleX(-1);
 
   @media (min-width: 768px) {
-    width: 43%;
-    background: rgba(0, 0, 0, 0.45);
+    background-position: 10% 60% !important;
+    background-size: initial !important;
+    min-height: 380px;
+    max-height: 55vh;
+    // height: minmax(380px, 55vh);
+  }
+  @media (min-width: 992px) {
+    background-size: cover !important;
+  }
+  @media (min-width: 1200px) {
+    background-position: 225% 100% !important;
+    background-size: initial !important;
+
+    // background-position: 0% 90% !important;
+    // background-size: cover !important;
+
+    min-height: 480px;
+    max-height: 85vh;
+  }
+  @media (min-width: 1400px) {
+    background-position: 100% 100% !important;
+  }
+}
+
+.header-background-img-cover {
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(2.5px);
+
+  @media (min-width: 768px) {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(0);
+  }
+}
+
+.header-foreground {
+  background: rgba(0, 0, 0, 0.5);
+  height: 200px;
+  width: 100%;
+
+  @media (min-width: 768px) {
+    background: rgba(0, 0, 0, 0.5);
+    height: 85%;
+    width: 45%;
+  }
+
+  @media (min-width: 992px) {
+    height: 90%;
+    width: 37%;
+    height: auto;
   }
 
   @media (min-width: 1200px) {
-    width: 43%;
-    background: rgba(0, 0, 0, 0.45);
+    width: 45%;
+    background: rgba(80, 72, 50, 0.4);
+    background: rgba(80, 65, 50, 0.4);
+    // background: rgba(62, 73, 83, 0.452);
+    // background: rgba(62, 73, 83, 0.6);
+    background: rgba(0, 0, 0, 0.35);
   }
 
   h2 {
-    @media (min-width: 414px) {
-      // outline: 1px solid white;
-      font-size: calc(2.275rem + 1.5vw) !important;
-    }
-
     @media (min-width: 768px) {
-      // outline: 1px solid white;
-      font-size: calc(1.225rem + 1.5vw);
-    }
-
-    @media (min-width: 992px) {
-      // outline: 1px solid blue;
+      font-size: calc(1.125rem + 1.5vw) !important;
+      line-height: 1.4;
     }
 
     @media (min-width: 1200px) {
-      // display-5
-      font-size: calc(1.425rem + 2.1vw);
-      // outline: 1px solid red;
+      // display-6
+      font-size: calc(1.375rem + 1.6vw) !important;
+      line-height: 1.5;
     }
 
     @media (min-width: 1400px) {
-      outline: 1px solid green;
+      font-size: 3rem !important;
     }
   }
+}
+
+// 手機版背景
+.header-background-img-mobile {
+  background: url('https://images.unsplash.com/photo-1626814026160-2237a95fc5a0?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80');
+}
+
+// pad 以上背景
+.header-background-img {
+  background: url('https://images.pexels.com/photos/3769029/pexels-photo-3769029.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500');
 }
 
 .why-section-background {
