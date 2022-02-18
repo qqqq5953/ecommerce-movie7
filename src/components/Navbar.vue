@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar navbar-expand-sm navbar-dark bg-primary">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <div class="container-fluid">
       <router-link
         class="navbar-brand nav-link active"
@@ -17,9 +17,12 @@
       >
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="collapse navbar-collapse row" id="navbarSupportedContent">
+      <div
+        class="collapse navbar-collapse row flex-column flex-lg-row"
+        id="navbarSupportedContent"
+      >
         <div class="col">
-          <form class="d-flex">
+          <form class="d-flex my-3">
             <div class="position-relative w-100">
               <!-- search bar -->
               <input
@@ -92,8 +95,10 @@
             </div>
           </form>
         </div>
-        <div class="col d-flex">
-          <ul class="navbar-nav ms-auto mb-2 mb-md-0 align-items-center">
+        <div class="col">
+          <ul
+            class="navbar-nav ms-auto mb-0 align-items-center justify-content-between"
+          >
             <li class="nav-item">
               <router-link class="nav-link" :to="{ name: 'Pricing' }">
                 <span>Pricing</span>
@@ -110,6 +115,11 @@
               >
             </li>
             <li class="nav-item">
+              <router-link class="nav-link" :to="{ name: 'Login' }"
+                >Admin</router-link
+              >
+            </li>
+            <li class="nav-item">
               <router-link class="nav-link" :to="{ name: 'Cart' }">
                 <i class="bi bi-cart2 fs-3 position-relative">
                   <span
@@ -119,12 +129,6 @@
                     <span class="visually-hidden">items in cart</span>
                   </span>
                 </i></router-link
-              >
-            </li>
-
-            <li class="nav-item">
-              <router-link class="nav-link" :to="{ name: 'Login' }"
-                >Admin</router-link
               >
             </li>
           </ul>
@@ -267,7 +271,6 @@ img {
   height: 70px;
   width: 50px;
   object-fit: cover;
-  // object-position: top center;
 }
 
 .search-list {
@@ -276,6 +279,5 @@ img {
 
 .search-item:hover {
   background-color: rgba(81, 84, 87, 0.4);
-  // background-color: #55595c;
 }
 </style>
