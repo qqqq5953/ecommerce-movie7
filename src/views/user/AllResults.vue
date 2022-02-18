@@ -187,9 +187,14 @@ export default {
     classifyGenre(response) {
       let tempProduct = [];
 
+      // 排除訂閱的類型（重要）
+      tempProduct = response.data.products.filter((item) => {
+        return item.category !== 'Subscription';
+      });
+
       if (this.genrePassIn === 'nowplaying') {
         // 首頁傳來為 NowPlaying
-        tempProduct = response.data.products.filter((item) => {
+        tempProduct = tempProduct.filter((item) => {
           const genre = item.category.split('|')[1];
           return genre === 'nowplaying';
         });
@@ -197,7 +202,7 @@ export default {
         console.log('nowplaying', this.allProducts);
       } else if (this.genrePassIn === 'upcoming') {
         // 首頁傳來為 Upcoming
-        tempProduct = response.data.products.filter((item) => {
+        tempProduct = tempProduct.filter((item) => {
           const genre = item.category.split('|')[1];
           return genre === 'upcoming';
         });
@@ -205,7 +210,7 @@ export default {
         console.log('upcoming', this.allProducts);
       } else {
         // see all results
-        tempProduct = response.data.products.filter((item) => {
+        tempProduct = tempProduct.filter((item) => {
           return item.title
             .split('-')
             .join(' ')

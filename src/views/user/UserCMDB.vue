@@ -391,11 +391,7 @@ export default {
 
   @media (min-width: 1200px) {
     width: 45%;
-    background: rgba(80, 72, 50, 0.4);
-    background: rgba(80, 65, 50, 0.4);
-    // background: rgba(62, 73, 83, 0.452);
-    // background: rgba(62, 73, 83, 0.6);
-    background: rgba(0, 0, 0, 0.35);
+    background: rgba(62, 73, 83, 0.415);
   }
 
   h2 {

@@ -184,6 +184,7 @@ export default {
     };
   },
   inject: ['emitter'],
+  emits: ['calculate-product-number'],
   methods: {
     async getCartProductNumber() {
       // axios
@@ -195,7 +196,7 @@ export default {
       // 儲存回傳資料
       this.cartLength = response.data.data.carts.length;
     },
-    async getProducts() {
+    async getAllProducts() {
       this.isLoading = true;
 
       // api
@@ -203,10 +204,15 @@ export default {
       const response = await this.$http.get(api).catch((err) => {
         console.log(err);
       });
-      // console.log('res', response.data);
+      console.log('getAllProducts', response.data);
 
       // 儲存資料
       this.products = response.data.products;
+
+      // 排除訂閱的類型（重要）
+      this.products = this.products.filter((item) => {
+        return item.category !== 'Subscription';
+      });
 
       this.isLoading = false;
     },
@@ -252,7 +258,7 @@ export default {
   },
   mounted() {
     this.toggleSearchMenu();
-    this.getProducts();
+    this.getAllProducts();
     this.getCartProductNumber();
 
     this.emitter.on('calculate-product-number', (data) => {
