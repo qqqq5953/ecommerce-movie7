@@ -1,6 +1,6 @@
 <template>
   <div class="bg-dark">
-    <div class="container py-4">
+    <div class="container py-4 px-5 px-xl-0">
       <!-- test -->
       <!-- <ul class="">
         <li v-for="item in videoType" :key="item.title">
@@ -58,7 +58,9 @@
             :key="item"
             class="col-md-6 mb-md-3 mb-4 d-flex flex-column justify-content-between"
           >
-            <h4 class="text-white bg-primary py-2 px-3 flex-grow-1">
+            <h4
+              class="text-white bg-primary py-2 px-3 flex-grow-1 d-none d-xl-block"
+            >
               {{
                 item.name.split(' | ')[2] ||
                 item.name.split(' | ')[1] ||
@@ -66,14 +68,16 @@
                 item.name
               }}
             </h4>
-            <iframe
-              type="text/html"
-              allowfullscreen
-              width="100%"
-              height="325px"
-              :src="baseYoutubeUrl + item.key"
-            >
-            </iframe>
+            <div class="video-wrapper">
+              <iframe
+                type="text/html"
+                allowfullscreen
+                width="100%"
+                height="100%"
+                :src="baseYoutubeUrl + item.key"
+              >
+              </iframe>
+            </div>
           </li>
         </ul>
       </main>
@@ -84,6 +88,10 @@
 <style lang="scss" scoped>
 .dropdown-toggle::after {
   display: none;
+}
+
+.video-wrapper {
+  aspect-ratio: 16/9;
 }
 </style>
 
