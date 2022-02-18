@@ -1,7 +1,7 @@
 <template>
   <Loading :active="isLoading"></Loading>
   <div class="bg-primary">
-    <div class="container py-4">
+    <div class="container py-4 px-5 px-xl-0">
       <header class="text-white d-none">
         <section class="row">
           <div class="col-8">
@@ -30,14 +30,14 @@
           </div>
         </section>
       </header>
-      <main class="text-white mt-4">
-        <div class="row">
-          <section class="col-9">
-            <div class="row h-100 w-100">
+      <main class="text-white">
+        <div class="row flex-column flex-sm-row gap-4 gap-md-5 gap-xl-0">
+          <section class="col-xl-9">
+            <div class="row flex-column flex-sm-row gap-4 gap-md-0">
               <!-- poster -->
-              <div class="col-5">
+              <div class="col-8 col-sm-5 col-md-6 col-xl-5 mx-auto">
                 <div
-                  class="rounded-3 h-100 w-100 position-relative poster-box-shadow"
+                  class="position-relative poster-box-shadow rounded-3 h-100 w-100"
                   style=""
                 >
                   <img
@@ -53,8 +53,10 @@
                   ></div>
                 </div>
               </div>
-
-              <section class="col-7 d-flex flex-column">
+              <!-- content -->
+              <section
+                class="col-12 col-md-6 col-xl-7 d-flex flex-column mt-2 mt-md-0"
+              >
                 <div
                   class="d-flex align-items-start justify-content-between mb-2"
                 >
@@ -86,7 +88,7 @@
                 </div>
 
                 <!-- overview -->
-                <p class="mt-3 fs-5">{{ overview }}</p>
+                <p class="overview mt-3 fs-5">{{ overview }}</p>
                 <!-- badge -->
                 <div class="d-flex pb-3">
                   <span
@@ -184,75 +186,75 @@
             </div>
           </section>
 
-          <aside
-            class="col-3 p-3 rounded-3 d-flex flex-column aside-background"
-          >
-            <div class="mb-3 d-flex flex-column gap-3">
-              <!-- popularity -->
-              <div class="d-flex align-items-center justify-content-between">
-                <h4 class="h6 text-white text-end mb-0">popularity</h4>
-                <div class="text-end">
-                  <!-- <i class="bi bi-star-fill text-warning me-2"></i> -->
-                  <i class="bi bi-trophy text-danger me-2"></i>
-                  <span>{{ parseFloat(popularity).toFixed(0) }}</span>
-                </div>
-              </div>
-
-              <!-- vote -->
-              <div class="d-flex align-items-center justify-content-between">
-                <h4 class="h6 text-white text-end mb-0">Vote Average</h4>
-                <div class="text-end">
-                  <i class="bi bi-people-fill text-info me-2"></i>
-                  <span>{{ voteAverage }}</span>
-                </div>
-              </div>
-
-              <!-- rate -->
-              <div class="d-flex align-items-center justify-content-between">
-                <div class="">
-                  <h4 class="h6 text-white mb-0">Rate</h4>
-                </div>
-                <div
-                  class="position-relative d-flex align-items-center"
-                  style="min-height: 25px"
-                >
-                  <div
-                    class="position-absolute end-0 d-flex align-items-center"
-                  >
-                    <a
-                      v-if="status.rating"
-                      href="#"
-                      class="px-2 me-1"
-                      @click.prevent="deleteRating"
-                    >
-                      <i class="bi bi-dash-circle-fill text-muted fs-6"></i>
-                    </a>
-                    <a
-                      href="#"
-                      class="d-flex justify-content-end align-items-center"
-                      :class="{ 'me-4': result }"
-                      @mousemove.prevent="hoverRating($event)"
-                      @mouseenter.prevent="offsetWidthCount"
-                      @click.prevent="rating"
-                      ref="ratingContainer"
-                    >
-                      <i
-                        style="z-index: -1"
-                        v-for="item in starsArray"
-                        :key="item.id"
-                        class="bi text-warning"
-                        :class="{
-                          'bi-star': item.star,
-                          'bi-star-half': item.starHalf,
-                          'bi-star-fill': item.starFill
-                        }"
-                      ></i>
-                    </a>
+          <section class="col-xl-3">
+            <aside
+              class="d-flex flex-column aside-background h-100 p-3 rounded-3"
+            >
+              <div class="mb-3 d-flex flex-column gap-3">
+                <!-- popularity -->
+                <div class="d-flex align-items-center justify-content-between">
+                  <h4 class="h6 text-white text-end mb-0">popularity</h4>
+                  <div class="text-end">
+                    <i class="bi bi-trophy-fill text-danger me-2"></i>
+                    <span>{{ parseFloat(popularity).toFixed(0) }}</span>
                   </div>
-                  <div v-if="result">{{ result * 2 }}</div>
                 </div>
-              </div>
-              <!-- <br />
+
+                <!-- vote -->
+                <div class="d-flex align-items-center justify-content-between">
+                  <h4 class="h6 text-white text-end mb-0">Vote Average</h4>
+                  <div class="text-end">
+                    <i class="bi bi-people-fill text-info me-2"></i>
+                    <span>{{ voteAverage }}</span>
+                  </div>
+                </div>
+
+                <!-- rate -->
+                <div class="d-flex align-items-center justify-content-between">
+                  <div class="">
+                    <h4 class="h6 text-white mb-0">Rate</h4>
+                  </div>
+                  <div
+                    class="position-relative d-flex align-items-center"
+                    style="min-height: 25px"
+                  >
+                    <div
+                      class="position-absolute end-0 d-flex align-items-center"
+                    >
+                      <a
+                        v-if="status.rating"
+                        href="#"
+                        class="px-2 me-1"
+                        @click.prevent="deleteRating"
+                      >
+                        <i class="bi bi-dash-circle-fill text-muted fs-6"></i>
+                      </a>
+                      <a
+                        href="#"
+                        class="d-flex justify-content-end align-items-center"
+                        :class="{ 'me-4': result }"
+                        @mousemove.prevent="hoverRating($event)"
+                        @mouseenter.prevent="offsetWidthCount"
+                        @click.prevent="rating"
+                        ref="ratingContainer"
+                      >
+                        <i
+                          style="z-index: -1"
+                          v-for="item in starsArray"
+                          :key="item.id"
+                          class="bi text-warning"
+                          :class="{
+                            'bi-star': item.star,
+                            'bi-star-half': item.starHalf,
+                            'bi-star-fill': item.starFill
+                          }"
+                        ></i>
+                      </a>
+                    </div>
+                    <div v-if="result">{{ result * 2 }}</div>
+                  </div>
+                </div>
+                <!-- <br />
               ratio:{{ ratio }}
               <br />
               Math.floor:{{ Math.floor(this.result) }}
@@ -262,53 +264,60 @@
               offsetX:{{ offsetX }}
               <br />
               Width:{{ ratingContainerWidth }} -->
-            </div>
-            <ul
-              class="d-flex flex-column justify-content-between flex-grow-1 list-unstyled more-video-list mb-0"
-            >
-              <li
-                class="rounded-3 bg-dark"
-                v-for="item in Object.values(videoType)"
-                :key="item"
+              </div>
+              <ul
+                class="d-flex flex-column justify-content-between flex-grow-1 list-unstyled more-video-list mb-0 gap-3 gap-xl-0"
               >
-                <a
-                  href="#"
-                  class="btn d-flex justify-content-between text-white w-100 px-3 py-2 text-decoration-none fs-6"
-                  :class="{ disabled: !item.content.length }"
-                  @click.prevent="moreVideos(item.type)"
+                <li
+                  class="rounded-3 bg-dark"
+                  v-for="item in Object.values(videoType)"
+                  :key="item"
                 >
-                  <div>
-                    {{ item.type }}
-                    <span> ({{ item.content.length }}) </span>
-                  </div>
+                  <a
+                    href="#"
+                    class="btn d-flex justify-content-between text-white w-100 px-3 py-3 py-xl-2 text-decoration-none fs-6"
+                    :class="{ disabled: !item.content.length }"
+                    @click.prevent="moreVideos(item.type)"
+                  >
+                    <div>
+                      {{ item.type }}
+                      <span> ({{ item.content.length }}) </span>
+                    </div>
 
-                  <i class="bi bi-chevron-compact-right"></i>
-                </a>
-              </li>
-            </ul>
-          </aside>
+                    <i class="bi bi-chevron-compact-right"></i>
+                  </a>
+                </li>
+              </ul>
+            </aside>
+          </section>
         </div>
 
+        <!-- video -->
         <div class="row mt-5">
-          <!-- video -->
-          <h2 class="h1 text-white d-flex align-items-center">
-            <i class="bi bi-camera-reels text-warning me-3 fs-4"></i>Watch
-            Trailer
-          </h2>
+          <div class="col-12">
+            <h2 class="h1 text-white d-flex align-items-center">
+              <i
+                class="bi bi-camera-reels text-warning me-3 fs-4 d-none d-md-block"
+              ></i
+              >Watch Trailer
+            </h2>
+          </div>
 
-          <section class="col-9">
-            <iframe
-              type="text/html"
-              allowfullscreen
-              width="100%"
-              height="500px"
-              v-if="trailers.length"
-              :src="
-                baseYoutubeUrl + trailers[0].key ||
-                baseYoutubeUrl + teaser[0].key
-              "
-            >
-            </iframe>
+          <section class="col-xl-9">
+            <div class="video-wrapper">
+              <iframe
+                type="text/html"
+                allowfullscreen
+                width="100%"
+                height="100%"
+                v-if="trailers.length"
+                :src="
+                  baseYoutubeUrl + trailers[0].key ||
+                  baseYoutubeUrl + teaser[0].key
+                "
+              >
+              </iframe>
+            </div>
           </section>
         </div>
       </main>
@@ -647,8 +656,16 @@ export default {
       });
 
       console.log('removeProductFromList', response);
+      // 切換icon
       this.status.isProductInList = !response.data.success;
       this.listStatusMessage = response.data.status_message;
+
+      // toast
+      this.pushMessageStateForUser(
+        this.listStatusMessage,
+        this.title,
+        'remove from watchlist'
+      );
 
       // spinner off
       this.status.watchlistProductID = '';
@@ -676,8 +693,16 @@ export default {
       });
 
       console.log('addProductToList', response);
+      // 切換icon
       this.status.isProductInList = response.data.success;
       this.listStatusMessage = response.data.status_message;
+
+      // toast
+      this.pushMessageStateForUser(
+        this.listStatusMessage,
+        this.title,
+        'add to watchlist'
+      );
 
       // spinner off
       this.status.watchlistProductID = '';
@@ -756,6 +781,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.overview {
+  line-height: 2;
+
+  @media (min-width: 1200px) {
+    line-height: 1.5;
+  }
+}
+
 .poster-box-shadow {
   // box-shadow: rgba(223, 223, 223, 0.24) 1px 1px 20px 2px;
   box-shadow: rgba(178, 198, 206, 0.12) 0px 2px 4px 2px,
@@ -793,5 +826,9 @@ export default {
 
 .bi-dash-circle-fill:hover {
   color: white !important;
+}
+
+.video-wrapper {
+  aspect-ratio: 16/9;
 }
 </style>

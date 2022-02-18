@@ -19,10 +19,10 @@ export function pushMessageStateForDashboard(response, item, action) {
   emitContent('danger', `${action}失敗`, message.join('、'));
 }
 
-export function pushMessageStateForUser(response, item, action) {
+export function pushMessageStateForUser(response, title, action) {
   function emitContent(style, status, content) {
     emitter.emit('push-message', {
-      title: item.title,
+      title,
       style,
       status,
       content
