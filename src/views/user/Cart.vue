@@ -7,7 +7,7 @@
         <h2 class="h1 mb-0 text-primary">My cart</h2>
       </div>
     </header>
-    <main class="">
+    <main>
       <section>
         <!-- 購物車商品 -->
         <div
@@ -101,121 +101,137 @@
           </div>
         </div>
       </section>
-      <!-- 優惠券 -->
-      <section class="input-group my-4">
-        <input
-          type="text"
-          class="form-control"
-          placeholder="請輸入優惠碼"
-          v-model="couponCode"
-          aria-label="input coupon"
-          aria-describedby="button-addon2"
-        />
-        <button
-          class="btn btn-outline-secondary text-muted"
-          id="button-addon2"
-          type="button"
-          @click="useCoupon"
-          :disabled="isCouponUsed"
-          v-if="isCouponUsed"
-        >
-          已使用優惠碼
-        </button>
-        <button
-          class="btn btn-outline-warning"
-          type="button"
-          @click="useCoupon"
-          id="button-addon2"
-          v-else
-        >
-          套用優惠碼
-        </button>
+
+      <section class="row justify-content-center">
+        <div class="col-lg-6">
+          <!-- 優惠券 -->
+          <section class="input-group my-4">
+            <input
+              type="text"
+              class="form-control"
+              placeholder="請輸入優惠碼"
+              v-model="couponCode"
+              aria-label="input coupon"
+              aria-describedby="button-addon2"
+            />
+            <button
+              class="btn btn-outline-secondary text-muted"
+              id="button-addon2"
+              type="button"
+              @click="useCoupon"
+              :disabled="isCouponUsed"
+              v-if="isCouponUsed"
+            >
+              已使用優惠碼
+            </button>
+            <button
+              class="btn btn-outline-warning"
+              type="button"
+              @click="useCoupon"
+              id="button-addon2"
+              v-else
+            >
+              套用優惠碼
+            </button>
+          </section>
+
+          <!-- 送出訂單 -->
+          <Form v-slot="{ errors }" @submit="onSubmit" v-if="cart.length">
+            <!-- email -->
+            <div class="mb-3">
+              <label for="email" class="form-label">Email*</label>
+              <Field
+                id="email"
+                name="email"
+                type="email"
+                class="form-control"
+                :class="{ 'is-invalid': errors['email'] }"
+                placeholder="請輸入 Email"
+                rules="email|required"
+                v-model="form.user.email"
+              >
+              </Field>
+              <error-message
+                name="email"
+                class="invalid-feedback"
+              ></error-message>
+            </div>
+
+            <!-- name -->
+            <div class="mb-3">
+              <label for="name" class="form-label">姓名*</label>
+              <Field
+                id="name"
+                name="name"
+                type="text"
+                class="form-control"
+                :class="{ 'is-invalid': errors['name'] }"
+                placeholder="請輸入姓名"
+                rules="required"
+                v-model="form.user.name"
+              ></Field>
+              <error-message
+                name="name"
+                class="invalid-feedback"
+              ></error-message>
+            </div>
+
+            <!-- tel -->
+            <div class="mb-3">
+              <label for="tel" class="form-label">手機*</label>
+              <Field
+                id="tel"
+                name="tel"
+                type="tel"
+                class="form-control"
+                :class="{ 'is-invalid': errors['tel'] }"
+                placeholder="請輸入手機"
+                rules="numeric|length: 10|required"
+                v-model="form.user.tel"
+              ></Field>
+              <error-message
+                name="tel"
+                class="invalid-feedback"
+              ></error-message>
+            </div>
+
+            <!-- address -->
+            <div class="mb-3">
+              <label for="address" class="form-label">地址*</label>
+              <Field
+                id="address"
+                name="address"
+                type="text"
+                class="form-control"
+                :class="{ 'is-invalid': errors['address'] }"
+                placeholder="請輸入地址"
+                rules="required"
+                v-model="form.user.address"
+              ></Field>
+              <error-message
+                name="address"
+                class="invalid-feedback"
+              ></error-message>
+            </div>
+
+            <!-- message -->
+            <div class="mb-3">
+              <label for="message" class="form-label">留言</label>
+              <Field
+                id="message"
+                name="message"
+                as="textarea"
+                class="form-control"
+                v-model="form.message"
+              ></Field>
+            </div>
+
+            <div class="text-end">
+              <button class="btn btn-warning" type="submit">送出訂單</button>
+            </div>
+          </Form>
+        </div>
       </section>
-
-      <!-- 送出訂單 -->
-      <Form v-slot="{ errors }" @submit="onSubmit" v-if="cart.length">
-        <!-- email -->
-        <div class="mb-3">
-          <label for="email" class="form-label">Email*</label>
-          <Field
-            id="email"
-            name="email"
-            type="email"
-            class="form-control"
-            :class="{ 'is-invalid': errors['email'] }"
-            placeholder="請輸入 Email"
-            rules="email|required"
-            v-model="form.user.email"
-          >
-          </Field>
-          <error-message name="email" class="invalid-feedback"></error-message>
-        </div>
-
-        <!-- name -->
-        <div class="mb-3">
-          <label for="name" class="form-label">姓名*</label>
-          <Field
-            id="name"
-            name="name"
-            type="text"
-            class="form-control"
-            :class="{ 'is-invalid': errors['name'] }"
-            placeholder="請輸入姓名"
-            rules="required"
-            v-model="form.user.name"
-          ></Field>
-          <error-message name="name" class="invalid-feedback"></error-message>
-        </div>
-
-        <!-- tel -->
-        <div class="mb-3">
-          <label for="tel" class="form-label">手機*</label>
-          <Field
-            id="tel"
-            name="tel"
-            type="tel"
-            class="form-control"
-            :class="{ 'is-invalid': errors['tel'] }"
-            placeholder="請輸入手機"
-            rules="numeric|length: 10|required"
-            v-model="form.user.tel"
-          ></Field>
-          <error-message name="tel" class="invalid-feedback"></error-message>
-        </div>
-
-        <!-- address -->
-        <div class="mb-3">
-          <label for="address" class="form-label">地址*</label>
-          <Field
-            id="address"
-            name="address"
-            type="text"
-            class="form-control"
-            :class="{ 'is-invalid': errors['address'] }"
-            placeholder="請輸入地址"
-            rules="required"
-            v-model="form.user.address"
-          ></Field>
-          <error-message
-            name="address"
-            class="invalid-feedback"
-          ></error-message>
-        </div>
-
-        <!-- message -->
-        <div class="mb-3">
-          <label for="message" class="form-label">留言</label>
-          <Field
-            id="message"
-            name="message"
-            as="textarea"
-            class="form-control"
-            v-model="form.message"
-          ></Field>
-        </div>
-
-        <button class="btn btn-warning" type="submit">送出訂單</button>
-      </Form>
     </main>
   </div>
 </template>
