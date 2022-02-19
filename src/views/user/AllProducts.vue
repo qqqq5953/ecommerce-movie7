@@ -109,12 +109,10 @@
 </template>
 
 <script>
-// import Pagination from '@/components/Pagination.vue';
 import PaginationForResults from '@/components/PaginationForResults.vue';
 
 export default {
   components: {
-    // Pagination,
     PaginationForResults
   },
   inject: ['emitter', 'sortData'],
@@ -131,7 +129,6 @@ export default {
       key: '7bbe6005cfda593dc21cceb93eaf9a8e',
       pagination: {},
       // pagination
-      slicePages: undefined,
       totalPages: undefined,
       currentPage: 1,
       perPage: 6
