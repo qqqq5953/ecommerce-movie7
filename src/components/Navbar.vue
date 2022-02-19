@@ -10,8 +10,8 @@
         class="navbar-toggler"
         type="button"
         data-bs-toggle="collapse"
-        data-bs-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent"
+        data-bs-target="#navbarDropdownMenu"
+        aria-controls="navbarDropdownMenu"
         aria-expanded="false"
         aria-label="Toggle navigation"
       >
@@ -19,7 +19,8 @@
       </button>
       <div
         class="collapse navbar-collapse row flex-column flex-lg-row"
-        id="navbarSupportedContent"
+        id="navbarDropdownMenu"
+        ref="navbarDropdownMenu"
       >
         <div class="col">
           <form class="d-flex my-3">
@@ -98,6 +99,7 @@
         <div class="col">
           <ul
             class="navbar-nav ms-auto mb-0 align-items-center justify-content-between"
+            @click="toggleNavbarDropdown"
           >
             <li class="nav-item">
               <router-link class="nav-link" :to="{ name: 'Pricing' }">
@@ -254,6 +256,9 @@ export default {
         }
       });
       this.clearSearchBar();
+    },
+    toggleNavbarDropdown() {
+      this.$refs.navbarDropdownMenu.classList.toggle('show');
     }
   },
   mounted() {
