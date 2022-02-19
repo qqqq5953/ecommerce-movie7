@@ -1,7 +1,7 @@
 <template>
   <Loading :active="isLoading"></Loading>
   <div class="bg-primary">
-    <div class="container py-4 px-5 px-xl-0">
+    <div class="container py-5 px-5 px-xl-0">
       <header class="text-white d-none">
         <section class="row">
           <div class="col-8">
