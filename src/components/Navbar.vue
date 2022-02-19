@@ -123,7 +123,7 @@
             </li>
             <li class="nav-item">
               <router-link class="nav-link" :to="{ name: 'Cart' }">
-                <i class="bi bi-cart2 fs-3 position-relative">
+                <i class="bi bi-cart fs-3 position-relative">
                   <span
                     class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning text-dark fs-6"
                   >

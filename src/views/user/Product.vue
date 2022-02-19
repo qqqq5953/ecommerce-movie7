@@ -804,8 +804,8 @@ export default {
   -webkit-backdrop-filter: blur(13.5px);
 }
 
-:hover:is(.btn-outline-warning, .btn-outline-secondary) {
-  color: #000 !important;
+:hover:is(.btn-outline-warning, .btn-outline-secondary, .btn-outline-light) {
+  color: rgba(26, 26, 26, 1) !important;
 }
 
 :hover:is(.btn-warning) {
