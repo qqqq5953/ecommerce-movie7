@@ -61,6 +61,7 @@
                   class="d-flex align-items-start justify-content-between mb-2"
                 >
                   <h2 class="display-5 text-white mb-0">{{ title }}</h2>
+                  <!-- watchlist -->
                   <a
                     href="#"
                     type="button"
@@ -79,6 +80,7 @@
                   Original title:
                   <span class="fw-normal">{{ originalTitle }}</span>
                 </h3>
+
                 <div class="text-muted">
                   <span class="fs-6 me-2">{{ releaseDate.split('-')[0] }}</span>
                   |
@@ -98,35 +100,15 @@
                     >{{ item.name }}</span
                   >
                 </div>
-                <!-- price -->
-                <!-- <div class="row mb-2 mt-auto">
-                  <div class="col" v-if="isNowOrUpcoming === 'nowplaying'">
-                    <span>Rent:</span>
-                    <span class="h3 text-muted ms-2 mb-0">${{ price }}</span>
-                  </div>
-                  <div class="col" v-if="isNowOrUpcoming === 'nowplaying'">
-                    <span>Subscribe:</span>
-                    <span class="h3 text-warning ms-2 mb-0">$9.99</span>
-                  </div>
-                </div> -->
-
-                <!-- <div
-                  class="d-flex justify-content-between align-items-center ms-auto mt-auto mb-3"
-                  v-if="isNowOrUpcoming === 'nowplaying'"
-                >
-                  <span>Subscribe:</span>
-                  <span class="h3 text-danger ms-3">USD${{ price }}</span>
-                </div> -->
-                <!-- PURCHASE or subscribe -->
+                <!-- now playing 類別出現的 button -->
                 <div
                   class="row justify-content-between mt-auto flex-column-reverse flex-xl-row"
                   :class="{ 'mt-auto': isNowOrUpcoming === 'upcoming' }"
                   role="group"
+                  v-if="isNowOrUpcoming === 'nowplaying'"
                 >
-                  <div
-                    class="col-12 col-xl-6"
-                    v-if="isNowOrUpcoming === 'nowplaying'"
-                  >
+                  <!-- rent -->
+                  <div class="col-12 col-xl-6">
                     <button
                       type="button"
                       class="btn text-center rounded-3 w-100"
@@ -150,10 +132,8 @@
                       RENT $0.99
                     </button>
                   </div>
-                  <div
-                    class="col-12 col-xl-6 mb-3 mb-xl-0"
-                    v-if="isNowOrUpcoming === 'nowplaying'"
-                  >
+                  <!-- subscribe -->
+                  <div class="col-12 col-xl-6 mb-3 mb-xl-0">
                     <button
                       type="button"
                       class="btn btn-warning text-center border border-warning text-primary rounded-3 w-100"
@@ -181,6 +161,15 @@
                       <span class="text-light">SUBSCRIBED !</span>
                     </router-link>
                   </div>
+                </div>
+
+                <!-- Upcoming 類別出現的 button -->
+                <div v-else>
+                  <button
+                    class="btn btn-primary border text-warning fst-italic w-100 disabled"
+                  >
+                    Upcoming
+                  </button>
                 </div>
               </section>
             </div>
@@ -413,7 +402,7 @@ export default {
   watch: {
     queriesChange(newVal) {
       // 防止跳回首頁會更新資料
-      if (this.$route.name === 'UserProduct') {
+      if (this.$route.name === 'Product') {
         this.idPassIn = newVal;
         this.getProductDetails();
       }
@@ -539,6 +528,12 @@ export default {
       });
     },
     arrangeVideoType(types) {
+      // 清空每個類別的 content
+      Object.values(this.videoType).forEach((item) => {
+        item.content.length = 0;
+      });
+
+      // 根據影片類別歸類
       types.forEach((item) => {
         if (item.type === 'Clip') {
           this.videoType.clips.content.push(item);
@@ -564,7 +559,7 @@ export default {
       const response = await this.$http
         .get(api)
         .catch((err) => console.log(err));
-      // console.log('getProductDetails', response);
+      console.log('getProductDetails', response);
 
       // 產品在 TMDB api 中的id
       this.id = response.data.product.content.split('|')[0];
