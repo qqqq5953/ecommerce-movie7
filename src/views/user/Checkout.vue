@@ -68,13 +68,21 @@
                 <span v-else class="text-success">Confirmed</span>
               </td>
             </tr>
+            <tr v-if="order.is_paid">
+              <th>Order date</th>
+              <td>
+                <span class="text-success">{{
+                  $filters.date(order.paid_date)
+                }}</span>
+              </td>
+            </tr>
           </tbody>
         </table>
         <div class="text-end">
-          <button v-if="!order.is_paid" class="btn btn-danger" type="submit">
+          <button v-if="!order.is_paid" class="btn btn-warning" type="submit">
             Checkout
           </button>
-          <router-link v-else class="btn btn-warning" :to="{ name: 'UserCMDB' }"
+          <router-link v-else class="btn btn-primary" :to="{ name: 'UserCMDB' }"
             >Continue shopping<i class="bi bi-arrow-right ms-2"></i
           ></router-link>
         </div>
