@@ -64,7 +64,10 @@
                         }
                       }"
                       class="text-decoration-none d-flex"
-                      @click="clearSearchBar"
+                      @click="
+                        clearSearchBar();
+                        toggleNavbarDropdown();
+                      "
                     >
                       <img
                         v-if="item.imageUrl[0]"
@@ -256,6 +259,7 @@ export default {
         }
       });
       this.clearSearchBar();
+      this.toggleNavbarDropdown();
     },
     toggleNavbarDropdown() {
       this.$refs.navbarDropdownMenu.classList.toggle('show');
