@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-dark">
+  <div class="bg-dark h-100">
     <div class="container py-5 px-5 px-xl-0">
       <header>
         <div class="d-flex align-items-center">
@@ -48,6 +48,7 @@
       </main>
 
       <PaginationForResults
+        v-if="listProducts.length"
         :totalPages="totalPages"
         :currentPage="currentPage"
         @change-page="setPagination"

@@ -1,11 +1,13 @@
 <template>
-  <Navbar></Navbar>
-
-  <router-view />
-
-  <div class="bg-dark">
-    <div class="container">
-      <Footer></Footer>
+  <div class="d-flex flex-column h-100">
+    <Navbar></Navbar>
+    <div class="flex-grow-1">
+      <router-view />
+    </div>
+    <div class="bg-dark border-top">
+      <div class="container">
+        <Footer></Footer>
+      </div>
     </div>
   </div>
 </template>
@@ -21,3 +23,5 @@ export default {
   }
 };
 </script>
+
+<style lang="scss" scoped></style>

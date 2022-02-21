@@ -29,6 +29,13 @@ export default {
 
 <style lang="scss">
 @import './assets/all';
+
+html,
+body,
+#app {
+  height: 100%;
+}
+
 body {
   scroll-behavior: smooth;
 }
