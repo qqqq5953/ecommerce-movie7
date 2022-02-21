@@ -7,6 +7,11 @@
     <router-view />
   </div>
   <ToastMessage></ToastMessage>
+  <div class="bg-dark">
+    <div class="container">
+      <Footer></Footer>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -15,11 +20,13 @@ import Navbar from '@/components/Navbar.vue';
 import sortData from '@/methods/sortData';
 import emitter from '@/methods/emitter';
 import { pushMessageStateForUser } from '@/methods/pushMessageState';
+import Footer from '@/components/Footer.vue';
 
 export default {
   components: {
     Navbar,
-    ToastMessage
+    ToastMessage,
+    Footer
   },
   provide() {
     return {

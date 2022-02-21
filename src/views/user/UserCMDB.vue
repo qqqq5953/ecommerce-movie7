@@ -254,12 +254,12 @@
 
 <script>
 import CardVertical from '@/components/CardVerticalTest.vue';
+
 // import Navbar from '@/components/Navbar.vue';
 
 export default {
   components: {
     CardVertical
-    // Navbar
   },
   inject: ['sortData', 'emitter'],
   data() {
