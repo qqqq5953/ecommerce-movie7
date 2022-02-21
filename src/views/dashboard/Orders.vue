@@ -94,7 +94,7 @@ export default {
     OrderDeleteModal,
     Pagination
   },
-  inject: ['pushMessageState'],
+  inject: ['pushMessageStateForDashboard'],
   data() {
     return {
       isLoading: false,
@@ -131,7 +131,7 @@ export default {
         this.$refs.orderDeleteModal.hideModal();
 
         // toast
-        this.pushMessageState(response, order, '刪除');
+        this.pushMessageStateForDashboard(response, order, '刪除');
       } catch (err) {}
     },
     async getOrders(page) {

@@ -1,9 +1,7 @@
 <template>
   <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <div class="container-fluid">
-      <router-link
-        class="navbar-brand nav-link active"
-        :to="{ name: 'UserCMDB' }"
+      <router-link class="navbar-brand nav-link active" :to="{ name: 'Home' }"
         >CMDB</router-link
       >
       <button

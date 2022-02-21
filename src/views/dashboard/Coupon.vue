@@ -81,7 +81,7 @@ export default {
     CouponDeleteModal,
     Pagination
   },
-  inject: ['pushMessageState'],
+  inject: ['pushMessageStateForDashboard'],
   data() {
     return {
       coupons: [],
@@ -113,7 +113,7 @@ export default {
         this.$refs.couponDeleteModal.hideModal();
 
         // toast
-        this.pushMessageState(response, coupon, '刪除');
+        this.pushMessageStateForDashboard(response, coupon, '刪除');
         console.log('deleteCoupon', response);
       } catch (err) {
         console.log(err);
@@ -175,7 +175,7 @@ export default {
         this.$refs.couponEditModal.hideModal();
 
         // toast
-        this.pushMessageState(response, coupon, currentPage ? '更新' : '新增');
+        this.pushMessageStateForDashboard(response, coupon, currentPage ? '更新' : '新增');
         console.log('updateCoupons', response);
       } catch (err) {
         console.log(err);

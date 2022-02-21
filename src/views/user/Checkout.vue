@@ -82,7 +82,7 @@
           <button v-if="!order.is_paid" class="btn btn-warning" type="submit">
             Checkout
           </button>
-          <router-link v-else class="btn btn-primary" :to="{ name: 'UserCMDB' }"
+          <router-link v-else class="btn btn-primary" :to="{ name: 'Home' }"
             >Continue shopping<i class="bi bi-arrow-right ms-2"></i
           ></router-link>
         </div>
