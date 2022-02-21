@@ -143,7 +143,7 @@
               </button>
             </div>
             <small class="text-warning fs-6" v-if="!isCouponUsed"
-              >* Click the button to use a coupon
+              >* See Coupon Usage <i class="bi bi-arrow-down"></i>
             </small>
 
             <!-- Coupon usage -->
@@ -158,7 +158,7 @@
                     aria-expanded="true"
                     aria-controls="collapseOne"
                   >
-                    Coupon usage
+                    Coupon Usage
                   </button>
                 </h4>
                 <div
