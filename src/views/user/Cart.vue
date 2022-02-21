@@ -87,149 +87,229 @@
           </ul>
         </div>
         <!-- 購物車總金額 -->
-        <div class="mt-2 total-price-font">
+        <div class="mt-2 total-price-font" v-if="cart.length">
           <div class="text-end text-danger" v-if="!isCouponUsed">
             Total: ${{ totalAmount.total.toFixed(2) }}
           </div>
-          <div v-if="isCouponUsed" class="text-end">
-            <del v-if="isCouponUsed" class=""
-              >Total: ${{ totalAmount.total.toFixed(2) }}</del
-            >
-            <div v-if="isCouponUsed" class="text-danger">
+          <!-- 用 coupon 後金額 -->
+          <div v-else class="text-end">
+            <del>Total: ${{ totalAmount.total.toFixed(2) }}</del>
+            <div class="text-danger">
               After discount: ${{ totalAmount.finalTotal.toFixed(2) }}
             </div>
+            <div class="text-danger fs-6">{{ discountRatio }}% off</div>
           </div>
         </div>
       </section>
 
-      <section class="row justify-content-center">
+      <section class="row justify-content-center" v-if="cart.length">
         <div class="col-lg-6">
           <!-- 優惠券 -->
-          <section class="input-group my-4">
-            <input
-              type="text"
-              class="form-control"
-              placeholder="請輸入優惠碼"
-              v-model="couponCode"
-              aria-label="input coupon"
-              aria-describedby="button-addon2"
-            />
-            <button
-              class="btn btn-outline-secondary text-muted"
-              id="button-addon2"
-              type="button"
-              @click="useCoupon"
-              :disabled="isCouponUsed"
-              v-if="isCouponUsed"
-            >
-              已使用優惠碼
-            </button>
-            <button
-              class="btn btn-outline-warning"
-              type="button"
-              @click="useCoupon"
-              id="button-addon2"
-              v-else
-            >
-              套用優惠碼
-            </button>
+          <section class="py-5">
+            <h3 class="h4 mb-3">Use Coupon</h3>
+            <div class="input-group input-group-sm">
+              <input
+                type="text"
+                class="form-control"
+                :placeholder="
+                  totalAmount.total <= 120
+                    ? 'No coupon available ...'
+                    : 'Your coupon is ...'
+                "
+                v-model="couponCode"
+                disabled
+                aria-label="input coupon"
+                aria-describedby="button-addon2"
+              />
+              <button
+                class="btn btn-outline-secondary text-muted"
+                id="button-addon2"
+                type="button"
+                @click="useCoupon"
+                :disabled="isCouponUsed"
+                v-if="isCouponUsed"
+              >
+                Coupon used
+              </button>
+              <button
+                class="btn btn-outline-warning"
+                type="button"
+                @click="useCoupon"
+                id="button-addon2"
+                :disabled="totalAmount.total <= 120"
+                v-else
+              >
+                Use Coupon
+              </button>
+            </div>
+            <small class="text-warning fs-6" v-if="!isCouponUsed"
+              >* Click the button to use a coupon
+            </small>
+
+            <!-- Coupon usage -->
+            <div class="accordion mt-3" id="accordionExample">
+              <div class="accordion-item">
+                <h4 class="accordion-header" id="headingOne">
+                  <button
+                    class="accordion-button collapsed py-2 px-3 fs-6 text-muted"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#couponUsage"
+                    aria-expanded="true"
+                    aria-controls="collapseOne"
+                  >
+                    Coupon usage
+                  </button>
+                </h4>
+                <div
+                  id="couponUsage"
+                  class="accordion-collapse collapse"
+                  aria-labelledby="headingOne"
+                  data-bs-parent="#accordionExample"
+                >
+                  <div class="accordion-body">
+                    <ul class="fs-6 list-unstyled mb-0">
+                      <li>
+                        <div class="d-flex py-1">
+                          <div>
+                            <span>$120</span>
+                            <i class="bi bi-arrow-right mx-2"></i>
+                            <span class="fst-italic fw-bold">CMDBTEN</span>
+                          </div>
+                          <span class="badge bg-primary ms-auto fst-italic"
+                            >10% off</span
+                          >
+                        </div>
+                      </li>
+                      <li>
+                        <div class="d-flex py-1">
+                          <div>
+                            <span>$240</span>
+                            <i class="bi bi-arrow-right mx-2"></i>
+                            <span class="fst-italic fw-bold">CMDBFIFTEEN</span>
+                          </div>
+                          <span class="badge bg-primary ms-auto fst-italic"
+                            >15% off</span
+                          >
+                        </div>
+                      </li>
+                      <li>
+                        <div class="d-flex py-1">
+                          <div>
+                            <span>$360</span>
+                            <i class="bi bi-arrow-right mx-2"></i>
+                            <span class="fst-italic fw-bold">CMDBTWENTY</span>
+                          </div>
+                          <span class="badge bg-primary ms-auto fst-italic"
+                            >20% off</span
+                          >
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
           </section>
 
           <!-- 送出訂單 -->
-          <Form v-slot="{ errors }" @submit="onSubmit" v-if="cart.length">
-            <!-- email -->
-            <div class="mb-3">
-              <label for="email" class="form-label">Email*</label>
-              <Field
-                id="email"
-                name="email"
-                type="email"
-                class="form-control"
-                :class="{ 'is-invalid': errors['email'] }"
-                placeholder="請輸入 Email"
-                rules="email|required"
-                v-model="form.user.email"
-              >
-              </Field>
-              <error-message
-                name="email"
-                class="invalid-feedback"
-              ></error-message>
-            </div>
+          <section>
+            <h3 class="h4">Delivery Info</h3>
+            <Form v-slot="{ errors }" @submit="onSubmit">
+              <!-- email -->
+              <div class="mb-3">
+                <label for="email" class="form-label">Email*</label>
+                <Field
+                  id="email"
+                  name="email"
+                  type="email"
+                  class="form-control"
+                  :class="{ 'is-invalid': errors['email'] }"
+                  placeholder="請輸入 Email"
+                  rules="email|required"
+                  v-model="form.user.email"
+                >
+                </Field>
+                <error-message
+                  name="email"
+                  class="invalid-feedback"
+                ></error-message>
+              </div>
 
-            <!-- name -->
-            <div class="mb-3">
-              <label for="name" class="form-label">姓名*</label>
-              <Field
-                id="name"
-                name="name"
-                type="text"
-                class="form-control"
-                :class="{ 'is-invalid': errors['name'] }"
-                placeholder="請輸入姓名"
-                rules="required"
-                v-model="form.user.name"
-              ></Field>
-              <error-message
-                name="name"
-                class="invalid-feedback"
-              ></error-message>
-            </div>
+              <!-- name -->
+              <div class="mb-3">
+                <label for="name" class="form-label">姓名*</label>
+                <Field
+                  id="name"
+                  name="name"
+                  type="text"
+                  class="form-control"
+                  :class="{ 'is-invalid': errors['name'] }"
+                  placeholder="請輸入姓名"
+                  rules="required"
+                  v-model="form.user.name"
+                ></Field>
+                <error-message
+                  name="name"
+                  class="invalid-feedback"
+                ></error-message>
+              </div>
 
-            <!-- tel -->
-            <div class="mb-3">
-              <label for="tel" class="form-label">手機*</label>
-              <Field
-                id="tel"
-                name="tel"
-                type="tel"
-                class="form-control"
-                :class="{ 'is-invalid': errors['tel'] }"
-                placeholder="請輸入手機"
-                rules="numeric|length: 10|required"
-                v-model="form.user.tel"
-              ></Field>
-              <error-message
-                name="tel"
-                class="invalid-feedback"
-              ></error-message>
-            </div>
+              <!-- tel -->
+              <div class="mb-3">
+                <label for="tel" class="form-label">手機*</label>
+                <Field
+                  id="tel"
+                  name="tel"
+                  type="tel"
+                  class="form-control"
+                  :class="{ 'is-invalid': errors['tel'] }"
+                  placeholder="請輸入手機"
+                  rules="numeric|length: 10|required"
+                  v-model="form.user.tel"
+                ></Field>
+                <error-message
+                  name="tel"
+                  class="invalid-feedback"
+                ></error-message>
+              </div>
 
-            <!-- address -->
-            <div class="mb-3">
-              <label for="address" class="form-label">地址*</label>
-              <Field
-                id="address"
-                name="address"
-                type="text"
-                class="form-control"
-                :class="{ 'is-invalid': errors['address'] }"
-                placeholder="請輸入地址"
-                rules="required"
-                v-model="form.user.address"
-              ></Field>
-              <error-message
-                name="address"
-                class="invalid-feedback"
-              ></error-message>
-            </div>
+              <!-- address -->
+              <div class="mb-3">
+                <label for="address" class="form-label">地址*</label>
+                <Field
+                  id="address"
+                  name="address"
+                  type="text"
+                  class="form-control"
+                  :class="{ 'is-invalid': errors['address'] }"
+                  placeholder="請輸入地址"
+                  rules="required"
+                  v-model="form.user.address"
+                ></Field>
+                <error-message
+                  name="address"
+                  class="invalid-feedback"
+                ></error-message>
+              </div>
 
-            <!-- message -->
-            <div class="mb-3">
-              <label for="message" class="form-label">留言</label>
-              <Field
-                id="message"
-                name="message"
-                as="textarea"
-                class="form-control"
-                v-model="form.message"
-              ></Field>
-            </div>
+              <!-- message -->
+              <div class="mb-3">
+                <label for="message" class="form-label">留言</label>
+                <Field
+                  id="message"
+                  name="message"
+                  as="textarea"
+                  class="form-control"
+                  v-model="form.message"
+                ></Field>
+              </div>
 
-            <div class="text-end">
-              <button class="btn btn-warning" type="submit">送出訂單</button>
-            </div>
-          </Form>
+              <div class="text-end">
+                <button class="btn btn-warning" type="submit">Submit</button>
+              </div>
+            </Form>
+          </section>
         </div>
       </section>
     </main>
@@ -242,7 +322,7 @@ export default {
     return {
       cart: [],
       discountTotal: '',
-      couponCode: 'CMDBTEN',
+      couponCode: '',
       isLoading: false,
       isCouponUsed: false,
       // vee-validate
@@ -267,9 +347,25 @@ export default {
         return total + item.final_total;
       }, 0);
       return { total, finalTotal };
+    },
+    discountRatio() {
+      const discount =
+        (1 - this.totalAmount.finalTotal / this.totalAmount.total).toFixed(2) *
+        100;
+
+      return discount;
     }
   },
   methods: {
+    assignCoupon() {
+      if (this.totalAmount.total >= 120) this.couponCode = 'CMDBTEN';
+      if (this.totalAmount.total >= 240) this.couponCode = 'CMDBFIFTEEN';
+      if (this.totalAmount.total >= 360) this.couponCode = 'CMDBTWENTY';
+    },
+    clearCoupon() {
+      this.isCouponUsed = false;
+      this.couponCode = '';
+    },
     async onSubmit() {
       this.isLoading = true;
 
@@ -291,6 +387,8 @@ export default {
       console.log('onSubmit', response);
     },
     async useCoupon() {
+      this.assignCoupon();
+
       // 取得優惠券資料
       const coupon = {
         code: this.couponCode
@@ -328,6 +426,9 @@ export default {
 
       // 重新渲染畫面
       await this.getCartProduct();
+
+      // 清除上一個帶入的 coupon
+      this.clearCoupon();
 
       this.isLoading = false;
       console.log('updateProductTotal', response.data);
