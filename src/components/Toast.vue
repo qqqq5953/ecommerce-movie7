@@ -1,29 +1,27 @@
 <template>
   <div
-    class="toast"
+    class="toast rounded-3"
     role="alert"
     aria-live="assertive"
     aria-atomic="true"
     ref="toast"
   >
-    <div class="toast-header">
+    <div class="toast-header rounded-3">
       <span
         :class="`bg-${msg.style}`"
         class="p-2 rounded me-2 d-inline-block"
       ></span>
       <strong class="mx-2">{{ msg.title }}</strong>
-      <strong class="me-auto">{{
-        msg.status
-      }}</strong>
       <button
         type="button"
-        class="btn-close"
+        class="btn-close ms-auto"
         data-bs-dismiss="toast"
         aria-label="Close"
       ></button>
     </div>
-    <div class="toast-body" v-if="msg.content">
-      {{ msg.content }}
+    <div class="toast-body">
+      <strong class="me-auto">{{ msg.status }}</strong>
+      <p v-if="msg.content">{{ msg.content }}</p>
     </div>
   </div>
 </template>
