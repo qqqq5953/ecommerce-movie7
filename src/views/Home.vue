@@ -200,7 +200,7 @@
       </main>
     </div>
   </div>
-  <div class="bg-dark">
+  <div class="bg-dark border-top">
     <div class="container">
       <Footer></Footer>
     </div>

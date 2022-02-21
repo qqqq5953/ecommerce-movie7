@@ -1,6 +1,6 @@
 <template>
   <Loading :active="isLoading"></Loading>
-  <div class="container py-5 px-3 px-xl-0 test">
+  <div class="container py-5 px-3 px-xl-0">
     <header>
       <div class="d-flex align-items-center">
         <i class="bi bi-cart-fill text-warning me-3 fs-2"></i>

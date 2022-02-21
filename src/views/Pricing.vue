@@ -1,13 +1,16 @@
 <template>
-  <div class="container py-3">
+  <div class="container py-5 px-5 px-xl-0">
     <header>
-      <h1 class="display-3 fw-normal p-3 pb-md-3 text-center">Pricing</h1>
+      <div class="d-flex align-items-center">
+        <i class="bi bi-columns-gap text-warning me-3 fs-2"></i>
+        <h2 class="h1 mb-0">Pricing</h2>
+      </div>
     </header>
 
-    <main>
-      <div class="row row-cols-1 row-cols-md-3 mb-5 text-center">
+    <main class="py-4">
+      <ul class="row row-cols-1 row-cols-lg-3 mb-5 text-center list-unstyled">
         <!-- FREE -->
-        <div class="col">
+        <li class="col mb-4 mb-lg-0">
           <div class="card mb-4 rounded-3 shadow-sm h-100">
             <div class="card-header py-3">
               <h4 class="my-0 fw-normal">Free</h4>
@@ -17,24 +20,20 @@
                 NT$0<small class="text-muted fw-light">/month</small>
               </h1>
               <ul class="mt-3 mb-4 text-start">
-                <li class="mb-3">
-                  Unlimited access to details of Movies and TV shows related to
-                  the content
-                </li>
+                <li class="mb-3">Unlimited access to details of Movies</li>
                 <li class="mb-3">10 quotas for Watchlist</li>
-                <li>10 quotas for My Favorite</li>
               </ul>
-              <button
-                type="button"
+              <router-link
+                :to="{ name: 'AllProducts' }"
                 class="w-100 btn btn-outline-primary mt-auto mb-2"
+                >See our products</router-link
               >
-                Sign up for free
-              </button>
             </div>
           </div>
-        </div>
+        </li>
+
         <!-- Rent -->
-        <div class="col">
+        <li class="col mb-4 mb-lg-0">
           <div class="card mb-4 rounded-3 shadow-sm h-100">
             <div class="card-header py-3">
               <h4 class="my-0 fw-normal">Rent a disc</h4>
@@ -44,29 +43,25 @@
                 $0.99<small class="text-muted fw-light">/week</small>
               </h1>
               <ul class="mt-3 mb-4 text-start">
-                <li class="mb-3">
-                  Unlimited access to details of Movies and TV shows related to
-                  the content
-                </li>
+                <li class="mb-3">Unlimited access to details of Movies</li>
                 <li class="mb-3">50 quotas for Watchlist</li>
-                <li class="mb-3">50 quotas for My Favorite</li>
                 <li class="mb-3">
-                  Access to the rented Movies and TV shows with
-                  <strong>HD quality</strong>
+                  Enjoy the rented Movies with
+                  <strong class="fw-bold">HD</strong> quality
                 </li>
-                <li>Access to rating the rented Movies and TV shows</li>
+                <li>Access to rating the rented Movies</li>
                 <li>Watch on 1 screen only</li>
               </ul>
               <router-link
                 :to="{ name: 'AllProducts' }"
                 class="w-100 btn btn-outline-primary mt-auto mb-2"
-                >Pick a movie / tv show</router-link
+                >Pick a movie</router-link
               >
             </div>
           </div>
-        </div>
+        </li>
         <!-- SUBSCRIPTION -->
-        <div class="col">
+        <li class="col">
           <div class="card mb-4 rounded-3 shadow-sm border-primary h-100">
             <div class="card-header py-3 bg-primary border-primary">
               <h4 class="my-0 fw-normal text-white">SUBSCRIPTION</h4>
@@ -76,34 +71,30 @@
                 $9.99<small class="text-muted fw-light">/month</small>
               </h1>
               <ul class="mt-3 mb-4 text-start">
-                <li class="mb-3">
-                  Unlimited access to details of Movies and TV shows related to
-                  the content
-                </li>
+                <li class="mb-3">Unlimited access to details of Movies</li>
                 <li class="mb-3">50 quotas for Watchlist</li>
-                <li class="mb-3">50 quotas for My Favorite</li>
                 <li class="mb-3">
-                  Unlimited access to
-                  <strong class="fw-bold">ALL</strong> Movies / TV shows with
+                  Enjoy
+                  <strong class="fw-bold">ALL</strong> Movies with
                   <strong class="fw-bold">4K</strong> quality
                 </li>
                 <li class="mb-3">
                   Unlimited access to rating
                   <strong class="fw-bold">ALL</strong>
-                  Movies and TV shows
+                  Movies
                 </li>
                 <li>
                   Watch on <strong class="fw-bold">2</strong> screens at the
                   same time
                 </li>
                 <li>
-                  Receive occasional promotions up to
+                  Receive seasonal promotions up to
                   <strong class="fw-bold">20% DISCOUNT</strong>
                 </li>
               </ul>
               <button
                 type="button"
-                class="w-100 btn btn-primary mt-auto mb-2"
+                class="btn btn-primary border border-primary mt-auto mb-2 w-100"
                 :disabled="status.loadingProductID === subscriptionID"
                 @click="addProductToCart(subscriptionID)"
                 v-if="!isSubscriptionInCart"
@@ -126,10 +117,13 @@
               </div>
             </div>
           </div>
-        </div>
-      </div>
-      <h2 class="display-6 text-center mb-4">Compare plans</h2>
+        </li>
+      </ul>
 
+      <div class="d-flex align-items-center">
+        <i class="bi bi-columns-gap text-warning me-3 fs-2"></i>
+        <h2 class="h1 mb-0">Compare plans</h2>
+      </div>
       <div class="table-responsive">
         <table class="table text-center align-middle">
           <thead>
@@ -155,18 +149,6 @@
             </tr>
             <tr>
               <th scope="row" class="text-start">Watchlist</th>
-              <td>
-                <i class="bi bi-check2 fs-4"></i>
-              </td>
-              <td>
-                <i class="bi bi-check2 fs-4"></i>
-              </td>
-              <td>
-                <i class="bi bi-check2 fs-4"></i>
-              </td>
-            </tr>
-            <tr>
-              <th scope="row" class="text-start">My Favorite</th>
               <td>
                 <i class="bi bi-check2 fs-4"></i>
               </td>
@@ -291,6 +273,7 @@ export default {
     }
   },
   created() {
+    window.scrollTo(0, -1000);
     this.hasSubscription();
   }
 };
