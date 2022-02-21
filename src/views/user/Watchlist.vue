@@ -123,6 +123,11 @@ export default {
 
       console.log('getAllProducts', response.data);
       this.products = response.data.products;
+
+      // 排除訂閱的類型（重要）
+      this.products = this.products.filter((item) => {
+        return item.category !== 'Subscription';
+      });
     },
     getProductID(id) {
       const filterProductArray = this.products.filter((item) => {

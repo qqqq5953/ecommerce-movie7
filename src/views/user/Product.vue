@@ -164,7 +164,7 @@
                 </div>
 
                 <!-- Upcoming 類別出現的 button -->
-                <div v-else>
+                <div v-else class="mt-auto">
                   <button
                     class="btn btn-primary border text-warning fst-italic w-100 disabled"
                   >
