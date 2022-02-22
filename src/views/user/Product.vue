@@ -326,6 +326,7 @@
           <section class="col-xl-9">
             <div class="video-wrapper">
               <iframe
+                class="test"
                 type="text/html"
                 allowfullscreen
                 width="100%"
@@ -865,5 +866,19 @@ export default {
 
 .video-wrapper {
   aspect-ratio: 16/9;
+
+  @supports not (aspect-ratio: 16/9) {
+    position: relative;
+    padding-top: 56.25%; /* 16:9 Aspect Ratio */
+  }
+}
+
+iframe {
+  @supports not (aspect-ratio: 16/9) {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+  }
 }
 </style>
