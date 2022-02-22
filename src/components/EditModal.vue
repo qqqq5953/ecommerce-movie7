@@ -9,7 +9,7 @@
   >
     <div class="modal-dialog modal-xl" role="document">
       <div class="modal-content border-0">
-        <div class="modal-header bg-dark text-white">
+        <section class="modal-header bg-dark text-white">
           <h5 class="modal-title" id="exampleModalLabel">
             <span>新增產品</span>
           </h5>
@@ -19,10 +19,11 @@
             data-bs-dismiss="modal"
             aria-label="Close"
           ></button>
-        </div>
-        <div class="modal-body">
+        </section>
+        <section class="modal-body">
           <form class="row">
             <div class="col-sm-4">
+              <!-- 輸入圖片網址 -->
               <div class="mb-3">
                 <label for="image" class="form-label">輸入圖片網址</label>
                 <div class="mb-3 input-group">
@@ -31,6 +32,7 @@
                     id="image"
                     class="form-control"
                     placeholder="請輸入一個或多個連結"
+                    v-model="inputImgUrl"
                     ref="multipleImages"
                   />
                   <button
@@ -50,6 +52,7 @@
                   </button>
                 </div>
               </div>
+              <!-- 上傳圖片 -->
               <div class="mb-3">
                 <label for="customFile" class="form-label"
                   >或 上傳圖片
@@ -63,6 +66,7 @@
                   @change="uploadFile"
                 />
               </div>
+              <!-- 顯示圖片檔案或連結 -->
               <img
                 v-for="item in tempProduct.imageUrl"
                 :key="item"
@@ -172,8 +176,8 @@
               </div>
             </div>
           </form>
-        </div>
-        <div class="modal-footer">
+        </section>
+        <section class="modal-footer">
           <button
             type="button"
             class="btn btn-outline-secondary"
@@ -188,7 +192,7 @@
           >
             確認
           </button>
-        </div>
+        </section>
       </div>
     </div>
   </div>
@@ -212,25 +216,32 @@ export default {
       modal: {},
       tempProduct: {
         imageUrl: [1, 2, 3]
-      }
+      },
+      inputImgUrl: ''
     };
   },
   watch: {
     product() {
       this.tempProduct = this.product;
-      // console.log('watch', this.tempProduct);
     }
   },
   methods: {
     addImages() {
-      if (!this.$refs.multipleImages.value) return;
+      console.log('inputImgUrl', this.inputImgUrl);
 
+      // 沒有圖片連結即無法新增
+      if (!this.inputImgUrl) return;
+
+      // 如為新增第一個連結，幫 this.tempProduct 新增 imageUrl 屬性
       if (this.tempProduct.imageUrl === undefined) {
         this.tempProduct.imageUrl = [];
       }
 
-      this.tempProduct.imageUrl.push(this.$refs.multipleImages.value);
-      this.$refs.multipleImages.value = '';
+      this.tempProduct.imageUrl.push(this.inputImgUrl);
+
+      // 將輸入欄位清空
+      this.inputImgUrl = '';
+      // this.$refs.multipleImages.value = '';
     },
     removeImages() {
       this.tempProduct.imageUrl.pop();
@@ -245,6 +256,8 @@ export default {
       this.$http.post(api, formData).then((res) => {
         if (res.data.success) this.tempProduct.imageUrl = res.data.imageUrl;
       });
+
+      console.log('this.tempProduct.imageUrl', this.tempProduct.imageUrl);
     }
   }
 };
