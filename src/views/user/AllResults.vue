@@ -248,12 +248,16 @@ export default {
       const endPage = startPage + this.perPage;
 
       this.products = this.allProducts.slice(startPage, endPage);
+
+      // 畫面滾動至最上方
+      window.scrollTo(0, -1000);
     },
     getProductDetails(id) {
       this.$router.push({ name: 'Product', params: { productID: id } });
     }
   },
   created() {
+    // 畫面滾動至最上方
     window.scrollTo(0, -1000);
 
     this.genrePassIn = this.$route.params.genre;

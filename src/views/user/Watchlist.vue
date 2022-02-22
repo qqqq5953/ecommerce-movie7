@@ -113,6 +113,9 @@ export default {
       const endPage = startPage + this.perPage;
 
       this.listProductsPerPage = this.listProducts.slice(startPage, endPage);
+
+      // 畫面滾動至最上方
+      window.scrollTo(0, -1000);
     },
     // 跳轉頁面用
     async getAllProducts() {
@@ -211,6 +214,9 @@ export default {
     }
   },
   created() {
+    // 畫面滾動至最上方
+    window.scrollTo(0, -1000);
+
     this.getList();
     this.getAllProducts();
   }

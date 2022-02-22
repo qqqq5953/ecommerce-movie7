@@ -1,9 +1,11 @@
 <template>
   <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <div class="container-fluid">
-      <router-link class="navbar-brand nav-link active" :to="{ name: 'Home' }"
-        >CMDB</router-link
-      >
+      <h1 class="mb-0">
+        <router-link class="navbar-brand nav-link active" :to="{ name: 'Home' }"
+          >CMDB</router-link
+        >
+      </h1>
       <button
         class="navbar-toggler"
         type="button"

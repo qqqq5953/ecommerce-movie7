@@ -2,8 +2,12 @@
   <footer class="py-5 px-5 px-xl-0">
     <div class="row flex-column flex-md-row justify-content-md-between">
       <section class="col col-md-8 pe-md-4">
-        <h2 class="h1 text-white border border-2 rounded-3 p-2 d-inline-block">
-          CMDB
+        <h2 class="h1 border border-2 rounded-3 p-2 mb-0 d-inline-block">
+          <router-link
+            class="text-white text-decoration-none"
+            :to="{ name: 'Home' }"
+            >CMDB</router-link
+          >
         </h2>
         <p class="text-white mt-3 mb-md-0">
           CMDB Offer worldwide latest movies fitting your lifestyle.
