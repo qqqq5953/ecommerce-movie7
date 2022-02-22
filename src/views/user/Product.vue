@@ -441,12 +441,12 @@ export default {
     }
   },
   methods: {
+    /// rating
     ratingOnMobile(e) {
       this.result = Number(e.target.value);
 
       this.rating();
     },
-    /// rating
     async rating() {
       // rating 後禁止點擊
       if (window.screen.width >= 992) {
@@ -808,10 +808,7 @@ export default {
     this.idPassIn = this.productID;
     await this.getProductDetails();
     this.checkProductStatus();
-
     this.hasSubscription();
-
-    // console.log('sub id', process.env.VUE_APP_SUBSCRIPTION_ID);
   }
 };
 </script>

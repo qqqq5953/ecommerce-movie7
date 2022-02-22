@@ -28,14 +28,13 @@
                 >
               </td>
               <td class="px-2">{{ item.qty }} / {{ item.product.unit }}</td>
-              <td class="text-end px-2">${{ item.final_total }}</td>
+              <td class="text-end px-2">${{ item.final_total.toFixed(2) }}</td>
             </tr>
           </tbody>
           <tfoot>
             <tr>
-              <td colspan="2" class="text-end px-2">Total:</td>
-              <td class="text-end text-danger px-2">
-                ${{ totalAmount.toFixed(2) || 0 }}
+              <td colspan="3" class="text-end text-danger px-2">
+                Total: ${{ totalAmount.toFixed(2) || 0 }}
               </td>
             </tr>
           </tfoot>
@@ -130,6 +129,9 @@ export default {
       console.log('payOrder', response);
     },
     async getOrder() {
+      // 畫面滾動至最上方
+      window.scrollTo(0, -1000);
+
       this.isLoading = true;
 
       // axios
