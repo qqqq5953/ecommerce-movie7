@@ -25,7 +25,7 @@
                       class="position-absolute backdrop_image"
                       :style="{ backgroundImage: `url(${item.imageUrl[1]})` }"
                     ></div>
-                    <!-- badge-mobile -->
+                    <!-- badge for mobile for upcoming movie-->
                     <div
                       v-if="item.category.split('|')[1] === 'upcoming'"
                       class="position-absolute end-0 badge badge-mobile bg-primary rounded-pill mt-3 me-3 text-warning fst-italic d-sm-none"
@@ -35,7 +35,7 @@
                     <div class="position-relative info_section">
                       <div class="info_section_width px-4 py-3 py-lg-4">
                         <!-- card-header -->
-                        <div class="row card-header-wrapper">
+                        <div class="row card-header-wrapper rounded-3 py-3">
                           <div class="col-4 col-md-2 col-lg-3">
                             <img
                               v-if="item.imageUrl[0]"
@@ -44,21 +44,23 @@
                               :alt="item.title"
                             />
                           </div>
-                          <div class="col-8 col-md-10 col-lg-9">
-                            <h4 class="card-title mb-0 d-sm-none">
+                          <div class="col-8 col-md-10 col-lg-9 ps-0 ps-sm-2">
+                            <!-- sm 以下的 title -->
+                            <h2 class="h4 card-title mb-0 d-sm-none">
                               {{ item.title }}
-                            </h4>
-                            <h3 class="card-title mb-0 d-none d-sm-block">
+                            </h2>
+                            <!-- sm 以上的 title -->
+                            <h2 class="h3 card-title mb-0 d-none d-sm-block">
                               {{ item.title }}
-                            </h3>
+                            </h2>
                             <div class="fs-6">
-                              <small class="d-inline-block">{{
+                              <small class="d-block d-sm-inline-block">{{
                                 item.content.split('|')[2]
                               }}</small>
                               <span class="d-none d-sm-inline-block mx-2 fs-5"
                                 >|</span
                               >
-                              <small class="d-inline-block"
+                              <small class="d-block d-sm-inline-block"
                                 >Popularity:
                                 <span>{{
                                   parseFloat(
@@ -229,10 +231,14 @@ export default {
     width: 100%;
     height: 100%;
     z-index: 2;
-    background: linear-gradient(to top, #e5e6e6 45%, transparent 100%);
+    background: linear-gradient(to top, #e5e6e6 40%, transparent 75%);
 
     @media (min-width: 992px) {
-      background: linear-gradient(to right, #e5e6e6 50%, transparent 90%);
+      background: linear-gradient(
+        to right,
+        rgba(229, 230, 230, 1) 50%,
+        transparent 83%
+      );
     }
 
     .info_section_width {
@@ -245,13 +251,18 @@ export default {
 
     .card-header-wrapper {
       margin-top: 65px;
-
+      background: rgba(255, 255, 255, 0.4);
+      backdrop-filter: blur(3px);
+      -webkit-backdrop-filter: blur(3px);
       @media (min-width: 576px) {
         margin-top: 85px;
       }
 
       @media (min-width: 992px) {
         margin-top: 0;
+        background: none;
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
       }
     }
 
@@ -272,9 +283,6 @@ export default {
     z-index: 1;
     height: 100%;
     width: 100%;
-
-    @media (min-width: 768px) {
-    }
 
     @media (min-width: 992px) {
       position: absolute;

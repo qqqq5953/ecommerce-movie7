@@ -64,7 +64,6 @@
                   <!-- watchlist -->
                   <a
                     href="#"
-                    type="button"
                     class="text-white"
                     @click.prevent="addProductToList"
                   >
