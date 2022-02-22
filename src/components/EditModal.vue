@@ -213,10 +213,7 @@ export default {
   },
   data() {
     return {
-      modal: {},
-      tempProduct: {
-        imageUrl: [1, 2, 3]
-      },
+      tempProduct: {},
       inputImgUrl: ''
     };
   },
@@ -238,6 +235,7 @@ export default {
       }
 
       this.tempProduct.imageUrl.push(this.inputImgUrl);
+      console.log('tempProduct', this.tempProduct);
 
       // 將輸入欄位清空
       this.inputImgUrl = '';

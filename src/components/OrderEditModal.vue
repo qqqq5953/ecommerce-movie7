@@ -9,8 +9,8 @@
   >
     <div class="modal-dialog modal-xl" role="document">
       <div class="modal-content border-0">
-        <div class="modal-header bg-dark text-white">
-          <h5 class="modal-title">
+        <div class="modal-header bg-dark">
+          <h5 class="modal-title text-white">
             <span>訂單細節</span>
           </h5>
           <button
@@ -69,7 +69,9 @@
                   </tr>
                   <tr>
                     <th>總金額</th>
-                    <td>{{ tempOrder.total }}</td>
+                    <td v-if="tempOrder.total">
+                      {{ tempOrder.total.toFixed(2) }}
+                    </td>
                   </tr>
                 </tbody>
               </table>
@@ -81,7 +83,9 @@
                       {{ item.product.title }}
                     </th>
                     <td>{{ item.qty }} / {{ item.product.unit }}</td>
-                    <td class="text-end">{{ item.final_total }}</td>
+                    <td class="text-end" v-if="item.final_total">
+                      {{ item.final_total.toFixed(2) }}
+                    </td>
                   </tr>
                 </tbody>
               </table>
@@ -120,7 +124,6 @@ export default {
   },
   data() {
     return {
-      modal: {},
       tempOrder: {},
       tempProducts: {},
       tempUser: {}
@@ -131,7 +134,6 @@ export default {
       this.tempOrder = this.order;
       this.tempProducts = this.order.products;
       this.tempUser = this.order.user;
-      // console.log('watch tempCoupon', this.tempCoupon);
     }
   }
 };

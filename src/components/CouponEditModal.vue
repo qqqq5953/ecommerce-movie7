@@ -9,8 +9,8 @@
   >
     <div class="modal-dialog modal-md" role="document">
       <div class="modal-content border-0">
-        <div class="modal-header bg-dark text-white">
-          <h5 class="modal-title" id="exampleModalLabel">
+        <div class="modal-header bg-dark">
+          <h5 class="modal-title text-white" id="exampleModalLabel">
             <span>新增優惠券</span>
           </h5>
           <button

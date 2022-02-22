@@ -20,6 +20,9 @@ export default {
       const { title, style, status, content } = message;
       this.messages.push({ title, style, status, content });
     });
+  },
+  beforeUnmount() {
+    this.emitter.off('push-message');
   }
 };
 </script>

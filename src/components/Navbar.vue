@@ -230,11 +230,12 @@ export default {
       this.$refs.navbarDropdownMenu.classList.toggle('show');
     }
   },
-  mounted() {
+  created() {
     this.toggleSearchMenu();
     this.getAllProducts();
     this.getCartProductNumber();
-
+  },
+  mounted() {
     this.emitter.on('calculate-product-number', (data) => {
       this.cartLength = data;
     });

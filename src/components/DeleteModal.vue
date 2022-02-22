@@ -48,7 +48,7 @@
 
 <script>
 import modalMixins from '@/mixins/modalMixin';
-// /node_modules/
+
 export default {
   mixins: [modalMixins],
   props: {
@@ -65,7 +65,6 @@ export default {
   watch: {
     product() {
       this.tempProduct = this.product;
-      // console.log('DeleteModal 頁面，tempProduct：', this.tempProduct);
     }
   }
 };

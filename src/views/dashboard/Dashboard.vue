@@ -3,26 +3,13 @@
   <div class="container-fluid position-relative">
     <router-view />
   </div>
-  <ToastMessage></ToastMessage>
 </template>
 
 <script>
-import emitter from '@/methods/emitter';
-import { pushMessageStateForDashboard } from '@/methods/pushMessageState';
-import sortData from '@/methods/sortData';
-import ToastMessage from '@/components/ToastMessage.vue';
 import AdminNavbar from '@/components/AdminNavbar.vue';
 export default {
   components: {
-    AdminNavbar,
-    ToastMessage
-  },
-  provide() {
-    return {
-      emitter,
-      pushMessageStateForDashboard,
-      sortData
-    };
+    AdminNavbar
   },
   created() {
     // 取出 cookie

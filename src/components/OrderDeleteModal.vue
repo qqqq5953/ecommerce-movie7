@@ -9,8 +9,8 @@
   >
     <div class="modal-dialog modal-xl" role="document">
       <div class="modal-content border-0">
-        <div class="modal-header bg-danger text-white">
-          <h5 class="modal-title" id="exampleModalLabel">
+        <div class="modal-header bg-danger">
+          <h5 class="modal-title text-white" id="exampleModalLabel">
             <span>刪除訂單</span>
           </h5>
           <button
@@ -36,7 +36,9 @@
                   {{ item.product.title }}
                 </th>
                 <td>{{ item.qty }} / {{ item.product.unit }}</td>
-                <td class="text-end">{{ item.final_total }}</td>
+                <td class="text-end" v-if="item.final_total">
+                  {{ item.final_total.toFixed(2) }}
+                </td>
               </tr>
             </tbody>
           </table>

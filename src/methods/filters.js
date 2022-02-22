@@ -8,6 +8,7 @@ export function date(time) {
   return localDate.toLocaleDateString();
 }
 
+// 用在 Coupon.vue 159
 export function toUnixTimeStamp(date) {
   return Math.floor(new Date(date).getTime() / 1000);
 }
