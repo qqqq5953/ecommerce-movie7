@@ -362,7 +362,7 @@ export default {
       if (this.totalAmount.total >= 240) this.couponCode = 'CMDBFIFTEEN';
       if (this.totalAmount.total >= 360) this.couponCode = 'CMDBTWENTY';
     },
-    clearCoupon() {
+    resetCoupon() {
       this.isCouponUsed = false;
       this.couponCode = '';
     },
@@ -427,9 +427,6 @@ export default {
       // 重新渲染畫面
       await this.getCartProduct();
 
-      // 清除上一個帶入的 coupon
-      this.clearCoupon();
-
       this.isLoading = false;
       console.log('updateProductTotal', response.data);
     },
@@ -444,6 +441,9 @@ export default {
 
       // 儲存回傳資料
       this.cart = response.data.data.carts;
+
+      // 重設 coupon
+      this.resetCoupon();
 
       this.isLoading = false;
       console.log('getCartProduct', response);
