@@ -119,20 +119,13 @@ export default {
     return {
       allProducts: [],
       products: [],
-      cart: [],
-      status: {
-        loadingItemsID: ''
-      },
       isLoading: false,
-      baseImageUrl: 'https://image.tmdb.org/t/p/w200',
-      key: '7bbe6005cfda593dc21cceb93eaf9a8e',
       pagination: {},
       genrePassIn: '',
-      slicePages: undefined,
+      // pagination
       totalPages: undefined,
       currentPage: 1,
-      perPage: 3,
-      lastPage: undefined
+      perPage: 6
     };
   },
   computed: {
@@ -152,37 +145,6 @@ export default {
     }
   },
   methods: {
-    setMaxViewButtons() {
-      if (this.currentPage === 1 && this.totalPages === 1) {
-        this.slicePages = [1];
-        console.log('第一頁，共一頁');
-      }
-      if (this.currentPage === 1 && this.totalPages !== 1) {
-        this.slicePages = [
-          this.currentPage,
-          this.currentPage + 1,
-          this.currentPage + 2
-        ];
-        console.log('第一頁，不只一頁');
-      }
-      if (this.currentPage !== 1 && this.currentPage !== this.totalPages) {
-        this.slicePages = [
-          this.currentPage - 1,
-          this.currentPage,
-          this.currentPage + 1
-        ];
-        console.log('在中間頁');
-      }
-      if (this.currentPage !== 1 && this.currentPage === this.totalPages) {
-        this.slicePages = [
-          this.totalPages - 2,
-          this.totalPages - 1,
-          this.totalPages
-        ];
-        console.log('在最後一頁');
-      }
-      this.lastPage = this.slicePages[this.slicePages.length - 1];
-    },
     async getAllProducts() {
       this.isLoading = true;
 
@@ -202,7 +164,6 @@ export default {
       this.setPagination();
 
       this.isLoading = false;
-      console.log('getAllProducts', response.data);
     },
     classifyGenre(response) {
       let tempProduct = [];
@@ -218,16 +179,12 @@ export default {
           const genre = item.category.split('|')[1];
           return genre === 'nowplaying';
         });
-
-        console.log('nowplaying', this.allProducts);
       } else if (this.genrePassIn === 'upcoming') {
         // 首頁傳來為 Upcoming
         tempProduct = tempProduct.filter((item) => {
           const genre = item.category.split('|')[1];
           return genre === 'upcoming';
         });
-
-        console.log('upcoming', this.allProducts);
       } else {
         // see all results
         tempProduct = tempProduct.filter((item) => {

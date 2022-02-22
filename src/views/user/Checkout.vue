@@ -119,14 +119,10 @@ export default {
     async payOrder() {
       // axios
       const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/pay/${this.orderId}`;
-      const response = await this.$http
-        .post(api)
-        .catch((err) => console.log(err));
+      await this.$http.post(api).catch((err) => console.log(err));
 
       // 重新渲染畫面
       this.getOrder();
-
-      console.log('payOrder', response);
     },
     async getOrder() {
       // 畫面滾動至最上方
@@ -145,9 +141,6 @@ export default {
       this.user = response.data.order.user;
 
       this.isLoading = false;
-      console.log('getOrder', response);
-      console.log('this.order', this.order);
-      console.log('this.user', this.user);
     }
   },
   async created() {

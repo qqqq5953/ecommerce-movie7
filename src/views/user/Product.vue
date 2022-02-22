@@ -359,27 +359,21 @@ export default {
       // TMDB
       key: '7bbe6005cfda593dc21cceb93eaf9a8e',
       sessionID: 'd13bca7b7450c217c5af3127e3a0a984db98ccb2',
-      account_id: 'qqqq5953',
       list_id: '8191517',
       baseImageUrl: 'https://image.tmdb.org/t/p/w300',
       baseYoutubeUrl: 'https://www.youtube.com/embed/',
       // watchlist
-      listStatus: '',
       listStatusMessage: '',
       isLoading: false,
       // Movie
       title: '',
       originalTitle: '',
-      imdbID: '',
       runTime: {
         hour: '',
         minute: ''
       },
       trailers: [],
       teasers: [],
-      // TV
-      seasons: [],
-      createdBy: [],
       // 共用
       idPassIn: '',
       releaseDate: '',
@@ -600,7 +594,6 @@ export default {
       const response = await this.$http
         .get(api)
         .catch((err) => console.log(err));
-      console.log('getProductDetails', response);
 
       // 產品在 TMDB api 中的id
       this.id = response.data.product.content.split('|')[0];
@@ -624,7 +617,6 @@ export default {
       const response = await this.$http.get(
         `https://api.themoviedb.org/3/${this.genre}/${this.id}?api_key=${this.key}&language=${this.language}&append_to_response=videos,images`
       );
-      // console.log('getData', response);
 
       if (this.genre === 'movie') this.getMovieDetail(response);
       if (this.genre === 'tv') this.getTVDetail(response);
@@ -656,15 +648,6 @@ export default {
       this.runTime.hour = Math.floor(response.data.runtime / 60);
       this.runTime.minute = response.data.runtime % 60;
     },
-    getTVDetail(response) {
-      this.title = response.data.name;
-      this.originalTitle = response.data.original_name;
-      this.releaseDate = response.data.first_air_date;
-      this.seasons = response.data.seasons;
-      this.createdBy = response.data.created_by;
-      this.runTime.hour = Math.floor(response.data.episode_run_time / 60);
-      this.runTime.minute = response.data.episode_run_time % 60;
-    },
     /// watchlist
     async checkProductStatus() {
       const api = `https://api.themoviedb.org/3/list/${this.list_id}/item_status?api_key=${this.key}&movie_id=${this.id}`;
@@ -674,7 +657,6 @@ export default {
       });
 
       this.status.isProductInList = response.data.item_present;
-      // console.log('checkProductStatus', response);
     },
     async removeProductFromList() {
       // spinner on
@@ -691,7 +673,6 @@ export default {
         console.log(err);
       });
 
-      console.log('removeProductFromList', response);
       // 切換icon
       this.status.isProductInList = !response.data.success;
       this.listStatusMessage = response.data.status_message;
@@ -728,7 +709,6 @@ export default {
         console.log(err);
       });
 
-      console.log('addProductToList', response);
       // 切換icon
       this.status.isProductInList = response.data.success;
       this.listStatusMessage = response.data.status_message;
@@ -755,10 +735,9 @@ export default {
         data: { product_id: id, qty: 1 }
       };
 
-      const response = await this.$http.post(api, requestBody).catch((err) => {
+      await this.$http.post(api, requestBody).catch((err) => {
         console.log(err);
       });
-      console.log('addProductToCart', response.data);
 
       // 更新 navbar cart 數量
       const cartLength = await this.getCartProductNumber();
@@ -779,8 +758,6 @@ export default {
       const response = await this.cartAPIResponse().catch((err) => {
         console.log(err);
       });
-
-      console.log('getCartProductNumber', response.data);
 
       // 回傳購物車資料
       return response.data.data.carts.length;
@@ -823,13 +800,11 @@ export default {
 }
 
 .poster-box-shadow {
-  // box-shadow: rgba(223, 223, 223, 0.24) 1px 1px 20px 2px;
   box-shadow: rgba(178, 198, 206, 0.12) 0px 2px 4px 2px,
     rgba(174, 188, 194, 0.32) 0px 2px 16px 2px;
 }
 
 .aside-background {
-  background: rgba(255, 255, 255, 0.05);
   background: rgba(52, 58, 64, 0.3);
   border-radius: 16px;
   box-shadow: 0 0 4px rgba(255, 255, 255, 0.3);

@@ -383,8 +383,6 @@ export default {
         name: 'UserCheckout',
         params: { orderID: response.data.orderId }
       });
-
-      console.log('onSubmit', response);
     },
     async useCoupon() {
       this.assignCoupon();
@@ -406,8 +404,6 @@ export default {
       // 儲存回傳資料
       this.isCouponUsed = response.data.success;
       this.discountTotal = response.data.data.final_total;
-
-      console.log('useCoupon', response);
     },
     async updateProductTotal(item) {
       this.isLoading = true;
@@ -420,7 +416,7 @@ export default {
 
       // axios
       const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/cart/${item.id}`;
-      const response = await this.$http
+      await this.$http
         .put(api, { data: cart })
         .catch((err) => console.log(err));
 
@@ -428,7 +424,6 @@ export default {
       await this.getCartProduct();
 
       this.isLoading = false;
-      console.log('updateProductTotal', response.data);
     },
     async getCartProduct() {
       this.isLoading = true;
@@ -446,7 +441,6 @@ export default {
       this.resetCoupon();
 
       this.isLoading = false;
-      console.log('getCartProduct', response);
     },
     async deleteProduct(item) {
       // axios

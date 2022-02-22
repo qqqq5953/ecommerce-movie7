@@ -243,7 +243,6 @@ export default {
       const response = await this.$http.get(api).catch((err) => {
         console.log(err);
       });
-      console.log('res', response.data);
 
       // 儲存資料
       this.products = response.data.products;
@@ -277,7 +276,6 @@ export default {
   },
   created() {
     window.scrollTo(0, -1000);
-
     this.getProducts();
   }
 };
@@ -291,17 +289,12 @@ export default {
   background-size: cover !important;
   min-height: 350px;
   max-height: 375px;
-  // -moz-transform: scaleX(-1);
-  // -webkit-transform: scaleX(-1);
-  // -o-transform: scaleX(-1);
-  // transform: scaleX(-1);
 
   @media (min-width: 768px) {
     background-position: 10% 60% !important;
     background-size: initial !important;
     min-height: 380px;
     max-height: 55vh;
-    // height: minmax(380px, 55vh);
   }
   @media (min-width: 992px) {
     background-size: cover !important;
@@ -309,10 +302,6 @@ export default {
   @media (min-width: 1200px) {
     background-position: 225% 100% !important;
     background-size: initial !important;
-
-    // background-position: 0% 90% !important;
-    // background-size: cover !important;
-
     min-height: 480px;
     max-height: 85vh;
   }
@@ -431,7 +420,6 @@ export default {
   }
 
   &::-webkit-scrollbar-track {
-    // background-color: rgba(85, 89, 92, 1);
     background-color: rgba(69, 67, 56, 0.7);
     border-radius: 100vw;
     margin-inline: 10vw;
@@ -445,9 +433,6 @@ export default {
 
     &:hover {
       background-color: rgba(26, 26, 26, 1);
-
-      // background-color: #f0ad4e;
-      border: 2px solid rgba(255, 255, 255, 0.7);
       border: 2px solid #f0ad4e;
     }
   }

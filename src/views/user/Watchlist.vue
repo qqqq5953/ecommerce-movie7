@@ -102,7 +102,6 @@ export default {
 
       // 設置分頁
       this.setPagination();
-      console.log('getList', response);
     },
     setPagination(page = 1) {
       this.currentPage = page;
@@ -125,7 +124,6 @@ export default {
         console.log(err);
       });
 
-      console.log('getAllProducts', response.data);
       this.products = response.data.products;
 
       // 排除訂閱的類型（重要）
@@ -134,6 +132,7 @@ export default {
       });
     },
     getProductID(id) {
+      // 找出產品 id
       const filterProductArray = this.products.filter((item) => {
         return item.content.split('|')[0] === id.toString();
       });
@@ -159,58 +158,9 @@ export default {
         console.log(err);
       });
 
-      console.log('removeProductFromList', response);
-
       this.listStatusMessage = response.data.status_message;
 
       this.getList();
-    },
-    // test
-    async getRequestToken() {
-      // api
-      const api = `https://api.themoviedb.org/3/authentication/token/new?api_key=${this.key}`;
-      const response = await this.$http.get(api).catch((err) => {
-        console.log(err);
-      });
-
-      console.log('getRequestToken', response);
-
-      this.requestToken = response.data.request_token;
-    },
-    goToAuthentication() {
-      this.approvedPageUrl = `https://www.themoviedb.org/authenticate/${this.requestToken}`;
-    },
-    async createSessionID() {
-      // api
-      const api = `https://api.themoviedb.org/3/authentication/session/new?api_key=${this.key}`;
-      const requestBody = {
-        request_token: this.requestToken
-      };
-      const response = await this.$http.post(api, requestBody).catch((err) => {
-        console.log(err);
-      });
-
-      console.log('createSessionID', response);
-
-      this.sessionID = response.data.session_id;
-    },
-    async createList() {
-      const api = `https://api.themoviedb.org/3/list?api_key=${this.key}&session_id=${this.sessionID}`;
-
-      const requestBody = {
-        name: 'Test 1',
-        description: 'Test 1',
-        language: 'en'
-      };
-
-      const response = await this.$http.post(api, requestBody).catch((err) => {
-        console.log(err);
-      });
-
-      this.listResponse = response.data.success;
-      this.listResponseMessage = response.data.status_message;
-      this.listID = response.data.list_code;
-      console.log('createList', response);
     }
   },
   created() {

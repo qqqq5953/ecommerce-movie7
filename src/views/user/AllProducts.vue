@@ -122,41 +122,14 @@ export default {
     return {
       allProducts: [],
       products: [],
-      cart: [],
-      status: {
-        loadingItemsID: ''
-      },
       isLoading: false,
-      baseImageUrl: 'https://image.tmdb.org/t/p/w200',
-      key: '7bbe6005cfda593dc21cceb93eaf9a8e',
-      pagination: {},
       // pagination
       totalPages: undefined,
       currentPage: 1,
       perPage: 6
-      // genrePassIn: ''
     };
   },
   methods: {
-    async getProducts(page = 1) {
-      this.isLoading = true;
-
-      // api
-      const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/products?page=${page}`;
-      const response = await this.$http.get(api).catch((err) => {
-        console.log(err);
-      });
-
-      // 資料存入
-      this.pagination = response.data.pagination;
-      this.products = response.data.products;
-
-      this.products.reverse();
-      // this.products = this.sortData(this.products, 'content.split[1]');
-
-      this.isLoading = false;
-      console.log('res', response.data);
-    },
     async getAllProducts() {
       // api
       const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/products/all`;
@@ -164,9 +137,7 @@ export default {
         console.log(err);
       });
 
-      console.log('getAllProducts', response);
-
-      // 儲存資料並
+      // 儲存資料
       this.allProducts = response.data.products;
 
       // 排除訂閱的類型（重要）
@@ -189,6 +160,7 @@ export default {
       const endPage = startPage + this.perPage;
 
       this.products = this.allProducts.slice(startPage, endPage);
+
       // 畫面滾動至最上方
       window.scrollTo(0, -1000);
     },
@@ -214,7 +186,6 @@ export default {
 
   &:hover {
     transform: scale(1.02);
-    // box-shadow: 0px 0px 80px -25px rgba(0, 0, 0, 0.5);
     box-shadow: -6px 0px 55px -30px rgba(255, 255, 255, 1);
     transition: all 0.4s;
   }
@@ -234,11 +205,7 @@ export default {
     background: linear-gradient(to top, #e5e6e6 40%, transparent 75%);
 
     @media (min-width: 992px) {
-      background: linear-gradient(
-        to right,
-        rgba(229, 230, 230, 1) 50%,
-        transparent 83%
-      );
+      background: linear-gradient(to right, #e5e6e6 50%, transparent 83%);
     }
 
     .info_section_width {
@@ -254,6 +221,7 @@ export default {
       background: rgba(255, 255, 255, 0.4);
       backdrop-filter: blur(3px);
       -webkit-backdrop-filter: blur(3px);
+
       @media (min-width: 576px) {
         margin-top: 85px;
       }

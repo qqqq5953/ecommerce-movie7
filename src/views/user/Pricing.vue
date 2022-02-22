@@ -250,8 +250,6 @@ export default {
         console.log(err);
       });
 
-      console.log('getCartProductNumber', response.data);
-
       // 回傳購物車資料
       return response.data.data.carts.length;
     },

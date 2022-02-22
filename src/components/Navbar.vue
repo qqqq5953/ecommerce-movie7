@@ -43,9 +43,9 @@
                 <i class="bi bi-x-lg"></i>
               </a>
 
-              <!-- 搜尋結果 :class="{ 'd-none': !keywords.length }"-->
+              <!-- 搜尋結果 -->
               <ul
-                class="text-white list-unstyled position-absolute bg-dark mb-0 start-0 end-0 pt-3 search-list"
+                class="text-white list-unstyled position-absolute bg-primary mb-0 start-0 end-0 pt-3 search-list"
                 ref="searchList"
                 v-if="keywords"
               >
@@ -141,48 +141,14 @@
       </div>
     </div>
   </nav>
-
-  <!-- 測試區 -->
-  <div class="row">
-    <!-- <div class="col-4">
-      <h3>finalData ({{ finalData.length }})</h3>
-      <div class="" v-for="item in finalData" :key="item.id + 1">
-        {{ item.title || item.name }} | {{ item.popularity }}
-      </div>
-    </div>
-    <div class="col-4">
-      <h3>matchedKeyword ({{ matchedKeyword.length }})</h3>
-      <div class="" v-for="item in matchedKeyword" :key="item.id + 2">
-        {{ item.title || item.name }} | {{ item.popularity }}
-      </div>
-    </div>
-    <div class="col-4">
-      <h3>noRepeatData ({{ noRepeatData.length }})</h3>
-      <div class="" v-for="item in noRepeatData" :key="item.id">
-        {{ item.title || item.name }} | {{ item.popularity }}
-      </div>
-      <h3>topEightResult ({{ topEightResult.length }})</h3>
-      <div class="" v-for="item in topEightResult" :key="item.id">
-        {{ item.title || item.name }} | {{ item.popularity }}
-      </div>
-      <hr />
-      <h3>difference ({{ difference.length }})</h3>
-      <div class="" v-for="item in difference" :key="item.id">
-        {{ item.title || item.name }} | {{ item.popularity }}
-      </div>
-    </div> -->
-  </div>
 </template>
 
 <script>
 export default {
   data() {
     return {
-      baseImageUrl: 'https://image.tmdb.org/t/p/w200',
-      keywords: '',
-      language: '',
       isLoading: false,
-      // new
+      keywords: '',
       products: [],
       match: [],
       cartLength: ''
@@ -209,7 +175,6 @@ export default {
       const response = await this.$http.get(api).catch((err) => {
         console.log(err);
       });
-      console.log('getAllProducts', response.data);
 
       // 儲存資料
       this.products = response.data.products;

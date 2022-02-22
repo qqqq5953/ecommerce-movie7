@@ -1,14 +1,6 @@
 <template>
   <div class="bg-dark">
     <div class="container py-4 px-5 px-xl-0">
-      <!-- test -->
-      <!-- <ul class="">
-        <li v-for="item in videoType" :key="item.title">
-          <button class="" type="button">
-            {{ item }}
-          </button>
-        </li>
-      </ul> -->
       <header
         class="d-flex justify-content-md-between flex-wrap align-items-center border-bottom pb-4"
       >
@@ -126,11 +118,9 @@ export default {
   data() {
     return {
       key: '7bbe6005cfda593dc21cceb93eaf9a8e',
-      baseImageUrl: 'https://image.tmdb.org/t/p/w300',
       baseYoutubeUrl: 'https://www.youtube.com/embed/',
       idPassIn: '',
       titlePassIn: '',
-      selectedVideoTypePassIn: '',
       selectedVideoType: '',
       product: [],
       videoType: {
@@ -148,7 +138,7 @@ export default {
       let temp = [];
 
       if (this.selectedVideoType === 'Behind the Scenes') {
-        // 選擇 hehind the scenes 之調整
+        // 選擇 behind the scenes 之調整
         temp = this.videoType.behind.content;
       } else {
         temp = this.videoType[this.selectedVideoType.toLowerCase()].content;
@@ -165,8 +155,6 @@ export default {
       const response = await this.$http.get(
         `https://api.themoviedb.org/3/movie/${this.idPassIn}?api_key=${this.key}&language=en-US&append_to_response=videos,images`
       );
-      console.log('getData', response);
-
       this.product = response.data;
 
       // video 分類
@@ -195,8 +183,7 @@ export default {
 
     this.idPassIn = this.movieID;
     this.titlePassIn = this.movieTitle;
-    this.selectedVideoTypePassIn = this.movieVideoType;
-    this.selectedVideoType = this.selectedVideoTypePassIn;
+    this.selectedVideoType = this.movieVideoType;
     this.getData();
   }
 };
