@@ -30,7 +30,6 @@
               <h3 class="text-white text-center">
                 {{ item.title }}
               </h3>
-              <!-- {{ item.content.split('|')[1] }} -->
               <p class="mt-auto">{{ item.description }}</p>
               <small class="d-block fs-6 text-end">{{
                 item.content.split('|')[2]
@@ -52,12 +51,6 @@ export default {
     language: {
       type: String
     }
-  },
-  data() {
-    return {
-      baseImageUrl: 'https://image.tmdb.org/t/p/w300',
-      genre: 'movie'
-    };
   },
   methods: {
     getProductDetails(id) {
@@ -98,17 +91,14 @@ export default {
   transition: opacity 0.5s;
   p {
     display: -webkit-box;
-    // max-width: 90%;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
-    // line-height: 1.4;
   }
 }
 
 .movie-poster:hover {
   .movie-intro {
-    // border: 2px solid white;
     opacity: 1;
     width: 100%;
   }

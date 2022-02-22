@@ -1,1 +1,0 @@
-<template>user/coupon</template>

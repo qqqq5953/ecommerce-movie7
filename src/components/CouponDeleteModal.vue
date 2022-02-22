@@ -58,14 +58,12 @@ export default {
   },
   data() {
     return {
-      modal: {},
       tempCoupon: {}
     };
   },
   watch: {
     coupon() {
       this.tempCoupon = this.coupon;
-      // console.log('DeleteModal tempCoupon', this.tempCoupon);
     }
   }
 };

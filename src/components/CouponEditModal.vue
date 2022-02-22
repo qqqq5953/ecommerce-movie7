@@ -121,14 +121,12 @@ export default {
   },
   data() {
     return {
-      modal: {},
       tempCoupon: {}
     };
   },
   watch: {
     coupon() {
       this.tempCoupon = this.coupon;
-      // console.log('watch tempCoupon', this.tempCoupon);
     }
   }
 };
