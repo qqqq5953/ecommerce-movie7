@@ -76,11 +76,13 @@
                   </a>
                 </div>
 
+                <!-- Original title -->
                 <h3 class="h6 text-white mb-1">
                   Original title:
                   <span class="fw-normal">{{ originalTitle }}</span>
                 </h3>
 
+                <!-- date / time -->
                 <div class="text-muted">
                   <span class="fs-6 me-2">{{ releaseDate.split('-')[0] }}</span>
                   |
@@ -91,6 +93,7 @@
 
                 <!-- overview -->
                 <p class="overview mt-3 fs-5">{{ overview }}</p>
+
                 <!-- badge -->
                 <div class="d-flex pb-3">
                   <span
@@ -100,6 +103,7 @@
                     >{{ item.name }}</span
                   >
                 </div>
+
                 <!-- now playing 類別出現的 button -->
                 <div
                   class="row justify-content-between mt-auto flex-column-reverse flex-xl-row"
@@ -166,7 +170,7 @@
                 <!-- Upcoming 類別出現的 button -->
                 <div v-else class="mt-auto">
                   <button
-                    class="btn btn-primary border text-warning fst-italic w-100 disabled"
+                    class="btn btn-primary border text-warning fst-italic w-100 disabled rounded-3"
                   >
                     Upcoming
                   </button>
@@ -181,27 +185,65 @@
             >
               <div class="mb-3 d-flex flex-column gap-3">
                 <!-- popularity -->
-                <div class="d-flex align-items-center justify-content-between">
+                <section
+                  class="d-flex align-items-center justify-content-between"
+                >
                   <h4 class="h6 text-white text-end mb-0">popularity</h4>
                   <div class="text-end">
                     <i class="bi bi-trophy-fill text-danger me-2"></i>
                     <span>{{ parseFloat(popularity).toFixed(0) }}</span>
                   </div>
-                </div>
+                </section>
 
                 <!-- vote -->
-                <div class="d-flex align-items-center justify-content-between">
+                <section
+                  class="d-flex align-items-center justify-content-between"
+                >
                   <h4 class="h6 text-white text-end mb-0">Vote Average</h4>
                   <div class="text-end">
                     <i class="bi bi-people-fill text-info me-2"></i>
                     <span>{{ voteAverage }}</span>
                   </div>
-                </div>
+                </section>
 
-                <!-- rate -->
-                <div class="d-flex align-items-center justify-content-between">
-                  <div class="">
-                    <h4 class="h6 text-white mb-0">Rate</h4>
+                <!-- 手機版 rate -->
+                <section
+                  class="d-flex align-items-center justify-content-between d-lg-none"
+                >
+                  <h4 class="h6 text-white mb-0">Rating</h4>
+                  <div>
+                    <a
+                      v-if="status.rating"
+                      href="#"
+                      class="px-2 me-1"
+                      @click.prevent="deleteRating"
+                    >
+                      <i class="bi bi-dash-circle-fill text-muted fs-6"></i>
+                    </a>
+                    <i
+                      v-if="status.rating"
+                      class="bi bi-star-fill text-warning me-2"
+                    ></i>
+                    <select
+                      class="form-select form-select-sm py-1 rounded-3"
+                      aria-label="form-select-sm example"
+                      @change="ratingOnMobile($event)"
+                      v-else
+                    >
+                      <option selected>Rate</option>
+                      <option :value="item" v-for="item in 10" :key="item">
+                        {{ item }}
+                      </option>
+                    </select>
+                    <span v-if="status.rating">{{ result }}</span>
+                  </div>
+                </section>
+                <!-- 網頁版 rate -->
+                <section
+                  class="d-none d-lg-flex align-items-lg-center justify-content-lg-between"
+                >
+                  <div>
+                    <h4 class="h6 text-white mb-0">Rating</h4>
                   </div>
                   <div
                     class="position-relative d-flex align-items-center"
@@ -242,17 +284,7 @@
                     </div>
                     <div v-if="result">{{ result * 2 }}</div>
                   </div>
-                </div>
-                <!-- <br />
-              ratio:{{ ratio }}
-              <br />
-              Math.floor:{{ Math.floor(this.result) }}
-              <br />
-              Math.ceil:{{ Math.ceil(this.result) }}
-              <br />
-              offsetX:{{ offsetX }}
-              <br />
-              Width:{{ ratingContainerWidth }} -->
+                </section>
               </div>
               <ul
                 class="d-flex flex-column justify-content-between flex-grow-1 list-unstyled more-video-list mb-0 gap-3 gap-xl-0"
@@ -409,10 +441,17 @@ export default {
     }
   },
   methods: {
+    ratingOnMobile(e) {
+      this.result = Number(e.target.value);
+
+      this.rating();
+    },
     /// rating
     async rating() {
       // rating 後禁止點擊
-      this.$refs.ratingContainer.style.pointerEvents = 'none';
+      if (window.screen.width >= 992) {
+        this.$refs.ratingContainer.style.pointerEvents = 'none';
+      }
 
       // api
       const api = `https://api.themoviedb.org/3/movie/${this.id}/rating?api_key=${this.key}&session_id=${this.sessionID}`;
@@ -437,7 +476,9 @@ export default {
     },
     async deleteRating() {
       // delete rating 後可點擊
-      this.$refs.ratingContainer.style.pointerEvents = 'auto';
+      if (window.screen.width >= 992) {
+        this.$refs.ratingContainer.style.pointerEvents = 'auto';
+      }
 
       // api
       const api = `https://api.themoviedb.org/3/movie/${this.id}/rating?api_key=${this.key}&session_id=${this.sessionID}`;
