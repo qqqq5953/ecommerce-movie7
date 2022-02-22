@@ -1,0 +1,2 @@
+(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["chunk-2d0c1501"],{4609:function(n,c,o){"use strict";function u(n,c){return"user/coupon"}o.r(c);var e=o("6b0d"),r=o.n(e);const s={},t=r()(s,[["render",u]]);c["default"]=t}}]);
+//# sourceMappingURL=chunk-2d0c1501.c085e69d.js.map
