@@ -9,8 +9,8 @@
   >
     <div class="modal-dialog modal-xl" role="document">
       <div class="modal-content border-0">
-        <div class="modal-header bg-danger text-white">
-          <h5 class="modal-title" id="exampleModalLabel">
+        <div class="modal-header bg-danger">
+          <h5 class="modal-title text-white" id="exampleModalLabel">
             <span>刪除 {{ tempProduct.title }}</span>
           </h5>
           <button

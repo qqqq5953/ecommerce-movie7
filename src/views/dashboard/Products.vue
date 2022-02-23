@@ -21,71 +21,87 @@
       查看全部產品
     </button>
   </div>
-  <Pagination
-    :pages="pagination"
-    @change-page="getProducts"
-    @previous-page="getProducts"
-    @next-page="getProducts"
-  ></Pagination>
-  <!-- table -->
-  <table class="table">
-    <thead>
-      <tr>
-        <th scope="col">分類</th>
-        <th scope="col">產品名稱</th>
-        <th scope="col" class="text-end">原價</th>
-        <th scope="col" class="text-end">售價</th>
-        <th scope="col">是否啟用</th>
-        <th scope="col">編輯</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr v-for="item in products" :key="item.id">
-        <th scope="row">{{ item.category }}</th>
-        <td>{{ item.title }}</td>
-        <td class="text-end">{{ $filters.currency(item.origin_price) }}</td>
-        <td class="text-end">{{ $filters.currency(item.price) }}</td>
-        <td>
-          <span class="text-success" v-if="item.is_enabled">啟用</span>
-          <span class="text-muted" v-else>未啟用</span>
-        </td>
-        <td>
-          <div class="btn-group" role="group">
-            <button
-              type="button"
-              class="btn btn-outline-primary"
-              @click="openModal(false, item, pagination)"
-            >
-              編輯
-            </button>
-            <button
-              type="button"
-              class="btn btn-outline-danger"
-              @click="openDeleteModal(item, pagination)"
-            >
-              刪除
-            </button>
-          </div>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-  <!-- <Pagination
-    :pages="pagination"
-    @change-page="getProducts"
-    @previous-page="getProducts"
-    @next-page="getProducts"
-  ></Pagination> -->
-  <EditModal
-    ref="editModal"
-    :product="tempProduct"
-    @update-product="updateProduct"
-  ></EditModal>
-  <DeleteModal
-    :product="tempDeleteProduct"
-    @delete-product="deleteProduct"
-    ref="deleteModal"
-  ></DeleteModal>
+  <div class="container py-5 px-3 px-xl-0">
+    <header>
+      <div class="d-flex align-items-center justify-content-between">
+        <div class="d-flex align-items-center">
+          <i class="bi bi-box-seam text-warning me-3 fs-1"></i>
+          <h2 class="h1 mb-0 text-primary">產品列表</h2>
+        </div>
+        <div class="text-end">
+          <button
+            type="button"
+            class="btn btn-dark"
+            @click="openModal(true)"
+          >
+            新增產品
+          </button>
+        </div>
+      </div>
+    </header>
+    <!-- table -->
+    <main class="table-responsive my-4">
+      <table class="table align-middle">
+        <thead>
+          <tr>
+            <th scope="col">產品名稱</th>
+            <th scope="col">分類</th>
+            <th scope="col" class="text-end text-nowrap">原價</th>
+            <th scope="col" class="text-end text-nowrap">售價</th>
+            <th scope="col" class="text-nowrap">是否啟用</th>
+            <th scope="col">編輯</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="item in products" :key="item.id">
+            <td>{{ item.title }}</td>
+            <th scope="row">{{ item.category }}</th>
+            <td class="text-end">{{ $filters.currency(item.origin_price) }}</td>
+            <td class="text-end">{{ $filters.currency(item.price) }}</td>
+            <td>
+              <span class="text-success" v-if="item.is_enabled">啟用</span>
+              <span class="text-muted" v-else>未啟用</span>
+            </td>
+            <td>
+              <div class="btn-group btn-group-sm" role="group">
+                <button
+                  type="button"
+                  class="btn btn-outline-primary text-nowrap"
+                  @click="openModal(false, item, pagination)"
+                >
+                  編輯
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-outline-danger text-nowrap"
+                  @click="openDeleteModal(item, pagination)"
+                >
+                  刪除
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </main>
+
+    <Pagination
+      :pages="pagination"
+      @change-page="getProducts"
+      @previous-page="getProducts"
+      @next-page="getProducts"
+    ></Pagination>
+    <EditModal
+      ref="editModal"
+      :product="tempProduct"
+      @update-product="updateProduct"
+    ></EditModal>
+    <DeleteModal
+      :product="tempDeleteProduct"
+      @delete-product="deleteProduct"
+      ref="deleteModal"
+    ></DeleteModal>
+  </div>
 </template>
 
 <script>

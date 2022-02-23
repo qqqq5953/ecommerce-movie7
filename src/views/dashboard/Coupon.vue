@@ -10,7 +10,7 @@
         <div class="text-end">
           <button
             type="button"
-            class="btn btn-primary"
+            class="btn btn-dark"
             @click="openCouponEditModal(true)"
           >
             新增優惠券
