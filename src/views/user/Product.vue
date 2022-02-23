@@ -313,13 +313,14 @@
         </div>
 
         <!-- video -->
-        <div class="row mt-5">
+        <div class="row mt-5" v-if="trailers.length || teasers.length">
           <div class="col-12">
             <h2 class="h1 text-white d-flex align-items-center">
               <i
                 class="bi bi-camera-reels text-warning me-3 fs-4 d-none d-md-block"
               ></i
-              >Watch Trailer
+              >Watch
+              {{ trailers.length ? 'Trailer' : 'Teaser' }}
             </h2>
           </div>
 
@@ -331,10 +332,9 @@
                 allowfullscreen
                 width="100%"
                 height="100%"
-                v-if="trailers.length"
                 :src="
                   baseYoutubeUrl + trailers[0].key ||
-                  baseYoutubeUrl + teaser[0].key
+                  baseYoutubeUrl + teasers[0].key
                 "
               >
               </iframe>

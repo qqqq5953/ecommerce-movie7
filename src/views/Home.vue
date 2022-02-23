@@ -137,7 +137,7 @@
         </section>
 
         <!-- Playing Now -->
-        <section class="pb-5">
+        <section class="pb-5" v-if="nowPlaying.length">
           <h2 class="h1 d-inline-block genre-title">
             <a
               href="#"
@@ -164,7 +164,7 @@
         </section>
 
         <!-- UpComing -->
-        <section class="pb-5">
+        <section class="pb-5" v-if="upComing.length">
           <h2 class="h1 d-inline-block genre-title">
             <a
               href="#"
@@ -245,7 +245,7 @@ export default {
       this.getNowPlaying();
 
       // 將 upComing 分離出來
-      this.getUpcoming();
+      // this.getUpcoming();
 
       this.isLoading = false;
     },
