@@ -23,79 +23,19 @@
                   class="text-decoration-none d-block"
                   @click.prevent="getProductDetails(item.id)"
                 >
-                  <!-- card -->
-                  <div class="position-relative movie-card">
-                    <!-- backdrop_image -->
-                    <div
-                      class="position-absolute backdrop_image"
-                      :style="{ backgroundImage: `url(${item.imageUrl[1]})` }"
-                    ></div>
-                    <div class="position-relative info_section">
-                      <div class="info_section_width px-4 py-3 py-lg-4">
-                        <!-- card-header -->
-                        <div class="row card-header-wrapper rounded-3 py-3">
-                          <div class="col-4 col-md-2 col-lg-3">
-                            <img
-                              v-if="item.imageUrl[0]"
-                              :src="item.imageUrl[0]"
-                              class="card-img-top card-img-top-adjusted img-fluid d-block"
-                              :alt="item.title"
-                            />
-                          </div>
-                          <div class="col-8 col-md-10 col-lg-9 ps-0 ps-sm-2">
-                            <!-- sm 以下的 title -->
-                            <h2 class="h4 card-title mb-0 d-sm-none">
-                              {{ item.title }}
-                            </h2>
-                            <!-- sm 以上的 title -->
-                            <h2 class="h3 card-title mb-0 d-none d-sm-block">
-                              {{ item.title }}
-                            </h2>
-                            <div class="fs-6">
-                              <small class="d-block d-sm-inline-block">{{
-                                item.content.split('|')[2]
-                              }}</small>
-                              <span class="d-none d-sm-inline-block mx-2 fs-5"
-                                >|</span
-                              >
-                              <small class="d-block d-sm-inline-block"
-                                >Popularity:
-                                <span>{{
-                                  parseFloat(
-                                    item.content.split('|')[1]
-                                  ).toFixed(0)
-                                }}</span></small
-                              >
-                            </div>
-                          </div>
-                        </div>
-                        <!-- card-body -->
-                        <div class="row my-4 mt-md-4 mb-md-0 mt-lg-3">
-                          <div class="col-12">
-                            <div class="card-text d-flex flex-column">
-                              <p class="lh-sm">{{ item.description }}</p>
-
-                              <div class="text-end mt-auto px-2">
-                                <span> &#171; see more &#187;</span>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                  <CardHorizontal :product="item"></CardHorizontal>
                 </a>
               </li>
             </ul>
           </main>
 
-          <PaginationForResults
+          <PaginationForUser
             :totalPages="totalPages"
             :currentPage="currentPage"
             @change-page="setPagination"
             @previous-page="setPagination"
             @next-page="setPagination"
-          ></PaginationForResults>
+          ></PaginationForUser>
         </div>
       </div>
     </div>
@@ -103,7 +43,8 @@
 </template>
 
 <script>
-import PaginationForResults from '@/components/PaginationForResults.vue';
+import PaginationForUser from '@/components/PaginationForUser.vue';
+import CardHorizontal from '@/components/CardHorizontal.vue';
 
 export default {
   props: {
@@ -112,7 +53,8 @@ export default {
     }
   },
   components: {
-    PaginationForResults
+    PaginationForUser,
+    CardHorizontal
   },
   inject: ['emitter', 'sortData'],
   data() {

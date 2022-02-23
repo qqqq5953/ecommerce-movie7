@@ -157,10 +157,7 @@
           </h2>
           <div class="position-relative mt-3">
             <section class="overflow-auto card-scrollbar position-relative">
-              <CardVertical
-                :results="nowPlaying"
-                :language="language"
-              ></CardVertical>
+              <Card :results="nowPlaying" :language="language"></Card>
             </section>
             <div class="position-absolute right-blur"></div>
           </div>
@@ -189,10 +186,7 @@
             <section
               class="overflow-auto mt-3 mb-5 card-scrollbar position-relative"
             >
-              <CardVertical
-                :results="upComing"
-                :language="language"
-              ></CardVertical>
+              <Card :results="upComing" :language="language"></Card>
             </section>
             <div class="position-absolute right-blur"></div>
           </div>
@@ -210,11 +204,11 @@
 <script>
 import Navbar from '@/components/Navbar.vue';
 import Footer from '@/components/Footer.vue';
-import CardVertical from '@/components/CardVerticalTest.vue';
+import Card from '@/components/Card.vue';
 
 export default {
   components: {
-    CardVertical,
+    Card,
     Navbar,
     Footer
   },

@@ -47,24 +47,24 @@
         </ul>
       </main>
 
-      <PaginationForResults
+      <PaginationForUser
         v-if="listProducts.length"
         :totalPages="totalPages"
         :currentPage="currentPage"
         @change-page="setPagination"
         @previous-page="setPagination"
         @next-page="setPagination"
-      ></PaginationForResults>
+      ></PaginationForUser>
     </div>
   </div>
 </template>
 
 <script>
-import PaginationForResults from '@/components/PaginationForResults.vue';
+import PaginationForUser from '@/components/PaginationForUser.vue';
 
 export default {
   components: {
-    PaginationForResults
+    PaginationForUser
   },
   data() {
     return {
