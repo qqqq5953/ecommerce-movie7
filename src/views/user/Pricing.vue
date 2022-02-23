@@ -238,7 +238,7 @@ export default {
       });
 
       // 更新 navbar cart 數量
-      const cartLength = await this.getCartProductNumber();
+      const cartLength = await this.getCartLength();
       emitter.emit('calculate-product-number', cartLength);
 
       // 檢查是否已訂閱
@@ -251,7 +251,7 @@ export default {
       const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/cart`;
       return this.$http.get(api);
     },
-    async getCartProductNumber() {
+    async getCartLength() {
       // axios
       const response = await this.cartAPIResponse().catch((err) => {
         console.log(err);

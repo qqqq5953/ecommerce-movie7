@@ -598,7 +598,7 @@ export default {
       // 產品在 TMDB api 中的id
       this.id = response.data.product.content.split('|')[0];
 
-      // 產品在 TMDB api 中的id
+      // 產品價格
       this.price = response.data.product.price;
 
       // 產品屬於 movie 或 tv 類別
@@ -608,19 +608,21 @@ export default {
       this.isNowOrUpcoming = response.data.product.category.split('|')[1];
 
       // 再透過 TMDB api 獲得更多產品資料
-      await this.getData();
+      await this.getTMDBData();
 
       this.isLoading = false;
     },
-    async getData() {
+    async getTMDBData() {
       // TMDB api
       const response = await this.$http.get(
         `https://api.themoviedb.org/3/${this.genre}/${this.id}?api_key=${this.key}&language=${this.language}&append_to_response=videos,images`
       );
 
+      // 根據 movie 或 tv 選擇對應的資料（但目前只做 movie）
       if (this.genre === 'movie') this.getMovieDetail(response);
       if (this.genre === 'tv') this.getTVDetail(response);
 
+      // movie 或 tv 共有的資料
       this.posterUrl = response.data.poster_path;
       this.genres = response.data.genres;
       this.overview = response.data.overview;
@@ -648,7 +650,7 @@ export default {
       this.runTime.hour = Math.floor(response.data.runtime / 60);
       this.runTime.minute = response.data.runtime % 60;
     },
-    /// watchlist
+    /// add to watchlist
     async checkProductStatus() {
       const api = `https://api.themoviedb.org/3/list/${this.list_id}/item_status?api_key=${this.key}&movie_id=${this.id}`;
 
@@ -723,7 +725,7 @@ export default {
       // spinner off
       this.status.watchlistProductID = '';
     },
-    /// cart
+    /// add to cart
     async addProductToCart(id) {
       // spinner on
       this.status.loadingProductID = id;
@@ -740,7 +742,7 @@ export default {
       });
 
       // 更新 navbar cart 數量
-      const cartLength = await this.getCartProductNumber();
+      const cartLength = await this.getCartLength();
       this.emitter.emit('calculate-product-number', cartLength);
 
       // 檢查是否已訂閱
@@ -753,7 +755,7 @@ export default {
       const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/cart`;
       return this.$http.get(api);
     },
-    async getCartProductNumber() {
+    async getCartLength() {
       // axios
       const response = await this.cartAPIResponse().catch((err) => {
         console.log(err);

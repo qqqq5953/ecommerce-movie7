@@ -62,11 +62,6 @@ export default {
       default: 1
     }
   },
-  data() {
-    return {
-      tempProducts: []
-    };
-  },
   emits: ['change-page', 'previous-page', 'next-page'],
   methods: {
     onChangePage(page) {

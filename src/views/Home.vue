@@ -47,29 +47,26 @@
       </header>
       <!-- 平板以上 -->
       <header class="position-relative d-none d-md-block">
-        <section class="position-relative">
-          <div class="header-background header-background-img"></div>
-          <div
-            class="header-background-img-cover d-flex align-items-center h-100 position-absolute top-0 bottom-0 end-0 start-0"
-          >
-            <div class="mb-0 mx-3 mx-md-4 mx-xl-5 p-4 header-foreground">
-              <h2 class="text-white">
-                <span class="d-block">Offer worldwide</span>
-                <!-- <span>worldwide</span> -->
-                <span class="text-warning"> latest movies </span>
-                fitting your lifestyle
-              </h2>
+        <div class="header-background header-background-img"></div>
+        <div
+          class="header-background-img-cover d-flex align-items-center h-100 position-absolute top-0 bottom-0 end-0 start-0"
+        >
+          <div class="mb-0 mx-3 mx-md-4 mx-xl-5 p-4 header-foreground">
+            <h2 class="text-white">
+              <span class="d-block">Offer worldwide</span>
+              <span class="text-warning"> latest movies </span>
+              fitting your lifestyle
+            </h2>
 
-              <router-link
-                :to="{ name: 'AllProducts' }"
-                class="btn btn-warning fs-5 w-100 text-primary"
-              >
-                <span>Pick a movie now</span>
-                <i class="bi bi-arrow-right ms-2"></i>
-              </router-link>
-            </div>
+            <router-link
+              :to="{ name: 'AllProducts' }"
+              class="btn btn-warning fs-5 w-100 text-primary"
+            >
+              <span>Pick a movie now</span>
+              <i class="bi bi-arrow-right ms-2"></i>
+            </router-link>
           </div>
-        </section>
+        </div>
       </header>
       <main class="py-5 px-5 px-xl-0">
         <!-- why CMDB -->
@@ -245,7 +242,7 @@ export default {
       this.getNowPlaying();
 
       // 將 upComing 分離出來
-      // this.getUpcoming();
+      this.getUpcoming();
 
       this.isLoading = false;
     },
@@ -322,7 +319,7 @@ export default {
   @media (min-width: 768px) {
     background: rgba(0, 0, 0, 0.45);
     height: 85%;
-    width: 45%;
+    width: 47%;
   }
 
   @media (min-width: 992px) {
