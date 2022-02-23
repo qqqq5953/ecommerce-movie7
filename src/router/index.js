@@ -100,6 +100,10 @@ const routes = [
         component: () => import('../views/user/Pricing.vue')
       }
     ]
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    component: () => import('../views/404Page.vue')
   }
 ];
 
