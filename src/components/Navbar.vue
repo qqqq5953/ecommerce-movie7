@@ -1,6 +1,6 @@
 <template>
   <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-    <div class="container-fluid">
+    <div class="container">
       <h1 class="mb-0">
         <router-link class="navbar-brand nav-link active" :to="{ name: 'Home' }"
           >CMDB</router-link
@@ -10,7 +10,7 @@
         class="navbar-toggler"
         type="button"
         data-bs-toggle="collapse"
-        data-bs-target="#navbarDropdownMenu"
+        data-bs-target="#navbarSupportedContent"
         aria-controls="navbarDropdownMenu"
         aria-expanded="false"
         aria-label="Toggle navigation"
@@ -19,7 +19,7 @@
       </button>
       <div
         class="collapse navbar-collapse row flex-column flex-lg-row"
-        id="navbarDropdownMenu"
+        id="navbarSupportedContent"
         ref="navbarDropdownMenu"
       >
         <div class="col">
@@ -101,7 +101,7 @@
         </div>
         <div class="col">
           <ul
-            class="navbar-nav ms-auto mb-0 align-items-center justify-content-between"
+            class="navbar-nav ms-auto mb-0 text-center align-items-center"
             @click="toggleNavbarDropdown"
           >
             <li class="nav-item">
@@ -147,6 +147,7 @@
 export default {
   data() {
     return {
+      collapse: {},
       isLoading: false,
       keywords: '',
       products: [],
@@ -227,7 +228,7 @@ export default {
       this.toggleNavbarDropdown();
     },
     toggleNavbarDropdown() {
-      this.$refs.navbarDropdownMenu.classList.toggle('show');
+      this.$refs.navbarDropdownMenu.classList.remove('show');
     }
   },
   created() {

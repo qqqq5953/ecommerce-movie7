@@ -3,7 +3,7 @@
     <div class="container-fluid">
       <h1 class="mb-0">
         <router-link class="navbar-brand nav-link active" :to="{ name: 'Home' }"
-          >CMDB</router-link
+          >最後移除</router-link
         >
       </h1>
       <button
@@ -17,8 +17,12 @@
       >
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+      <div
+        class="collapse navbar-collapse"
+        id="navbarSupportedContent"
+        ref="navbarDropdownMenu"
+      >
+        <ul class="navbar-nav me-auto mb-0 px-3" @click="toggleNavbarDropdown">
           <li class="nav-item">
             <router-link class="nav-link" :to="{ name: 'Products' }"
               >產品</router-link
@@ -51,6 +55,9 @@ export default {
       this.$http.post(api).then((res) => {
         if (res.data.success) this.$router.push({ name: 'Login' });
       });
+    },
+    toggleNavbarDropdown() {
+      this.$refs.navbarDropdownMenu.classList.remove('show');
     }
   }
 };

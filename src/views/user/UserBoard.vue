@@ -1,6 +1,9 @@
 <template>
   <div class="d-flex flex-column h-100">
-    <Navbar></Navbar>
+    <div class="bg-primary">
+      <Navbar></Navbar>
+    </div>
+
     <div class="flex-grow-1">
       <router-view />
     </div>

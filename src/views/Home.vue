@@ -1,9 +1,9 @@
 <template>
   <Loading :active="isLoading"></Loading>
-  <Navbar></Navbar>
 
   <div class="bg-primary">
-    <div class="container-md">
+    <Navbar></Navbar>
+    <div class="container">
       <!-- 手機 -->
       <header class="position-relative d-md-none">
         <section class="d-md-none" style="max-height: 373px; overflow: hidden">
