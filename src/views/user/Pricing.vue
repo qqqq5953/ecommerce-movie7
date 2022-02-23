@@ -1,8 +1,12 @@
 <template>
   <div class="container py-5 px-5 px-xl-0">
     <header>
-      <div class="d-flex align-items-center">
-        <i class="bi bi-columns-gap text-warning me-3 fs-2"></i>
+      <div
+        class="d-flex align-items-center justify-content-center justify-content-sm-start"
+      >
+        <i
+          class="bi bi-columns-gap text-warning me-3 fs-2 d-none d-sm-inline-block"
+        ></i>
         <h2 class="h1 mb-0">Pricing</h2>
       </div>
     </header>
@@ -112,7 +116,7 @@
                   :to="{ name: 'Cart' }"
                   class="w-100 btn btn-warning mt-2 mb-2 border border-warning border-2"
                 >
-                  <span class="text-light">Go to my cart</span>
+                  <span class="text-light">View my cart</span>
                 </router-link>
               </div>
             </div>
@@ -120,8 +124,12 @@
         </li>
       </ul>
 
-      <div class="d-flex align-items-center">
-        <i class="bi bi-columns-gap text-warning me-3 fs-2"></i>
+      <div
+        class="d-flex align-items-center justify-content-center justify-content-sm-start"
+      >
+        <i
+          class="bi bi-columns-gap text-warning me-3 fs-2 d-none d-sm-inline-block"
+        ></i>
         <h2 class="h1 mb-0">Compare plans</h2>
       </div>
       <div class="table-responsive">
@@ -225,10 +233,9 @@ export default {
         data: { product_id: id, qty: 1 }
       };
 
-      const response = await this.$http.post(api, requestBody).catch((err) => {
+      await this.$http.post(api, requestBody).catch((err) => {
         console.log(err);
       });
-      console.log('addProductToCart', response.data);
 
       // 更新 navbar cart 數量
       const cartLength = await this.getCartProductNumber();

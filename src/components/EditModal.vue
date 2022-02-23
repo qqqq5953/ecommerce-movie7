@@ -70,7 +70,7 @@
               <img
                 v-for="item in tempProduct.imageUrl"
                 :key="item"
-                class="img-fluid"
+                class="img-fluid d-block mt-1 py-3 border-bottom border-2 w-100 border-primary"
                 :src="item"
                 alt=""
               />
@@ -220,6 +220,7 @@ export default {
   watch: {
     product() {
       this.tempProduct = this.product;
+      if (this.tempProduct.is_enabled) this.tempProduct.is_enabled = 1;
     }
   },
   methods: {
