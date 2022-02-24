@@ -167,7 +167,7 @@ export default {
       const yyyy = today.getFullYear();
       return yyyy + '-' + mm + '-' + dd;
     },
-    // 新增 NowPlaying
+    /// 新增 NowPlaying
     async getNowPlaying() {
       this.isLoading = true;
 
@@ -178,7 +178,6 @@ export default {
         .catch((err) => {
           console.log(err);
         });
-      console.log('getNowPlaying', response);
 
       const totalPages = response.data.total_pages;
 
@@ -221,18 +220,15 @@ export default {
           temp.push(item);
         });
       }
-      // console.log('temp', temp);
-
       return temp;
     },
-    // 新增 getUpcoming
+    /// 新增 getUpcoming
     async getUpcoming() {
       this.isLoading = true;
 
       const response = await this.$http.get(
         `https://api.themoviedb.org/3/movie/upcoming?api_key=${this.key}&language=${this.language}&region=${this.region}&page=1`
       );
-      console.log('getUpcoming', response);
 
       // 獲得所有資料
       const totalPages = response.data.total_pages;
@@ -270,11 +266,9 @@ export default {
           temp.push(item);
         });
       }
-      // console.log('temp', temp);
-
       return temp;
     },
-    // 快速新增多樣產品
+    /// 快速新增多樣產品
     async addManyProducts(genre, length) {
       const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/admin/product`;
 
@@ -303,7 +297,7 @@ export default {
           });
       }
     },
-    // 取得產品列表
+    /// 取得產品列表
     async getProducts(page) {
       this.isLoading = true;
 
@@ -318,9 +312,8 @@ export default {
       this.pagination = response.data.pagination;
 
       this.isLoading = false;
-      console.log('getProducts', response);
     },
-    // 更新產品
+    /// 更新產品
     async updateProduct(item) {
       // 新增
       let api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/admin/product`;
@@ -362,7 +355,7 @@ export default {
         currentPage ? '更新' : '新增'
       );
     },
-    // 快速刪除 全部產品
+    /// 快速刪除 全部產品
     async deleteAllProducts() {
       await this.getAllProducts();
 
@@ -384,12 +377,11 @@ export default {
       const response = await this.$http.get(api).catch((err) => {
         console.log(err);
       });
-      console.log('getAllProducts', response.data);
 
       // 儲存資料
       this.allProducts = response.data.products;
     },
-    // 刪除 單一產品
+    /// 刪除 單一產品
     async deleteProduct(item) {
       // axios
       const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/admin/product/${item.id}`;
@@ -406,7 +398,7 @@ export default {
       // toast
       this.pushMessageStateForDashboard(response, item, '刪除');
     },
-    // Modal
+    /// Modal
     openModal(isNew, item, pagination) {
       // 新增
       if (isNew) this.tempProduct = {};
