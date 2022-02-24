@@ -10,7 +10,6 @@
       <div class="d-flex align-items-center mb-2">
         <i class="bi bi-box-seam text-warning me-3 fs-1"></i>
         <h2 class="h1 mb-0 text-primary">產品列表</h2>
-
         <button
           type="button"
           class="btn btn-dark ms-auto"
@@ -20,6 +19,23 @@
         </button>
       </div>
       <div class="row">
+        <div class="col-12 my-2">
+          <!-- alert -->
+          <div
+            class="alert alert-danger alert-dismissible fade show d-flex align-items-center"
+            role="alert"
+            v-if="isLoading && processingCount"
+          >
+            <i class="bi bi-exclamation-triangle me-3"></i>
+            <div>處理中: {{ processingCount }}</div>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="alert"
+              aria-label="Close"
+            ></button>
+          </div>
+        </div>
         <div class="col-12 col-sm-6 col-md-12 col-lg my-2">
           <button
             type="button"
@@ -99,6 +115,7 @@
                 <button
                   type="button"
                   class="btn btn-outline-danger text-nowrap"
+                  :disabled="item.title.toLowerCase() === 'subscription'"
                   @click="openDeleteModal(item, pagination)"
                 >
                   刪除
@@ -139,7 +156,12 @@ export default {
     DeleteModal,
     Pagination
   },
-  inject: ['emitter', 'pushMessageStateForDashboard', 'sortData'],
+  inject: [
+    'emitter',
+    'pushMessageStateForDashboard',
+    'pushMessageStateForUser',
+    'sortData'
+  ],
   data() {
     return {
       allProducts: [],
@@ -147,6 +169,7 @@ export default {
       pagination: {},
       tempProduct: {},
       tempDeleteProduct: {},
+      processingCount: 0,
       isNew: false,
       isLoading: false,
       disableBtn: true,
@@ -155,8 +178,7 @@ export default {
       top20upComing: [],
       language: 'en-US',
       region: 'US',
-      baseImageUrl: 'https://image.tmdb.org/t/p/w300',
-      key: '7bbe6005cfda593dc21cceb93eaf9a8e'
+      baseImageUrl: 'https://image.tmdb.org/t/p/w300'
     };
   },
   methods: {
@@ -170,10 +192,11 @@ export default {
     /// 新增 NowPlaying
     async getNowPlaying() {
       this.isLoading = true;
+      this.processingCount = 0;
 
       const response = await this.$http
         .get(
-          `https://api.themoviedb.org/3/movie/now_playing?api_key=${this.key}&language=${this.language}&region=${this.region}&page=1`
+          `https://api.themoviedb.org/3/movie/now_playing?api_key=${process.env.VUE_APP_KEY}&language=${this.language}&region=${this.region}&page=1`
         )
         .catch((err) => {
           console.log(err);
@@ -198,7 +221,7 @@ export default {
       this.top20nowPlaying = filterDate.slice(0, 20);
 
       // 快速新增產品
-      await this.addManyProducts(this.top20nowPlaying, 20);
+      await this.addManyProducts(this.top20nowPlaying, 3);
 
       this.isLoading = false;
 
@@ -210,7 +233,7 @@ export default {
       for (let page = 1; page <= 2; page++) {
         const response = await this.$http
           .get(
-            `https://api.themoviedb.org/3/movie/now_playing?api_key=7bbe6005cfda593dc21cceb93eaf9a8e&language=${this.language}&region=${this.region}&page=${page}`
+            `https://api.themoviedb.org/3/movie/now_playing?api_key=${process.env.VUE_APP_KEY}&language=${this.language}&region=${this.region}&page=${page}`
           )
           .catch((err) => {
             console.log(err);
@@ -225,9 +248,10 @@ export default {
     /// 新增 getUpcoming
     async getUpcoming() {
       this.isLoading = true;
+      this.processingCount = 0;
 
       const response = await this.$http.get(
-        `https://api.themoviedb.org/3/movie/upcoming?api_key=${this.key}&language=${this.language}&region=${this.region}&page=1`
+        `https://api.themoviedb.org/3/movie/upcoming?api_key=${process.env.VUE_APP_KEY}&language=${this.language}&region=${this.region}&page=1`
       );
 
       // 獲得所有資料
@@ -259,7 +283,7 @@ export default {
       const temp = [];
       for (let page = 1; page <= totalPages; page++) {
         const response = await this.$http.get(
-          `https://api.themoviedb.org/3/movie/upcoming?api_key=7bbe6005cfda593dc21cceb93eaf9a8e&language=${this.language}&region=${this.region}&page=${page}`
+          `https://api.themoviedb.org/3/movie/upcoming?api_key=${process.env.VUE_APP_KEY}&language=${this.language}&region=${this.region}&page=${page}`
         );
 
         response.data.results.forEach((item) => {
@@ -295,6 +319,8 @@ export default {
           .catch((err) => {
             console.log(err);
           });
+
+        this.processingCount += 1;
       }
     },
     /// 取得產品列表
@@ -357,19 +383,32 @@ export default {
     },
     /// 快速刪除 全部產品
     async deleteAllProducts() {
+      this.isLoading = true;
+      this.processingCount = 0;
+
       await this.getAllProducts();
 
+      let response;
       for (let i = 0; i < this.allProducts.length; i++) {
         const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/admin/product/${this.allProducts[i].id}`;
+
         if (this.allProducts[i].category.toUpperCase() === 'SUBSCRIPTION') {
           continue;
         } else {
-          const response = await this.$http.delete(api);
-          console.log('deleteAllProducts', response.data);
+          response = await this.$http.delete(api).catch((err) => {
+            console.log(err);
+          });
+          this.processingCount += 1;
         }
       }
 
+      this.isLoading = false;
+
+      // 重新render畫面
       await this.getProducts();
+
+      // toast
+      this.pushMessageStateForUser(response, '全品項', '刪除');
     },
     async getAllProducts() {
       // api
