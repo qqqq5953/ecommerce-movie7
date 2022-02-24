@@ -1,13 +1,16 @@
 <template>
   <div class="bg-dark h-100">
-    <div class="container py-5 px-5 px-xl-0">
+    <div
+      class="container py-5 px-5 px-xl-0"
+      :class="{ 'h-100': !listProductsPerPage.length }"
+    >
       <header>
         <div class="d-flex align-items-center">
           <i class="bi bi-bookmark-plus text-warning me-3 fs-4"></i>
           <h2 class="h1 text-white mb-0">watchlist</h2>
         </div>
       </header>
-      <main class="py-4">
+      <main class="py-4" :class="{ 'h-100': !listProductsPerPage.length }">
         <ul class="row flex-wrap list-unstyled mb-0">
           <li
             class="col-6 col-md-4 col-lg-3 mb-4"
@@ -17,6 +20,7 @@
             <div
               class="card rounded-3 border-0 card-img-box-shadow h-100 position-relative"
             >
+              <!-- delete button -->
               <a
                 href="#"
                 @click.prevent="removeProductFromList(item.id)"
@@ -25,6 +29,7 @@
                 <i class="bi bi-x-lg d-none d-md-block"></i>
                 <i class="bi bi-x d-md-none"></i>
               </a>
+              <!-- card image -->
               <a
                 href="#"
                 class="text-decoration-none d-block overflow-hidden"
@@ -45,6 +50,14 @@
             </div>
           </li>
         </ul>
+        <div
+          class="d-flex align-items-center justify-content-center h-100"
+          v-if="!listProductsPerPage.length"
+        >
+          <router-link :to="{ name: 'AllProducts' }" class="btn btn-warning"
+            >pick some movies now</router-link
+          >
+        </div>
       </main>
 
       <PaginationForUser

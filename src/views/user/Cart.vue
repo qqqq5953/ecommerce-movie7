@@ -1,14 +1,14 @@
 <template>
   <Loading :active="isLoading"></Loading>
-  <div class="container py-5 px-3 px-xl-0">
+  <div class="container py-5 px-3 px-xl-0" :class="{ 'h-100': !cart.length }">
     <header>
       <div class="d-flex align-items-center">
         <i class="bi bi-cart-fill text-warning me-3 fs-2"></i>
         <h2 class="h1 mb-0 text-primary">My cart</h2>
       </div>
     </header>
-    <main>
-      <section>
+    <main :class="{ 'h-100': !cart.length }">
+      <section class="">
         <!-- 購物車商品 -->
         <div
           class="border-bottom border-primary pb-3 pt-4"
@@ -312,6 +312,15 @@
           </section>
         </div>
       </section>
+
+      <div
+        class="d-flex align-items-center justify-content-center h-100"
+        v-if="!cart.length"
+      >
+        <router-link :to="{ name: 'AllProducts' }" class="btn btn-warning"
+          >pick some movies now</router-link
+        >
+      </div>
     </main>
   </div>
 </template>
