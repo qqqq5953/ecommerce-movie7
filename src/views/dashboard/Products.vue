@@ -1,38 +1,69 @@
 <template>
   <Loading :active="isLoading"></Loading>
-  <div class="text-end mt-3">
-    <button type="button" class="btn btn-primary" @click="openModal(true)">
-      新增產品
-    </button>
-    <button type="button" class="btn btn-success" @click="getNowPlaying">
-      快速新增 NowPlaying
-    </button>
-    <button type="button" class="btn btn-warning" @click="getUpcoming">
-      快速新增 upComing
-    </button>
-    <button type="button" class="btn btn-danger" @click="deleteAllProducts">
-      刪除全部(subscription不可以刪)
-    </button>
+  <div class="text-end mt-3 d-none">
     <button type="button" class="btn btn-info" @click="getAllProducts">
       查看全部產品
     </button>
   </div>
   <div class="container py-5 px-3 px-xl-0">
     <header>
-      <div class="d-flex align-items-center justify-content-between">
-        <div class="d-flex align-items-center">
-          <i class="bi bi-box-seam text-warning me-3 fs-1"></i>
-          <h2 class="h1 mb-0 text-primary">產品列表</h2>
+      <div class="d-flex align-items-center mb-2">
+        <i class="bi bi-box-seam text-warning me-3 fs-1"></i>
+        <h2 class="h1 mb-0 text-primary">產品列表</h2>
+
+        <button
+          type="button"
+          class="btn btn-dark ms-auto"
+          @click="openModal(true)"
+        >
+          新增產品
+        </button>
+      </div>
+      <div class="row">
+        <div class="col-12 col-sm-6 col-md-12 col-lg my-2">
+          <button
+            type="button"
+            class="btn btn-outline-dark btn-sm h-100 w-100 rounded-pill"
+            @click="toggleDisableButton"
+          >
+            切換按鈕狀態：
+            <span>{{ disableBtn ? '關' : '開' }}</span>
+          </button>
         </div>
-        <div class="text-end">
-          <button type="button" class="btn btn-dark" @click="openModal(true)">
-            新增產品
+        <div class="col-12 col-sm-6 col-md-4 col-lg my-2">
+          <button
+            type="button"
+            class="btn btn-outline-dark btn-sm h-100 w-100"
+            :disabled="disableBtn"
+            @click="getNowPlaying"
+          >
+            快速新增 NowPlaying
+          </button>
+        </div>
+        <div class="col-12 col-sm-6 col-md-4 col-lg my-2">
+          <button
+            type="button"
+            class="btn btn-outline-dark btn-sm h-100 w-100"
+            :disabled="disableBtn"
+            @click="getUpcoming"
+          >
+            快速新增 upComing
+          </button>
+        </div>
+        <div class="col-12 col-sm-6 col-md-4 col-lg my-2">
+          <button
+            type="button"
+            class="btn btn-outline-danger btn-sm h-100 w-100"
+            :disabled="disableBtn"
+            @click="deleteAllProducts"
+          >
+            刪除全部 (訂閱除外)
           </button>
         </div>
       </div>
     </header>
     <!-- table -->
-    <main class="table-responsive my-4">
+    <main class="table-responsive mb-4 mt-2">
       <table class="table align-middle">
         <thead>
           <tr>
@@ -48,8 +79,8 @@
           <tr v-for="item in products" :key="item.id">
             <td>{{ item.title }}</td>
             <th scope="row">{{ item.category }}</th>
-            <td class="text-end">{{ $filters.currency(item.origin_price) }}</td>
-            <td class="text-end">{{ $filters.currency(item.price) }}</td>
+            <td class="text-end">${{ item.origin_price.toFixed(2) }}</td>
+            <td class="text-end">${{ item.price.toFixed(2) }}</td>
             <td>
               <span class="text-success" v-if="item.is_enabled">啟用</span>
               <span class="text-muted" v-else>未啟用</span>
@@ -125,10 +156,14 @@ export default {
       baseImageUrl: 'https://image.tmdb.org/t/p/w300',
       key: '7bbe6005cfda593dc21cceb93eaf9a8e',
       // temp
-      allProducts: []
+      allProducts: [],
+      disableBtn: true
     };
   },
   methods: {
+    toggleDisableButton() {
+      this.disableBtn = !this.disableBtn;
+    },
     async getNowPlaying() {
       this.isLoading = true;
 
