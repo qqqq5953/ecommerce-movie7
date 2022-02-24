@@ -142,30 +142,32 @@ export default {
   inject: ['emitter', 'pushMessageStateForDashboard', 'sortData'],
   data() {
     return {
+      allProducts: [],
       products: [],
       pagination: {},
       tempProduct: {},
       tempDeleteProduct: {},
       isNew: false,
       isLoading: false,
-      // ref
-      // editModal: {},
-      // deleteModal: {}
+      disableBtn: true,
       // CMDB
       top20nowPlaying: [],
+      top20upComing: [],
       language: 'en-US',
       region: 'US',
       baseImageUrl: 'https://image.tmdb.org/t/p/w300',
-      key: '7bbe6005cfda593dc21cceb93eaf9a8e',
-      // temp
-      allProducts: [],
-      disableBtn: true
+      key: '7bbe6005cfda593dc21cceb93eaf9a8e'
     };
   },
   methods: {
-    toggleDisableButton() {
-      this.disableBtn = !this.disableBtn;
+    getTodayDate() {
+      const today = new Date();
+      const dd = String(today.getDate()).padStart(2, '0');
+      const mm = String(today.getMonth() + 1).padStart(2, '0');
+      const yyyy = today.getFullYear();
+      return yyyy + '-' + mm + '-' + dd;
     },
+    // 新增 NowPlaying
     async getNowPlaying() {
       this.isLoading = true;
 
@@ -193,40 +195,11 @@ export default {
         return new Date(item.release_date) <= new Date(todayDate);
       });
 
-      // 依照熱門度排序 取前 20
-      // this.top20nowPlaying = this.sortData(filterDate, 'popularity').slice(
-      //   0,
-      //   20
-      // );
+      // 取前 20 (如果 filterDate 超過 20 筆)
       this.top20nowPlaying = filterDate.slice(0, 20);
 
-      // 暫時 for 快速新增
-      const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/admin/product`;
-
-      for (let i = 0; i < 20; i++) {
-        this.tempProduct = {};
-        this.tempProduct.title = this.top20nowPlaying[i].title;
-        this.tempProduct.category = 'movie|nowplaying';
-        this.tempProduct.origin_price = 1.99;
-        this.tempProduct.price = 0.99;
-        this.tempProduct.unit = 'week';
-        this.tempProduct.description = this.top20nowPlaying[i].overview;
-        this.tempProduct.is_enabled = true;
-        this.tempProduct.imageUrl = [
-          this.baseImageUrl + this.top20nowPlaying[i].poster_path,
-          this.baseImageUrl + this.top20nowPlaying[i].backdrop_path
-        ];
-        // 透過content傳送其餘資料
-        this.tempProduct.content = `${this.top20nowPlaying[i].id}|${this.top20nowPlaying[i].popularity}|${this.top20nowPlaying[i].release_date}`;
-
-        await this.$http
-          .post(api, {
-            data: this.tempProduct
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      }
+      // 快速新增產品
+      await this.addManyProducts(this.top20nowPlaying, 20);
 
       this.isLoading = false;
 
@@ -252,6 +225,7 @@ export default {
 
       return temp;
     },
+    // 新增 getUpcoming
     async getUpcoming() {
       this.isLoading = true;
 
@@ -274,36 +248,11 @@ export default {
         return new Date(item.release_date) >= new Date(todayDate);
       });
 
-      // 依照熱門度排序 取前 20
-      this.top20upComing = this.sortData(filterDate, 'popularity').slice(0, 20);
+      // 取前 20 (如果 filterDate 超過 20 筆)
+      this.top20upComing = filterDate.slice(0, 20);
 
-      // 暫時 for 快速新增
-      const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/admin/product`;
-
-      for (let i = 0; i < 20; i++) {
-        this.tempProduct = {};
-        this.tempProduct.title = this.top20upComing[i].title;
-        this.tempProduct.category = 'movie|upcoming';
-        this.tempProduct.origin_price = 1.99;
-        this.tempProduct.price = 0.99;
-        this.tempProduct.unit = 'week';
-        this.tempProduct.description = this.top20upComing[i].overview;
-        this.tempProduct.is_enabled = true;
-        this.tempProduct.imageUrl = [
-          this.baseImageUrl + this.top20upComing[i].poster_path,
-          this.baseImageUrl + this.top20upComing[i].backdrop_path
-        ];
-        // 透過content傳送其餘資料
-        this.tempProduct.content = `${this.top20upComing[i].id}|${this.top20upComing[i].popularity}|${this.top20upComing[i].release_date}`;
-
-        await this.$http
-          .post(api, {
-            data: this.tempProduct
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      }
+      // 快速新增產品
+      await this.addManyProducts(this.top20upComing, 20);
 
       this.isLoading = false;
 
@@ -325,13 +274,36 @@ export default {
 
       return temp;
     },
-    getTodayDate() {
-      const today = new Date();
-      const dd = String(today.getDate()).padStart(2, '0');
-      const mm = String(today.getMonth() + 1).padStart(2, '0');
-      const yyyy = today.getFullYear();
-      return yyyy + '-' + mm + '-' + dd;
+    // 快速新增多樣產品
+    async addManyProducts(genre, length) {
+      const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/admin/product`;
+
+      for (let i = 0; i < length; i++) {
+        this.tempProduct = {};
+        this.tempProduct.title = genre[i].title;
+        this.tempProduct.category = 'movie|upcoming';
+        this.tempProduct.origin_price = 1.99;
+        this.tempProduct.price = 0.99;
+        this.tempProduct.unit = 'week';
+        this.tempProduct.description = genre[i].overview;
+        this.tempProduct.is_enabled = true;
+        this.tempProduct.imageUrl = [
+          this.baseImageUrl + genre[i].poster_path,
+          this.baseImageUrl + genre[i].backdrop_path
+        ];
+        // 透過content傳送其餘資料
+        this.tempProduct.content = `${genre[i].id}|${genre[i].popularity}|${genre[i].release_date}`;
+
+        await this.$http
+          .post(api, {
+            data: this.tempProduct
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
     },
+    // 取得產品列表
     async getProducts(page) {
       this.isLoading = true;
 
@@ -348,6 +320,7 @@ export default {
       this.isLoading = false;
       console.log('getProducts', response);
     },
+    // 更新產品
     async updateProduct(item) {
       // 新增
       let api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/admin/product`;
@@ -389,17 +362,7 @@ export default {
         currentPage ? '更新' : '新增'
       );
     },
-    async getAllProducts() {
-      // api
-      const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/products/all`;
-      const response = await this.$http.get(api).catch((err) => {
-        console.log(err);
-      });
-      console.log('getAllProducts', response.data);
-
-      // 儲存資料
-      this.allProducts = response.data.products;
-    },
+    // 快速刪除 全部產品
     async deleteAllProducts() {
       await this.getAllProducts();
 
@@ -415,6 +378,18 @@ export default {
 
       await this.getProducts();
     },
+    async getAllProducts() {
+      // api
+      const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/products/all`;
+      const response = await this.$http.get(api).catch((err) => {
+        console.log(err);
+      });
+      console.log('getAllProducts', response.data);
+
+      // 儲存資料
+      this.allProducts = response.data.products;
+    },
+    // 刪除 單一產品
     async deleteProduct(item) {
       // axios
       const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/admin/product/${item.id}`;
@@ -431,6 +406,7 @@ export default {
       // toast
       this.pushMessageStateForDashboard(response, item, '刪除');
     },
+    // Modal
     openModal(isNew, item, pagination) {
       // 新增
       if (isNew) this.tempProduct = {};
@@ -447,15 +423,13 @@ export default {
     openDeleteModal(item, pagination) {
       this.tempDeleteProduct = { ...item, ...pagination };
       this.$refs.deleteModal.showModal();
+    },
+    toggleDisableButton() {
+      this.disableBtn = !this.disableBtn;
     }
   },
   created() {
     this.getProducts();
-    // this.getNowPlaying();
-  },
-  mounted() {
-    // this.editModal = this.$refs.editModal;
-    // this.deleteModal = this.$refs.deleteModal;
   }
 };
 </script>
