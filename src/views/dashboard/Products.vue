@@ -10,11 +10,7 @@
     <button type="button" class="btn btn-warning" @click="getUpcoming">
       快速新增 upComing
     </button>
-    <button
-      type="button"
-      class="btn btn-danger disabled"
-      @click="deleteAllProducts"
-    >
+    <button type="button" class="btn btn-danger" @click="deleteAllProducts">
       刪除全部(subscription不可以刪)
     </button>
     <button type="button" class="btn btn-info" @click="getAllProducts">
@@ -29,11 +25,7 @@
           <h2 class="h1 mb-0 text-primary">產品列表</h2>
         </div>
         <div class="text-end">
-          <button
-            type="button"
-            class="btn btn-dark"
-            @click="openModal(true)"
-          >
+          <button type="button" class="btn btn-dark" @click="openModal(true)">
             新增產品
           </button>
         </div>
@@ -138,9 +130,15 @@ export default {
   },
   methods: {
     async getNowPlaying() {
-      const response = await this.$http.get(
-        `https://api.themoviedb.org/3/movie/now_playing?api_key=${this.key}&language=${this.language}&region=${this.region}&page=1`
-      );
+      this.isLoading = true;
+
+      const response = await this.$http
+        .get(
+          `https://api.themoviedb.org/3/movie/now_playing?api_key=${this.key}&language=${this.language}&region=${this.region}&page=1`
+        )
+        .catch((err) => {
+          console.log(err);
+        });
       console.log('getNowPlaying', response);
 
       const totalPages = response.data.total_pages;
@@ -151,12 +149,9 @@ export default {
       } else {
         allData = response.data.results;
       }
-      console.log('totalPages', totalPages);
-      console.log('allData', allData);
-
-      const todayDate = this.getTodayDate();
 
       // 篩選出今天日期以前的電影
+      const todayDate = this.getTodayDate();
       const filterDate = allData.filter((item) => {
         return new Date(item.release_date) <= new Date(todayDate);
       });
@@ -171,7 +166,7 @@ export default {
       // 暫時 for 快速新增
       const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/admin/product`;
 
-      for (let i = 0; i < 6; i++) {
+      for (let i = 0; i < 20; i++) {
         this.tempProduct = {};
         this.tempProduct.title = this.top20nowPlaying[i].title;
         this.tempProduct.category = 'movie|nowplaying';
@@ -186,12 +181,17 @@ export default {
         ];
         // 透過content傳送其餘資料
         this.tempProduct.content = `${this.top20nowPlaying[i].id}|${this.top20nowPlaying[i].popularity}|${this.top20nowPlaying[i].release_date}`;
-        const response = await this.$http.post(api, {
-          data: this.tempProduct
-        });
 
-        console.log('測試寫入', response);
+        await this.$http
+          .post(api, {
+            data: this.tempProduct
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       }
+
+      this.isLoading = false;
 
       // 重新渲染畫面
       await this.getProducts();
@@ -199,9 +199,13 @@ export default {
     async getAllNowPlayingData() {
       const temp = [];
       for (let page = 1; page <= 2; page++) {
-        const response = await this.$http.get(
-          `https://api.themoviedb.org/3/movie/now_playing?api_key=7bbe6005cfda593dc21cceb93eaf9a8e&language=${this.language}&region=${this.region}&page=${page}`
-        );
+        const response = await this.$http
+          .get(
+            `https://api.themoviedb.org/3/movie/now_playing?api_key=7bbe6005cfda593dc21cceb93eaf9a8e&language=${this.language}&region=${this.region}&page=${page}`
+          )
+          .catch((err) => {
+            console.log(err);
+          });
 
         response.data.results.forEach((item) => {
           temp.push(item);
@@ -212,7 +216,7 @@ export default {
       return temp;
     },
     async getUpcoming() {
-      this.isLoadingUpComing = true;
+      this.isLoading = true;
 
       const response = await this.$http.get(
         `https://api.themoviedb.org/3/movie/upcoming?api_key=${this.key}&language=${this.language}&region=${this.region}&page=1`
@@ -221,7 +225,9 @@ export default {
 
       // 獲得所有資料
       const totalPages = response.data.total_pages;
-      const allData = await this.getAllUpComingData(totalPages);
+      const allData = await this.getAllUpComingData(totalPages).catch((err) => {
+        console.log(err);
+      });
 
       // 獲得今天日期
       const todayDate = this.getTodayDate();
@@ -237,7 +243,7 @@ export default {
       // 暫時 for 快速新增
       const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/admin/product`;
 
-      for (let i = 0; i < 6; i++) {
+      for (let i = 0; i < 20; i++) {
         this.tempProduct = {};
         this.tempProduct.title = this.top20upComing[i].title;
         this.tempProduct.category = 'movie|upcoming';
@@ -252,12 +258,17 @@ export default {
         ];
         // 透過content傳送其餘資料
         this.tempProduct.content = `${this.top20upComing[i].id}|${this.top20upComing[i].popularity}|${this.top20upComing[i].release_date}`;
-        const response = await this.$http.post(api, {
-          data: this.tempProduct
-        });
 
-        console.log('測試寫入', response);
+        await this.$http
+          .post(api, {
+            data: this.tempProduct
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       }
+
+      this.isLoading = false;
 
       // 重新渲染畫面
       await this.getProducts();
@@ -285,22 +296,20 @@ export default {
       return yyyy + '-' + mm + '-' + dd;
     },
     async getProducts(page) {
-      try {
-        this.isLoading = true;
+      this.isLoading = true;
 
-        // axios
-        const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/admin/products?page=${page}`;
-        const response = await this.$http.get(api);
-
-        // 儲存回傳資料
-        this.products = response.data.products;
-        this.pagination = response.data.pagination;
-
-        this.isLoading = false;
-        console.log('getProducts', response);
-      } catch (err) {
+      // axios
+      const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/admin/products?page=${page}`;
+      const response = await this.$http.get(api).catch((err) => {
         console.log(err);
-      }
+      });
+
+      // 儲存回傳資料
+      this.products = response.data.products;
+      this.pagination = response.data.pagination;
+
+      this.isLoading = false;
+      console.log('getProducts', response);
     },
     async updateProduct(item) {
       // 新增
@@ -323,27 +332,25 @@ export default {
       // item 存進 tempProduct（API參數）
       this.tempProduct = item;
 
-      try {
-        // axios
-        const response = await this.$http[httpMethod](api, {
-          data: this.tempProduct
-        });
-
-        // 重新渲染畫面
-        await this.getProducts(currentPage);
-
-        // 關閉modal
-        this.$refs.editModal.hideModal();
-
-        // toast
-        this.pushMessageStateForDashboard(
-          response,
-          item,
-          currentPage ? '更新' : '新增'
-        );
-      } catch (err) {
+      // axios
+      const response = await this.$http[httpMethod](api, {
+        data: this.tempProduct
+      }).catch((err) => {
         console.log(err);
-      }
+      });
+
+      // 重新渲染畫面
+      await this.getProducts(currentPage);
+
+      // 關閉modal
+      this.$refs.editModal.hideModal();
+
+      // toast
+      this.pushMessageStateForDashboard(
+        response,
+        item,
+        currentPage ? '更新' : '新增'
+      );
     },
     async getAllProducts() {
       // api
@@ -372,22 +379,20 @@ export default {
       await this.getProducts();
     },
     async deleteProduct(item) {
-      try {
-        // axios
-        const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/admin/product/${item.id}`;
-        const response = await this.$http.delete(api);
-
-        // 重新渲染畫面
-        await this.getProducts(item.current_page);
-
-        // 關閉modal
-        this.$refs.deleteModal.hideModal();
-
-        // toast
-        this.pushMessageStateForDashboard(response, item, '刪除');
-      } catch (err) {
+      // axios
+      const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/admin/product/${item.id}`;
+      const response = await this.$http.delete(api).catch((err) => {
         console.log(err);
-      }
+      });
+
+      // 重新渲染畫面
+      await this.getProducts(item.current_page);
+
+      // 關閉modal
+      this.$refs.deleteModal.hideModal();
+
+      // toast
+      this.pushMessageStateForDashboard(response, item, '刪除');
     },
     openModal(isNew, item, pagination) {
       // 新增

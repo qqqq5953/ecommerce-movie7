@@ -74,16 +74,8 @@ export default {
       sessionID: 'd13bca7b7450c217c5af3127e3a0a984db98ccb2',
       listProductsPerPage: [],
       listProducts: [],
-      listStatusMessage: '',
       products: [],
       productID: '',
-      // test
-      requestToken: '',
-      approvedPageUrl: '',
-      listResponse: '',
-      listResponseMessage: '',
-      listID: '',
-      id: '646385',
       // pagination
       totalPages: undefined,
       currentPage: 1,
@@ -116,7 +108,6 @@ export default {
       // 畫面滾動至最上方
       window.scrollTo(0, -1000);
     },
-    // 跳轉頁面用
     async getAllProducts() {
       // api
       const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/products/all`;
@@ -154,12 +145,11 @@ export default {
         media_id: id
       };
 
-      const response = await this.$http.post(api, requestBody).catch((err) => {
+      await this.$http.post(api, requestBody).catch((err) => {
         console.log(err);
       });
 
-      this.listStatusMessage = response.data.status_message;
-
+      // 重新 render 畫面
       this.getList();
     }
   },
@@ -167,7 +157,11 @@ export default {
     // 畫面滾動至最上方
     window.scrollTo(0, -1000);
 
+    // 獲得 watchlist 資料
     this.getList();
+
+    /* 點擊指定產品並前往該產品頁面，
+    得到 this.products 後給 this.getProductID() 使用 */
     this.getAllProducts();
   }
 };

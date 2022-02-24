@@ -13,7 +13,7 @@
         </a>
       </li>
       <!-- 數字 -->
-      <li class="w-50">
+      <li>
         <ul class="pagination justify-content-center flex-wrap">
           <li
             class="page-item"
