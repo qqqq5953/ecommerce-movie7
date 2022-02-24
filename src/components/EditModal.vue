@@ -21,7 +21,12 @@
           ></button>
         </section>
         <section class="modal-body">
-          <form class="row">
+          <form
+            class="row"
+            action="/api/thisismycourse2/admin/upload"
+            enctype="multipart/form-data"
+            method="post"
+          >
             <div class="col-lg-4">
               <!-- 輸入圖片網址 -->
               <div class="mb-3">
@@ -60,6 +65,7 @@
                 </label>
                 <input
                   type="file"
+                  name="file-to-upload"
                   id="customFile"
                   class="form-control"
                   ref="fileInput"
@@ -245,16 +251,22 @@ export default {
     removeImages() {
       this.tempProduct.imageUrl.pop();
     },
-    uploadFile() {
+    async uploadFile() {
       const uploadedFile = this.$refs.fileInput.files[0];
       const formData = new FormData();
       formData.append('file-to-upload', uploadedFile);
       console.dir(uploadedFile);
 
       const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/admin/upload`;
-      this.$http.post(api, formData).then((res) => {
-        if (res.data.success) this.tempProduct.imageUrl = res.data.imageUrl;
+      const response = await this.$http.post(api, formData).catch((err) => {
+        console.log(err);
       });
+
+      console.log('response', response);
+
+      if (response.data.success) {
+        this.tempProduct.imageUrl = response.data.imageUrl;
+      }
 
       console.log('this.tempProduct.imageUrl', this.tempProduct.imageUrl);
     }
