@@ -332,10 +332,18 @@
                 allowfullscreen
                 width="100%"
                 height="100%"
-                :src="
-                  baseYoutubeUrl + trailers[0].key ||
-                  baseYoutubeUrl + teasers[0].key
-                "
+                v-if="trailers.length"
+                :src="baseYoutubeUrl + trailers[0].key"
+              >
+              </iframe>
+              <iframe
+                class="test"
+                type="text/html"
+                allowfullscreen
+                width="100%"
+                height="100%"
+                v-else
+                :src="baseYoutubeUrl + teasers[0].key"
               >
               </iframe>
             </div>
