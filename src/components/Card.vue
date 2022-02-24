@@ -47,9 +47,6 @@ export default {
   props: {
     results: {
       type: Array
-    },
-    language: {
-      type: String
     }
   },
   methods: {

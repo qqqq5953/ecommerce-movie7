@@ -30,7 +30,7 @@ export function pushMessageStateForUser(response, title, action) {
   }
 
   if (response) {
-    emitContent('success', `${action} completed`);
+    emitContent('success', `${action}`);
     return;
   };
   emitContent('danger', `${action} failed`);
