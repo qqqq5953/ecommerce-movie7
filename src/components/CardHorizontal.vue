@@ -21,14 +21,16 @@
               :alt="product.title"
             />
           </div>
-          <div class="col-8 col-md-10 col-lg-9 ps-0 ps-sm-2">
+          <div class="col-8 col-md-10 col-lg-9 px-0 px-sm-2" lang="en">
             <!-- sm 以下的 title -->
-            <h2 class="h4 card-title mb-0 d-sm-none">
+            <h2 class="h4 card-title card-title-adjusted mb-0 d-sm-none">
               {{ product.title }}
             </h2>
 
             <!-- sm 以上的 title -->
-            <h2 class="h3 card-title mb-0 d-none d-sm-block">
+            <h2
+              class="h3 card-title card-title card-title-adjusted mb-0 d-none d-sm-block"
+            >
               {{ product.title }}
             </h2>
             <div class="fs-6">
@@ -83,10 +85,12 @@ export default {
   box-shadow: 0px 0px 120px -20px rgba(0, 0, 0, 0.5);
   box-shadow: -6px 0px 50px -30px rgba(255, 255, 255, 0.8);
 
-  &:hover {
-    transform: scale(1.02);
-    box-shadow: -6px 0px 55px -30px rgba(255, 255, 255, 1);
-    transition: all 0.4s;
+  @media (min-width: 992px) {
+    &:hover {
+      transform: scale(1.02);
+      box-shadow: -6px 0px 55px -30px rgba(255, 255, 255, 1);
+      transition: all 0.4s;
+    }
   }
 
   .info_section {
@@ -131,6 +135,15 @@ export default {
       object-position: center center;
       aspect-ratio: 2 / 3;
       max-height: 250px;
+    }
+
+    .card-title-adjusted {
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+
+      -webkit-hyphens: auto;
+      -moz-hyphens: auto;
+      hyphens: auto;
     }
   }
 
