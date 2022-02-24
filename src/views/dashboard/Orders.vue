@@ -31,7 +31,7 @@
               </ul>
             </td>
             <td class="text-end" v-if="order.total">
-              {{ order.total.toFixed(2) }}
+              ${{ order.total.toFixed(2) }}
             </td>
             <td>
               <div class="form-check form-switch">
