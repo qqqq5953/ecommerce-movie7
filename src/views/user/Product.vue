@@ -357,9 +357,6 @@ export default {
   data() {
     return {
       // TMDB
-      key: '7bbe6005cfda593dc21cceb93eaf9a8e',
-      sessionID: 'd13bca7b7450c217c5af3127e3a0a984db98ccb2',
-      list_id: '8191517',
       baseImageUrl: 'https://image.tmdb.org/t/p/w300',
       baseYoutubeUrl: 'https://www.youtube.com/embed/',
       // watchlist
@@ -448,7 +445,7 @@ export default {
       }
 
       // api
-      const api = `https://api.themoviedb.org/3/movie/${this.id}/rating?api_key=${this.key}&session_id=${this.sessionID}`;
+      const api = `https://api.themoviedb.org/3/movie/${this.id}/rating?api_key=${process.env.VUE_APP_KEY}&session_id=${process.env.VUE_APP_SESSION_ID}`;
 
       const requestBody = {
         value: this.result
@@ -462,7 +459,7 @@ export default {
       this.pushMessageStateForUser(
         response.data.status_message,
         this.title,
-        'rating'
+        'Rating completed'
       );
 
       // 控制刪除rating鈕狀態
@@ -475,7 +472,7 @@ export default {
       }
 
       // api
-      const api = `https://api.themoviedb.org/3/movie/${this.id}/rating?api_key=${this.key}&session_id=${this.sessionID}`;
+      const api = `https://api.themoviedb.org/3/movie/${this.id}/rating?api_key=${process.env.VUE_APP_KEY}&session_id=${process.env.VUE_APP_SESSION_ID}`;
 
       const requestBody = {
         value: this.result
@@ -502,7 +499,7 @@ export default {
       this.pushMessageStateForUser(
         response.data.status_message,
         this.title,
-        'delete rating'
+        'Delete rating completed'
       );
     },
     offsetWidthCount() {
@@ -615,7 +612,7 @@ export default {
     async getTMDBData() {
       // TMDB api
       const response = await this.$http.get(
-        `https://api.themoviedb.org/3/${this.genre}/${this.id}?api_key=${this.key}&language=${this.language}&append_to_response=videos,images`
+        `https://api.themoviedb.org/3/${this.genre}/${this.id}?api_key=${process.env.VUE_APP_KEY}&language=${this.language}&append_to_response=videos,images`
       );
 
       // 根據 movie 或 tv 選擇對應的資料（但目前只做 movie）
@@ -652,7 +649,7 @@ export default {
     },
     /// add to watchlist
     async checkProductStatus() {
-      const api = `https://api.themoviedb.org/3/list/${this.list_id}/item_status?api_key=${this.key}&movie_id=${this.id}`;
+      const api = `https://api.themoviedb.org/3/list/${process.env.VUE_APP_LIST_ID}/item_status?api_key=${process.env.VUE_APP_KEY}&movie_id=${this.id}`;
 
       const response = await this.$http.get(api).catch((err) => {
         console.log(err);
@@ -665,7 +662,7 @@ export default {
       this.status.watchlistProductID = this.idPassIn;
 
       // api
-      const api = `https://api.themoviedb.org/3/list/${this.list_id}/remove_item?api_key=${this.key}&session_id=${this.sessionID}`;
+      const api = `https://api.themoviedb.org/3/list/${process.env.VUE_APP_LIST_ID}/remove_item?api_key=${process.env.VUE_APP_KEY}&session_id=${process.env.VUE_APP_SESSION_ID}`;
 
       const requestBody = {
         media_id: this.id
@@ -683,7 +680,7 @@ export default {
       this.pushMessageStateForUser(
         this.listStatusMessage,
         this.title,
-        'remove from watchlist'
+        'Remove from watchlist'
       );
 
       // spinner off
@@ -701,7 +698,7 @@ export default {
       }
 
       // api
-      const api = `https://api.themoviedb.org/3/list/${this.list_id}/add_item?api_key=${this.key}&session_id=${this.sessionID}`;
+      const api = `https://api.themoviedb.org/3/list/${process.env.VUE_APP_LIST_ID}/add_item?api_key=${process.env.VUE_APP_KEY}&session_id=${process.env.VUE_APP_SESSION_ID}`;
 
       const requestBody = {
         media_id: this.id
@@ -719,7 +716,7 @@ export default {
       this.pushMessageStateForUser(
         this.listStatusMessage,
         this.title,
-        'add to watchlist'
+        'Add to watchlist'
       );
 
       // spinner off
@@ -737,13 +734,20 @@ export default {
         data: { product_id: id, qty: 1 }
       };
 
-      await this.$http.post(api, requestBody).catch((err) => {
+      const response = await this.$http.post(api, requestBody).catch((err) => {
         console.log(err);
       });
 
       // 更新 navbar cart 數量
       const cartLength = await this.getCartLength();
       this.emitter.emit('calculate-product-number', cartLength);
+
+      // toast
+      this.pushMessageStateForUser(
+        response.data.success,
+        id === this.subscriptionID ? 'Subscription' : this.title,
+        'Add to cart'
+      );
 
       // 檢查是否已訂閱
       if (id === this.subscriptionID) await this.hasSubscription();

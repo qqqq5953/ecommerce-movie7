@@ -81,10 +81,7 @@ export default {
   },
   data() {
     return {
-      key: '7bbe6005cfda593dc21cceb93eaf9a8e',
       baseImageUrl: 'https://image.tmdb.org/t/p/w300',
-      list_id: '8191517',
-      sessionID: 'd13bca7b7450c217c5af3127e3a0a984db98ccb2',
       listProductsPerPage: [],
       listProducts: [],
       products: [],
@@ -97,7 +94,7 @@ export default {
   },
   methods: {
     async getList() {
-      const api = `https://api.themoviedb.org/3/list/${this.list_id}?api_key=${this.key}&language=en-US`;
+      const api = `https://api.themoviedb.org/3/list/${process.env.VUE_APP_LIST_ID}?api_key=${process.env.VUE_APP_KEY}&language=en-US`;
 
       const response = await this.$http.get(api).catch((err) => {
         console.log(err);
@@ -152,7 +149,7 @@ export default {
     },
     async removeProductFromList(id) {
       // api
-      const api = `https://api.themoviedb.org/3/list/${this.list_id}/remove_item?api_key=${this.key}&session_id=${this.sessionID}`;
+      const api = `https://api.themoviedb.org/3/list/${process.env.VUE_APP_LIST_ID}/remove_item?api_key=${process.env.VUE_APP_KEY}&session_id=${process.env.VUE_APP_SESSION_ID}`;
 
       const requestBody = {
         media_id: id

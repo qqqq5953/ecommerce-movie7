@@ -117,7 +117,6 @@ export default {
   inject: ['emitter'],
   data() {
     return {
-      key: '7bbe6005cfda593dc21cceb93eaf9a8e',
       baseYoutubeUrl: 'https://www.youtube.com/embed/',
       idPassIn: '',
       titlePassIn: '',
@@ -153,7 +152,7 @@ export default {
     },
     async getData() {
       const response = await this.$http.get(
-        `https://api.themoviedb.org/3/movie/${this.idPassIn}?api_key=${this.key}&language=en-US&append_to_response=videos,images`
+        `https://api.themoviedb.org/3/movie/${this.idPassIn}?api_key=${process.env.VUE_APP_KEY}&language=en-US&append_to_response=videos,images`
       );
       this.product = response.data;
 

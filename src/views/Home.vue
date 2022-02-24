@@ -154,7 +154,7 @@
           </h2>
           <div class="position-relative mt-3">
             <section class="overflow-auto card-scrollbar position-relative">
-              <Card :results="nowPlaying" :language="language"></Card>
+              <Card :results="nowPlaying"></Card>
             </section>
             <div class="position-absolute right-blur"></div>
           </div>
@@ -183,7 +183,7 @@
             <section
               class="overflow-auto mt-3 mb-5 card-scrollbar position-relative"
             >
-              <Card :results="upComing" :language="language"></Card>
+              <Card :results="upComing"></Card>
             </section>
             <div class="position-absolute right-blur"></div>
           </div>
@@ -212,13 +212,9 @@ export default {
   inject: ['sortData', 'emitter'],
   data() {
     return {
-      baseUrl: 'https://api.themoviedb.org/3/',
-      key: '7bbe6005cfda593dc21cceb93eaf9a8e',
       products: [],
       nowPlaying: [],
       upComing: [],
-      language: 'en-US',
-      region: 'US',
       isLoading: false
     };
   },
