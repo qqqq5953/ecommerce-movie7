@@ -221,7 +221,7 @@ export default {
       this.top20nowPlaying = filterDate.slice(0, 20);
 
       // 快速新增產品
-      await this.addManyProducts(this.top20nowPlaying, 3);
+      await this.addManyProducts(this.top20nowPlaying, 20, 'nowplaying');
 
       this.isLoading = false;
 
@@ -272,7 +272,7 @@ export default {
       this.top20upComing = filterDate.slice(0, 20);
 
       // 快速新增產品
-      await this.addManyProducts(this.top20upComing, 20);
+      await this.addManyProducts(this.top20upComing, 20, 'upcoming');
 
       this.isLoading = false;
 
@@ -293,24 +293,33 @@ export default {
       return temp;
     },
     /// 快速新增多樣產品
-    async addManyProducts(genre, length) {
+    async addManyProducts(top20Array, length, genre) {
       const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/admin/product`;
 
       for (let i = 0; i < length; i++) {
         this.tempProduct = {};
-        this.tempProduct.title = genre[i].title;
-        this.tempProduct.category = 'movie|upcoming';
+        this.tempProduct.title = top20Array[i].title;
+        this.tempProduct.category = `movie|${genre}`;
         this.tempProduct.origin_price = 1.99;
         this.tempProduct.price = 0.99;
         this.tempProduct.unit = 'week';
-        this.tempProduct.description = genre[i].overview;
+        this.tempProduct.description = top20Array[i].overview;
         this.tempProduct.is_enabled = true;
-        this.tempProduct.imageUrl = [
-          this.baseImageUrl + genre[i].poster_path,
-          this.baseImageUrl + genre[i].backdrop_path
-        ];
+
+        // 判斷是否有背景圖
+        if (top20Array[i].backdrop_path) {
+          this.tempProduct.imageUrl = [
+            this.baseImageUrl + top20Array[i].poster_path,
+            this.baseImageUrl + top20Array[i].backdrop_path
+          ];
+        } else {
+          this.tempProduct.imageUrl = [
+            this.baseImageUrl + top20Array[i].poster_path
+          ];
+        }
+
         // 透過content傳送其餘資料
-        this.tempProduct.content = `${genre[i].id}|${genre[i].popularity}|${genre[i].release_date}`;
+        this.tempProduct.content = `${top20Array[i].id}|${top20Array[i].popularity}|${top20Array[i].release_date}`;
 
         await this.$http
           .post(api, {
@@ -461,6 +470,7 @@ export default {
   },
   created() {
     this.getProducts();
+    this.getAllProducts();
   }
 };
 </script>
