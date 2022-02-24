@@ -16,7 +16,7 @@
       <li>
         <ul class="pagination justify-content-center flex-wrap">
           <li
-            class="page-item"
+            class="page-item mb-2"
             :class="{
               active: page === currentPage
             }"
