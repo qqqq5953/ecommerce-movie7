@@ -27,7 +27,9 @@
             @click="toggleDisableButton"
           >
             切換按鈕狀態：
-            <span>{{ disableBtn ? '關' : '開' }}</span>
+            <span :class="{ 'text-danger': !disableBtn }">{{
+              disableBtn ? '關' : '開'
+            }}</span>
           </button>
         </div>
         <div class="col-12 col-sm-6 col-md-4 col-lg my-2">

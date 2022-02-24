@@ -15,14 +15,14 @@
           </h5>
           <button
             type="button"
-            class="btn-close"
+            class="btn-close btn-close-white"
             data-bs-dismiss="modal"
             aria-label="Close"
           ></button>
         </section>
         <section class="modal-body">
           <form class="row">
-            <div class="col-sm-4">
+            <div class="col-lg-4">
               <!-- 輸入圖片網址 -->
               <div class="mb-3">
                 <label for="image" class="form-label">輸入圖片網址</label>
@@ -75,7 +75,7 @@
                 alt=""
               />
             </div>
-            <div class="col-sm-8">
+            <div class="col-lg-8">
               <div class="mb-3">
                 <label for="title" class="form-label">標題</label>
                 <input
@@ -89,7 +89,7 @@
               </div>
 
               <div class="row gx-2">
-                <div class="mb-3 col-md-6">
+                <div class="mb-3 col-12">
                   <label for="category" class="form-label">分類</label>
                   <input
                     type="text"
@@ -100,7 +100,7 @@
                     required
                   />
                 </div>
-                <div class="mb-3 col-md-6">
+                <div class="mb-3 col-12">
                   <label for="unit" class="form-label">單位</label>
                   <input
                     type="text"
@@ -114,7 +114,7 @@
               </div>
 
               <div class="row gx-2">
-                <div class="mb-3 col-md-6">
+                <div class="mb-3 col-12">
                   <label for="origin_price" class="form-label">原價</label>
                   <input
                     type="number"
@@ -125,7 +125,7 @@
                     required
                   />
                 </div>
-                <div class="mb-3 col-md-6">
+                <div class="mb-3 col-12">
                   <label for="price" class="form-label">售價</label>
                   <input
                     type="number"
