@@ -37,7 +37,7 @@
                   :to="{ name: 'AllProducts' }"
                   class="btn btn-warning btn-sm fs-6 w-100 text-primary"
                 >
-                  <span>Pick a movie now</span>
+                  <span>Pick some movies now</span>
                   <i class="bi bi-arrow-right ms-2"></i>
                 </router-link>
               </div>
@@ -62,7 +62,7 @@
               :to="{ name: 'AllProducts' }"
               class="btn btn-warning fs-5 w-100 text-primary"
             >
-              <span>Pick a movie now</span>
+              <span>Pick some movies now</span>
               <i class="bi bi-arrow-right ms-2"></i>
             </router-link>
           </div>
@@ -254,6 +254,9 @@ export default {
 
       // 照熱門度分類
       this.nowPlaying = this.sortData(this.nowPlaying, 'content');
+
+      // 取前 10
+      this.nowPlaying = this.nowPlaying.slice(0, 10);
     },
     getUpcoming() {
       this.upComing = this.products.filter((item) => {
@@ -263,6 +266,9 @@ export default {
 
       // 照熱門度分類
       this.upComing = this.sortData(this.upComing, 'content');
+
+      // 取前 10
+      this.upComing = this.upComing.slice(0, 10);
     }
   },
   created() {
