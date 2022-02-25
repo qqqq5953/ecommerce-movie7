@@ -76,14 +76,12 @@ export default {
   },
   data() {
     return {
-      modal: {},
       tempOrder: {}
     };
   },
   watch: {
     order() {
       this.tempOrder = this.order;
-      // console.log('watch tempOrder', this.tempOrder);
     }
   }
 };

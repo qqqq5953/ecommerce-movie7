@@ -47,48 +47,53 @@
             </div>
             <div class="col-lg-8">
               <h3>訂單細節</h3>
-              <table class="table">
-                <tbody>
-                  <tr>
-                    <th>訂單編號</th>
-                    <td>{{ tempOrder.id }}</td>
-                  </tr>
-                  <tr>
-                    <th>下單時間</th>
-                    <td>{{ $filters.date(tempOrder.create_at) }}</td>
-                  </tr>
-                  <tr>
-                    <th>付款時間</th>
-                    <td>{{ $filters.date(tempOrder.paid_date) }}</td>
-                  </tr>
-                  <tr>
-                    <th>付款狀態</th>
-                    <td :class="{ 'text-success': tempOrder.is_paid }">
-                      {{ tempOrder.is_paid ? '已付款' : '未付款' }}
-                    </td>
-                  </tr>
-                  <tr>
-                    <th>總金額</th>
-                    <td v-if="tempOrder.total">
-                      {{ tempOrder.total.toFixed(2) }}
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+              <div class="table-responsive">
+                <table class="table align-middle">
+                  <tbody>
+                    <tr>
+                      <th class="text-nowrap">訂單編號</th>
+                      <td>{{ tempOrder.id }}</td>
+                    </tr>
+                    <tr>
+                      <th class="text-nowrap">下單時間</th>
+                      <td>{{ $filters.date(tempOrder.create_at) }}</td>
+                    </tr>
+                    <tr>
+                      <th class="text-nowrap">付款時間</th>
+                      <td>{{ $filters.date(tempOrder.paid_date) }}</td>
+                    </tr>
+                    <tr>
+                      <th class="text-nowrap">付款狀態</th>
+                      <td :class="{ 'text-success': tempOrder.is_paid }">
+                        {{ tempOrder.is_paid ? '已付款' : '未付款' }}
+                      </td>
+                    </tr>
+                    <tr>
+                      <th class="text-nowrap">總金額</th>
+                      <td v-if="tempOrder.total">
+                        {{ tempOrder.total.toFixed(2) }}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
               <h3>選購商品</h3>
-              <table class="table">
-                <tbody>
-                  <tr v-for="item in tempProducts" :key="item.id">
-                    <th>
-                      {{ item.product.title }}
-                    </th>
-                    <td>{{ item.qty }} / {{ item.product.unit }}</td>
-                    <td class="text-end" v-if="item.final_total">
-                      {{ item.final_total.toFixed(2) }}
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+              <div class="table-responsive">
+                <table class="table align-middle">
+                  <tbody>
+                    <tr v-for="item in tempProducts" :key="item.id">
+                      <th>
+                        {{ item.product.title }}
+                      </th>
+                      <td>{{ item.qty }} / {{ item.product.unit }}</td>
+                      <td class="text-end" v-if="item.final_total">
+                        {{ item.final_total.toFixed(2) }}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>

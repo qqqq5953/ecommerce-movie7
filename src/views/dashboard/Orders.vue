@@ -125,40 +125,35 @@ export default {
       this.$refs.orderDeleteModal.showModal();
     },
     async deleteOrder(order) {
-      try {
-        // axios
-        const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/admin/order/${order.id}`;
-        const response = await this.$http.delete(api);
+      // axios
+      const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/admin/order/${order.id}`;
+      await this.$http.delete(api).catch((err) => {
+        console.log(err);
+      });
 
-        // 取得分頁資料
-        const currentPage = order.current_page;
+      // 取得分頁資料
+      const currentPage = order.current_page;
 
-        // 重新渲染畫面
-        this.getOrders(currentPage);
+      // 重新渲染畫面
+      this.getOrders(currentPage);
 
-        // 關閉modal
-        this.$refs.orderDeleteModal.hideModal();
-
-        // toast
-        this.pushMessageStateForDashboard(response, order, '刪除');
-      } catch (err) {}
+      // 關閉modal
+      this.$refs.orderDeleteModal.hideModal();
     },
     async getOrders(page) {
-      try {
-        this.isLoading = true;
+      this.isLoading = true;
 
-        // axios
-        const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/admin/orders?page=${page}`;
-        const response = await this.$http.get(api);
-
-        // 儲存回傳資料
-        this.orders = response.data.orders;
-        this.pagination = response.data.pagination;
-
-        this.isLoading = false;
-      } catch (err) {
+      // axios
+      const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/admin/orders?page=${page}`;
+      const response = await this.$http.get(api).catch((err) => {
         console.log(err);
-      }
+      });
+
+      // 儲存回傳資料
+      this.orders = response.data.orders;
+      this.pagination = response.data.pagination;
+
+      this.isLoading = false;
     }
   },
   created() {
