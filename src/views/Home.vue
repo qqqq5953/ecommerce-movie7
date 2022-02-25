@@ -37,7 +37,7 @@
                   :to="{ name: 'AllProducts' }"
                   class="btn btn-warning btn-sm fs-6 w-100 text-primary"
                 >
-                  <span>Pick some movies now</span>
+                  <span>Pick some movies</span>
                   <i class="bi bi-arrow-right ms-2"></i>
                 </router-link>
               </div>
@@ -62,7 +62,7 @@
               :to="{ name: 'AllProducts' }"
               class="btn btn-warning fs-5 w-100 text-primary"
             >
-              <span>Pick some movies now</span>
+              <span>Pick some movies</span>
               <i class="bi bi-arrow-right ms-2"></i>
             </router-link>
           </div>
@@ -283,22 +283,22 @@ export default {
   min-height: 350px;
   max-height: 375px;
 
-  @media (min-width: 768px) {
+  @include md {
     background-position: 10% 60% !important;
     background-size: initial !important;
     min-height: 380px;
     max-height: 55vh;
   }
-  @media (min-width: 992px) {
+  @include lg {
     background-size: cover !important;
   }
-  @media (min-width: 1200px) {
+  @include xl {
     background-position: 225% 100% !important;
     background-size: initial !important;
     min-height: 480px;
     max-height: 85vh;
   }
-  @media (min-width: 1400px) {
+  @include xxl {
     background-position: 100% 100% !important;
   }
 }
@@ -307,7 +307,7 @@ export default {
   background: rgba(255, 255, 255, 0.2);
   backdrop-filter: blur(2.5px);
 
-  @media (min-width: 768px) {
+  @include md {
     background: rgba(255, 255, 255, 0.05);
     backdrop-filter: blur(0);
   }
@@ -318,37 +318,37 @@ export default {
   height: 200px;
   width: 100%;
 
-  @media (min-width: 768px) {
+  @include md {
     background: rgba(0, 0, 0, 0.45);
     height: 85%;
     width: 47%;
   }
 
-  @media (min-width: 992px) {
+  @include lg {
     background: rgba(62, 73, 83, 0.45);
     height: 90%;
     width: 37%;
     height: auto;
   }
 
-  @media (min-width: 1200px) {
+  @include xl {
     background: rgba(62, 73, 83, 0.415);
     width: 45%;
   }
 
   h2 {
-    @media (min-width: 768px) {
+    @include md {
       font-size: calc(1.125rem + 1.5vw) !important;
       line-height: 1.4;
     }
 
-    @media (min-width: 1200px) {
+    @include xl {
       // display-6
       font-size: calc(1.375rem + 1.6vw) !important;
       line-height: 1.5;
     }
 
-    @media (min-width: 1400px) {
+    @include xxl {
       font-size: 3rem !important;
     }
   }

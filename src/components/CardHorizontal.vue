@@ -85,7 +85,7 @@ export default {
   box-shadow: 0px 0px 120px -20px rgba(0, 0, 0, 0.5);
   box-shadow: -6px 0px 50px -30px rgba(255, 255, 255, 0.8);
 
-  @media (min-width: 992px) {
+  @include lg {
     &:hover {
       transform: scale(1.02);
       box-shadow: -6px 0px 55px -30px rgba(255, 255, 255, 1);
@@ -100,14 +100,14 @@ export default {
     z-index: 2;
     background: linear-gradient(to top, #e5e6e6 40%, transparent 75%);
 
-    @media (min-width: 992px) {
+    @include lg {
       background: linear-gradient(to right, #e5e6e6 50%, transparent 83%);
     }
 
     .info_section_width {
       width: 100%;
 
-      @media (min-width: 992px) {
+      @include lg {
         width: 60%;
       }
     }
@@ -118,11 +118,11 @@ export default {
       backdrop-filter: blur(3px);
       -webkit-backdrop-filter: blur(3px);
 
-      @media (min-width: 576px) {
+     @include sm {
         margin-top: 85px;
       }
 
-      @media (min-width: 992px) {
+      @include lg {
         margin-top: 0;
         background: none;
         backdrop-filter: none;
@@ -157,7 +157,7 @@ export default {
     height: 100%;
     width: 100%;
 
-    @media (min-width: 992px) {
+    @include lg {
       position: absolute;
       background-repeat: no-repeat;
       background-size: cover;

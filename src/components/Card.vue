@@ -67,17 +67,17 @@ export default {
     height: 345px;
   }
 
-  @media (min-width: 768px) {
+  @include md {
     width: 90%;
     height: 325px;
   }
 
-  @media (min-width: 1200px) {
+  @include xl {
     width: 90%;
     height: 435px;
   }
 
-  @media (min-width: 1400px) {
+  @include xxl {
     width: 90%;
     height: 500px;
   }

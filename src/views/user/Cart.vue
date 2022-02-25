@@ -476,11 +476,11 @@ export default {
   aspect-ratio: 3 / 4;
   max-height: 99px;
 
-  @media (min-width: 768px) {
+  @include md {
     max-height: 111px;
   }
 
-  @media (min-width: 1200px) {
+  @include xl {
     max-height: 150px;
   }
 }
@@ -488,7 +488,7 @@ export default {
 .price-font {
   font-size: 0.75rem;
 
-  @media (min-width: 768px) {
+  @include md {
     font-size: 1rem;
   }
 }
@@ -496,7 +496,7 @@ export default {
 .total-price-font {
   font-size: 1rem;
 
-  @media (min-width: 768px) {
+  @include md {
     font-size: 1.25rem;
   }
 }
@@ -504,7 +504,7 @@ export default {
 .border-adjusted {
   border-bottom: 1px solid #eceeef;
 
-  @media (min-width: 992px) {
+  @include lg {
     border-bottom: none;
   }
 }

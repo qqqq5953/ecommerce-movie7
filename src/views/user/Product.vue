@@ -808,7 +808,7 @@ export default {
 .overview {
   line-height: 2;
 
-  @media (min-width: 1200px) {
+  @include xl {
     line-height: 1.5;
   }
 }

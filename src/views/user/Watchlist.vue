@@ -191,7 +191,7 @@ export default {
   backdrop-filter: blur(3.5px);
   -webkit-backdrop-filter: blur(3.5px);
 
-  @media (min-width: 768px) {
+  @include md {
     top: 10px;
     right: 10px;
     padding: 4px 7px 3px;
@@ -215,7 +215,7 @@ export default {
   background-size: cover;
   padding: 70% 0;
 
-  @media (min-width: 768px) {
+  @include md {
     padding: 65.8% 0;
   }
 }
@@ -226,7 +226,7 @@ export default {
 }
 
 .card-img-border-adjusted {
-  @media (min-width: 768px) {
+  @include md {
     border-bottom-left-radius: 0 !important;
     border-bottom-right-radius: 0 !important;
   }
