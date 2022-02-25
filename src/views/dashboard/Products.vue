@@ -1,10 +1,5 @@
 <template>
   <Loading :active="isLoading"></Loading>
-  <div class="text-end mt-3 d-none">
-    <button type="button" class="btn btn-info" @click="getAllProducts">
-      查看全部產品
-    </button>
-  </div>
   <div class="container py-5 px-3 px-xl-0">
     <header>
       <div class="d-flex align-items-center mb-2">

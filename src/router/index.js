@@ -65,7 +65,6 @@ const routes = [
         component: () => import('../views/user/ProductVideos.vue'),
         props: (route) => {
           return {
-            // key 可以自訂，要與UserProduct的props變數一致
             movieID: route.params.movieID,
             movieTitle: route.params.movieTitle,
             movieVideoType: route.params.videoType
@@ -83,7 +82,6 @@ const routes = [
         component: () => import('../views/user/Product.vue'),
         props: (route) => {
           return {
-            // key 可以自訂，要與UserProduct的props變數一致
             productID: route.params.productID
           };
         }

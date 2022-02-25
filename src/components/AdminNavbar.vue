@@ -1,11 +1,7 @@
 <template>
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container-fluid">
-      <h1 class="mb-0">
-        <router-link class="navbar-brand nav-link active" :to="{ name: 'Home' }"
-          >最後移除</router-link
-        >
-      </h1>
+    <div class="container">
+      <h1 class="h3 mb-0 text-white px-2 px-md-0">DashBoard</h1>
       <button
         class="navbar-toggler"
         type="button"
@@ -22,7 +18,7 @@
         id="navbarSupportedContent"
         ref="navbarDropdownMenu"
       >
-        <ul class="navbar-nav me-auto mb-0 px-3" @click="toggleNavbarDropdown">
+        <ul class="navbar-nav ms-auto mb-0 px-3" @click="toggleNavbarDropdown">
           <li class="nav-item">
             <router-link class="nav-link" :to="{ name: 'Products' }"
               >產品</router-link
@@ -39,7 +35,7 @@
             >
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#" @click.prevent="logOut">Logout</a>
+            <a class="nav-link" href="#" @click.prevent="logOut">登出</a>
           </li>
         </ul>
       </div>

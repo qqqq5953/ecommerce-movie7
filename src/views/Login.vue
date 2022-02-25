@@ -55,23 +55,23 @@ export default {
   data() {
     return {
       user: {
-        username: 'qqqq5953@gmail.com',
-        password: 'andy90343'
+        username: '',
+        password: ''
       }
     };
   },
   methods: {
-    signIn() {
+    async signIn() {
       const api = `${process.env.VUE_APP_API}admin/signin`;
-
-      this.$http.post(api, this.user).then((res) => {
-        if (res.data.success) {
-          const { token, expired } = res.data;
-          document.cookie = `hexToken=${token}; expires=${new Date(expired)}`;
-          this.$router.push({ name: 'Products' });
-          console.log('cookie expire:', new Date(expired));
-        }
+      const response = await this.$http.post(api, this.user).catch((err) => {
+        console.log(err);
       });
+
+      if (response.data.success) {
+        const { token, expired } = response.data;
+        document.cookie = `hexToken=${token}; expires=${new Date(expired)}`;
+        this.$router.push({ name: 'Products' });
+      }
     }
   }
 };
